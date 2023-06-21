@@ -1,0 +1,44 @@
+/**=====================
+     74. Print CSS Start
+==========================**/
+@media print {
+.page-wrapper {
+    .page-title {
+      visibility: hidden;
+    }
+    .page-body-wrapper {
+      .page-title {
+        display: none;
+      }
+    }
+  }
+  table.fixedHeader-floating {
+    display: none;
+  }
+  .sidebar-wrapper{
+    display: none;
+  }
+  .page-body{
+    width: 100%;
+    .card{
+      margin-left: 100px;
+    }
+  }
+}
+.invoice-table{
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.invoice{
+  .text-right{
+    input{
+      margin-top: 6px;
+    }
+  }
+  .d-flex {
+    align-items: center;
+  }
+}
+/**=====================
+    74. Print CSS Ends
+==========================**/

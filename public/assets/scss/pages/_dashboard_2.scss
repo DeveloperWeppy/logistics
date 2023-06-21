@@ -1,0 +1,688 @@
+/**=====================
+  67. Dashboard 2 CSS Start
+==========================**/
+// sale chart chart
+.sale-chart {
+  .card-body {
+    .d-flex {
+      align-items: center;
+    }
+    .sale-detail {
+      display: flex;
+      align-items: center;
+      .icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: $light;
+        svg {
+          width: auto;
+          height: 24px;
+          stroke: $primary-color;
+        }
+      }
+      .sale-content {
+        margin-left: 20px;
+        h3 {
+          color: $primary-color;
+          margin-bottom: 0;
+        }
+        p {
+          font-weight: 500;
+          margin: 0;
+          color: $light-text;
+          font-size: 18px;
+          letter-spacing: 0.5px;
+        }
+        span {
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+    }
+    .small-chart-view {
+      min-height: 90px !important;
+      max-height: 90px;
+      margin-top: -25px;
+      margin-left: auto;
+    }
+  }
+  .income-chart,
+  .visitor-chart {
+    .apexcharts-tooltip.apexcharts-theme-light {
+      background-color: $secondary-color;
+    }
+  }
+}
+// Recent Order Chart View
+.recent-order {
+  .card-body {
+    overflow: hidden;
+    padding-top: unset;
+    .medium-chart {
+      margin-right: -10px;
+      margin-left: -10px;
+      #recent-chart {
+        .apexcharts-yaxis-label {
+          font-size: 14px;
+          font-family: $font-roboto !important;
+          font-weight: 500;
+          fill: $primary-color !important;
+        }
+        .apexcharts-xaxis-label {
+          fill: $light-text;
+        }
+      }
+    }
+  }
+  .recent-chart {
+    .apexcharts-tooltip.apexcharts-theme-light {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+// Top Products
+.top-products {
+  table {
+    tr {
+      &:first-child {
+        td {
+          padding-top: 14px;
+        }
+      }
+      &:last-child {
+        td {
+          padding-bottom: 14px;
+        }
+      }
+      h5 {
+        margin-bottom: 0;
+      }
+      p {
+        font-family: $font-roboto;
+        color: $light-text;
+        line-height: unset;
+      }
+      th,
+      td {
+        padding-top: 14px;
+        padding-bottom: 14px;
+        vertical-align: middle;
+        min-width: 70px;
+        &:nth-child(2) {
+          min-width: 115px;
+        }
+        &:first-child {
+          padding-left: 25px !important;
+          padding-right: unset;
+          min-width: 200px;
+        }
+        &:last-child {
+          padding-right: 25px;
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:hover {
+          background-color: rgba($primary-color, 0.1);
+          td {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+  .card-body {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 17px;
+    padding-bottom: 15px !important;
+    .products-logo-img {
+      width: auto;
+      height: 40px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+// Country Sales  Chart View
+.country-sales-view {
+  .card-body {
+    overflow: hidden;
+  }
+  .country-sales-chart {
+    margin-left: -11px !important;
+    .apexcharts-tooltip.apexcharts-theme-light {
+      background-color: $secondary-color;
+    }
+  }
+}
+
+// Best Sellers
+.best-sellers {
+  .card-body {
+    padding-top: 20px;
+    table {
+      h5 {
+        margin-bottom: 0;
+      }
+      tr {
+        .d-flex {
+          align-items: center;
+          .flex-grow-1 {
+            p {
+              color: $light-text;
+              font-size: 12px;
+              line-height: unset;
+            }
+          }
+        }
+        th {
+          font-size: 16px;
+          &:first-child {
+            min-width: 175px;
+          }
+        }
+        td {
+          vertical-align: middle;
+          min-width: 100px;
+          padding-top: 0;
+          padding-left: 10px;
+          padding-right: 10px;
+          &:first-child{
+            padding-left: unset;
+          }
+          .status-showcase {
+            text-align: right;
+            p {
+              margin-bottom: 0;
+              line-height: unset;
+            }
+          }
+        }
+        &:hover {
+          .d-flex {
+            .icon {
+              background-color: rgba($primary-color, 0.5);
+            }
+          }
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      &:hover {
+        td {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+// Rated Product
+.rated-product {
+  margin-left: 10px;
+  margin-right: 10px;
+  &.bg-primary {
+    background-color: rgba($primary-color, 0.2) !important;
+  }
+  &.bg-secondary {
+    background-color: rgba($secondary-color, 0.2) !important;
+  }
+  .card-body {
+    padding: 20px;
+  }
+  .img-wrapper {
+    align-items: center;
+    display: flex;
+    img {
+      border-radius: 5px;
+      align-items: center;
+      justify-content: center;
+    }
+    span.badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 6px 7px;
+      font-size: 9px;
+      text-transform: capitalize;
+    }
+  }
+  .product-detail {
+    margin-top: 15px;
+    h4 {
+      color: $light-text;
+      font-weight: 400;
+    }
+    h3 {
+      font-family: $font-rubik;
+      line-height: 24px;
+      color: $primary-color;
+    }
+    ul.rating-star {
+      display: flex;
+      align-items: center;
+      li {
+        i {
+          color: $yellow;
+        }
+      }
+    }
+  }
+}
+
+// Slick Slider Styling
+.items-slider {
+  .slick-list{
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .slick-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    background-color: $primary-color;
+    border-radius: 50%;
+    margin-top: -10px;
+  }
+  .slick-next,
+  .slick-prev {
+    z-index: 2;
+    &:before {
+      opacity: 1;
+      font-family: $font-awesome;
+      font-size: 14px;
+    }
+  }
+  .slick-prev {
+    &::before {
+      content: "\f104";
+    }
+  }
+  .slick-next {
+    &::before {
+      content: "\f105";
+    }
+  }
+  .rating-star {
+    li {
+      line-height: 1;
+    }
+  }
+  &:hover {
+    .slick-prev {
+      position: absolute;
+      left: 2px;
+      opacity: 1;
+    }
+    .slick-next {
+      position: absolute;
+      right: 2px;
+      opacity: 1;
+    }
+  }
+}
+
+// Review Section View
+.product-review {
+  .d-flex {
+    align-items: center;
+    .img-wrapper {
+      width: 40px;
+      height: 40px;
+      border-radius: 5px;
+      background-color: rgba($primary-color, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s ease;
+    }
+    .person-detail {
+      margin-left: 15px;
+      h4 {
+        margin: 0;
+      }
+      a{
+        color: unset;
+      }
+      .rating-star {
+        display: flex;
+        align-items: center;
+        li {
+          i {
+            color: $yellow;
+          }
+        }
+      }
+      .quote-icon {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: rgba($primary-color, 0.08);
+      }
+    }
+  }
+  .product-detail {
+    p {
+      padding-top: 14px;
+      color: $light-text;
+    }
+  }
+}
+
+// Weekend Offer View
+.weekend-view {
+  background-image: url("../images/dashboard-2/offer-banner.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-x: hidden;
+  background-color: $primary-color;
+  .card-body {
+    .img-wrapper {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .product-detail {
+      text-align: center;
+      display: grid;
+      h3 {
+        color: $white;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      h5 {
+        color: $light-text;
+        margin-bottom: 15px;
+      }
+      .btn {
+        background-color: $white;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        color: $primary-color;
+        line-height: 1;
+        padding: 12px 20px;
+        z-index: 2;
+        margin-right: auto;
+        margin-left: auto;
+        font-size: 12px;
+      }
+    }
+    .inner-bg {
+      background: url(../images/dashboard-2/bg-ribbons.png) repeat;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      animation: anime1 5s linear infinite;
+      border-radius: 20px;
+    }
+    &:hover {
+      img {
+        animation: anime2 1s linear alternate infinite;
+      }
+    }
+  }
+}
+@keyframes anime1 {
+  0% {
+    background-position: 0px -80px;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
+@keyframes anime2 {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-8px);
+  }
+}
+@media screen and (max-width: 1660px) {
+  .sale-chart {
+    .card-body {
+      .sale-detail {
+        .sale-content {
+          margin-left: 10px;
+          h3 {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 1660px) and (min-width: 1200px) {
+  .top-products{
+    table{
+      tr{
+        td{
+          padding-top: 12px;
+          padding-bottom: 12px;
+        }
+      }
+    }
+  }
+  .sale-chart{
+    .card-body{
+      .sale-detail{
+        .icon{
+          width: 36px;
+          height: 36px;
+          svg{
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 1470px) and (min-width: 1200px) {
+  .rated-product{
+    .img-wrapper{
+      img{
+        width: 80px;
+      }
+    }
+    .product-detail{
+      h4{
+        font-size: 13px;
+      }
+      h3{
+        font-size: 16px;
+        margin-bottom: 0;
+      }
+    }
+  }
+  .sale-chart{
+    .card-body{
+      padding: 25px 14px;
+      .sale-detail{
+        .sale-content{
+          margin-left: 10px;
+          h3{
+            font-size: 16px;
+          }
+          p{
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  } 
+}
+@media screen and (max-width: 1364px) and (min-width: 1200px) {
+  .sale-chart{
+    .card-body{
+      .sale-detail{
+        .sale-content{
+          max-width: 82px;
+        }
+      }
+    }
+  }  
+  .small-chart-view{
+    svg{
+      transform: translate(-25px, 0);
+    }
+  }
+}
+@media screen and (max-width: 1199px) {
+  .rated-product{
+    .img-wrapper{
+      img{
+        width: 80px;
+      }
+    }
+  }
+  .weekend-view {
+    .card-body{
+      .img-wrapper{
+        margin-bottom: 30px;
+      }
+    }
+    .d-flex-bg {
+      .img-wrapper {
+        img {
+          width: 120px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) and (min-width: 576px) {
+  .sale-chart {
+    .card-body {
+      .sale-detail {
+        display: block;
+        .sale-content {
+          margin-left: unset;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .weekend-view {
+    .card-body {
+      padding: 30px !important;
+    }
+  }
+  .sale-chart {
+    .card-body {
+      .sale-detail {
+        .icon {
+          width: 40px;
+          height: 40px;
+          svg {
+            height: 20px;
+          }
+        }
+      }
+    }
+  }
+  .slick-dotted.slick-slider {
+    margin-bottom: unset;
+  }
+}
+@media screen and (max-width: 575px) {
+  .items-slider{
+    &:hover{
+      .slick-arrow{
+        display: block !important;
+      }
+    }
+    .slick-arrow{
+      display: none !important;
+
+    }
+  }
+  .product-review {
+    .d-flex {
+      .person-detail {
+        .quote-icon {
+          font-size: 50px;
+        }
+      }
+    }
+  }
+  .rated-product{
+    .product-detail{
+      h4{
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .sale-chart {
+    .card-body {
+      .small-chart-view {
+        .apexcharts-canvas {
+          width: 96px !important;
+        }
+      }
+      .sale-detail {
+        .sale-content {
+          min-width: 110px;
+          margin-left: 10px;
+          p{
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+  // Recent Order Chart View
+  .recent-order {
+    .card-body {
+      .medium-chart {
+        #recent-chart {
+          .apexcharts-yaxis-label {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  .product-review {
+    .d-flex {
+      .img-wrapper {
+        .person-detail {
+          .quote-icon {
+            font-size: 52px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/**=====================
+  67. Dashboard 2  CSS End
+==========================**/

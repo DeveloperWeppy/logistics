@@ -1,0 +1,1311 @@
+/**=====================
+53. Dashboard CSS Start
+==========================**/
+
+// table first child td
+tr {
+  .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: rgba($primary-color, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    transition: all 0.5s ease;
+    img {
+      height: 25px;
+    }
+  }
+}
+
+.default-page,
+.ecommerce-page {
+  .row{
+    div[class*="col-"]{
+      &:nth-child(even){
+        .sale-chart{
+          .apexcharts-tooltip.apexcharts-theme-light{
+            background-color: $secondary-color;
+          }
+        }
+      }
+    }
+  }
+  .apexcharts-tooltip.apexcharts-theme-light {
+    background-color: $primary-color;
+    color: $white;
+    border-color: transparent;
+    z-index: 1;
+    .apexcharts-tooltip-title,
+    .apexcharts-tooltip-text-label,
+    .apexcharts-tooltip-text-y-label {
+      display: none;
+    }
+    .apexcharts-tooltip-text-value,
+    .apexcharts-tooltip-text-z-value {
+      margin-left: 0;
+    }
+    .apexcharts-tooltip-text-y-value,
+    .apexcharts-tooltip-text-goals-value,
+    .apexcharts-tooltip-text-z-value {
+      color: $dark-all-font-color;
+      margin: 0;
+    }
+  }
+  p {
+    color: $light-text;
+  }
+  table {
+    tr {
+      &:first-child {
+        td,
+        th {
+          padding-top: 0;
+        }
+      }
+      &:last-child {
+        td {
+          padding-bottom: 0;
+        }
+      }
+      th,
+      td {
+        &:first-child {
+          padding-left: unset;
+        }
+        &:last-child {
+          padding-right: unset;
+        }
+      }
+    }
+  }
+}
+// profile greeting
+.profile-greeting {
+  position: relative;
+  background-color: $primary-color;
+  height: 254px;
+  border-radius: 20px;
+  .card-body {
+    background-color: $primary-color;
+    border-radius: 20px;
+  }
+  .greeting-img {
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    img {
+      width: auto;
+      height: 265px;
+    }
+  }
+  h1 {
+    color: $white;
+  }
+  p {
+    color: $white;
+    font-size: 16px;
+    width: 60%;
+  }
+  .btn {
+    background-color: $white;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    color: $primary-color;
+    padding: 10px 15px;
+    &:hover{
+      background-color: transparent;
+      border: 1px solid $white;
+      color: $white;
+      svg{
+        color: $white;
+      }
+    }
+    svg {
+      width: auto;
+      height: 18px;
+      color: $primary-color;
+      margin-left: 5px;
+    }
+  }
+}
+
+// yearly-view
+.yearly-view {
+  overflow: hidden;
+  .card-header {
+    h3 {
+      margin-bottom: 5px;
+      span {
+        background-color: rgba($primary-color, 0.05) !important;
+        font-size: 12px;
+        color: $primary-color;
+        padding: 8px 13px;
+        border-radius: 9px;
+        float: right;
+        font-weight: 400;
+        font-family: $font-rubik;
+      }
+    }
+    h5 {
+      color: $light-text;
+    }
+  }
+  .card-body {
+    border-radius: 30px;
+  }
+  .yearly-view {
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: -35px;
+    .apexcharts-tooltip {
+      background-color: $primary-color;
+      color: $white;
+      .apexcharts-tooltip-title {
+        display: none;
+      }
+      .apexcharts-tooltip-text-label {
+        display: none;
+      }
+      .apexcharts-tooltip-text-value,
+      .apexcharts-tooltip-text-z-value {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+// activity review
+.activity-review {
+  table {
+    tr {
+      &:first-child {
+        td,
+        th {
+          padding-top: 0;
+        }
+      }
+      td,
+      th {
+        padding: 6px !important;
+        min-width: 310px;
+        .d-flex {
+          align-items: center;
+          img {
+            margin-right: 15px;
+            border-radius: 5px;
+          }
+          h5 {
+            margin-bottom: 3px;
+          }
+          .flex-grow-1 {
+            p {
+              letter-spacing: 0;
+            }
+          }
+        }
+      }
+    }
+    .time-badge {
+      background: rgba($primary-color, 0.05);
+      padding: 2px 4px;
+      border-radius: 5px;
+      p {
+        font-size: 10px;
+        font-weight: 400;
+        color: $primary-color;
+        letter-spacing: 0.5px;
+        font-family: $font-rubik;
+      }
+    }
+    tbody {
+      tr {
+        &:hover {
+          background-color: rgba($primary-color, 0.1);
+          td {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+// transaction-history
+.transaction-history {
+  box-shadow: $card-hover-box-shadow;
+  table {
+    h5 {
+      margin-bottom: 0;
+    }
+    tr {
+      th,
+      td {
+        min-width: 85px;
+        &:first-child {
+          min-width: 197px;
+        }
+        &:last-child {
+          min-width: 113px;
+        }
+        &:nth-child(2) {
+          min-width: 140px;
+        }
+      }
+      th {
+        font-size: 16px;
+        padding-bottom: 20px;
+      }
+      td {
+        vertical-align: middle;
+        .progress-showcase {
+          text-align: right;
+          p {
+            margin-bottom: 2px;
+          }
+        }
+      }
+      &:hover {
+        .d-flex {
+          .icon {
+            background-color: rgba($secondary-color, 0.3);
+          }
+        }
+      }
+    }
+  }
+  .card-body {
+    padding: 0 !important;
+    overflow: hidden;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    thead {
+      tr {
+        th {
+          padding-top: 20px;
+          padding-bottom: 10px;
+          &:first-child {
+            padding-left: 25px;
+          }
+          &:last-child {
+            padding-right: 25px;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        box-sizing: border-box;
+        &:last-child {
+          td {
+            padding-bottom: 12px;
+          }
+        }
+        td {
+          border-top: 14px solid $light !important;
+          border-bottom: 14px solid $light !important;
+          padding-top: 12px !important;
+          &:last-child {
+            padding-right: 12px;
+            border-right: 25px solid $light !important;
+          }
+          &:first-child {
+            padding-left: 12px;
+            border-left: 25px solid $light !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// value chart start
+.value-chart {
+  .knob-block {
+    .progress-circle {
+      position: relative;
+      top: 3px;
+      input {
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+  .card-body {
+    padding-top: 38px !important;
+    padding-bottom: 38px !important;
+  }
+  &.bg-primary {
+    background-color: rgba($primary-color, 0.12) !important;
+  }
+  &.bg-secondary {
+    background-color: rgba($secondary-color, 0.15) !important;
+  }
+  .valuechart-detail {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  .badge {
+    position: absolute;
+    top: 20px;
+    font-size: 9px;
+    right: 20px;
+    padding: 5px 10px;
+  }
+  h2 {
+    color: $primary-color;
+    margin-bottom: 0;
+    font-size: 22px;
+  }
+  p {
+    color: $light-text;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  .stock-value {
+    min-height: 120px !important;
+    > div {
+      height: 110px !important;
+      svg{
+        transform: translate(0px, -10px);
+      }
+    }
+  }
+  .apexcharts-xaxis,
+  .apexcharts-yaxis,
+  .apexcharts-tooltip-text-y-label {
+    display: none;
+  }
+  .apexcharts-tooltip.apexcharts-theme-light {
+    background-color: $secondary-color;
+  }
+  .round-progress {
+    .apexcharts-tooltip.apexcharts-theme-light {
+      background-color: $primary-color;
+    }
+  }
+}
+
+// beyo-line
+.beyo-line {
+  background-color: $white;
+  margin-left: unset;
+  margin-right: unset;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  .beyoline-header {
+    background-color: $primary-color;
+    border-radius: 20px;
+    padding: 0 15px;
+    overflow: hidden;
+    #beyo-line {
+      margin-bottom: -32px;
+      margin-top: -18px;
+      .apexcharts-xaxis,
+      .apexcharts-yaxis {
+        display: none;
+      }
+    }
+  }
+  .beyo-detail {
+    padding: 29px 20px;
+    ul {
+      display: flex;
+      align-items: center;
+      li {
+        h2 {
+          margin-bottom: 0;
+          padding-left: 10px;
+        }
+        &:nth-child(n + 2) {
+          margin-left: 10px;
+        }
+        &:last-child{
+          min-width: 86px;
+        }
+      }
+    }
+    h3 {
+      .badge-primary {
+        background-color: rgba($primary-color, 0.1) !important;
+        margin-left: 10px;
+        color: $primary-color;
+        font-size: 10px;
+        padding: 7px 10px;
+        font-weight: 500;
+        vertical-align: middle;
+      }
+    }
+    > p {
+      font-size: 14px;
+      width: 60%;
+      margin: 0;
+    }
+    .date-history {
+      display: flex;
+      justify-content: space-between;
+      .date-lable {
+        text-align: center;
+        background-color: $white;
+        padding: 10px;
+        line-height: 1;
+        width: 60px;
+        text-transform: capitalize;
+        h3 {
+          margin-bottom: 0;
+          font-weight: 700;
+        }
+        p {
+          line-height: 1;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .apexcharts-tooltip.apexcharts-theme-light {
+    background-color: $white;
+    color: $primary-color;
+    border-color: transparent;
+    z-index: 1;
+    .apexcharts-tooltip-text-y-value,
+    .apexcharts-tooltip-text-goals-value,
+    .apexcharts-tooltip-text-z-value {
+      color: $primary-color;
+    }
+  }
+}
+
+// investment chart
+.investment-chart {
+  .investment-group {
+    display: flex;
+    flex-direction: column;
+    .invest-lable {
+      text-align: center;
+      font-weight: 500;
+      font-size: 18px;
+    }
+    .chart-detail {
+      text-align: center;
+      h5 {
+        color: $light-text;
+      }
+      h2 {
+        margin-bottom: unset;
+        font-size: 22px;
+        color: $primary-color;
+      }
+    }
+  }
+  .gain-chart {
+    .apexcharts-tooltip.apexcharts-theme-light {
+      background-color: $secondary-color;
+    }
+  }
+  .profit-chart {
+    .apexcharts-tooltip.apexcharts-theme-light {
+      background-color: $success-color;
+    }
+  }
+}
+
+// socialmedia shared start
+.social-shared {
+  table {
+    tr {
+      td {
+        vertical-align: middle;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        &:first-child {
+          min-width: 154px;
+          padding-left: 4px !important;
+        }
+        &:last-child {
+          padding-right: 5px !important;
+        }
+        h5 {
+          margin-bottom: 0;
+        }
+      }
+    }
+    tbody {
+      tr {
+        &:hover {
+          background-color: rgba($primary-color, 0.14);
+          td {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+// upgrade history
+.upgrade-history {
+  position: relative;
+  height: 250px;
+  .btn{
+    &:hover{
+      background-color: $white !important;
+      border: 1px solid $primary-color;
+      color: $primary-color;
+    }
+  }
+  p {
+    width: 65%;
+    font-size: 14px;
+  }
+  .upgrade-img {
+    position: absolute;
+    top: -10px;
+    right: -20px;
+  }
+  .card-body {
+    display: flex;
+    align-items: center;
+  }
+}
+
+// calender page
+#menu {
+  .dropdown {
+    .btn-default {
+      border: 1px solid $light-gray;
+      color: $primary-color;
+    }
+  }
+
+  .move-today {
+    border-color: $light-gray;
+  }
+
+  .move-day {
+    border-color: $light-gray;
+  }
+}
+
+// clock picker
+.clockpicker-popover {
+  .popover-title {
+    border-color: $light-gray;
+  }
+}
+
+.clockpicker-plate {
+  border-color: $light-gray;
+}
+
+.btn-light-secondary {
+  background-color: rgba(var(--theme-secondary), 0.1);
+  font-size: 12px;
+  padding: 6px 12px;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 1760px) {
+  .upgrade-history{
+    .upgrade-img{
+      img{
+        height: 220px;
+      }
+    }
+  } 
+  .transaction-history {
+    .card-body {
+      overflow-x: auto;
+      tbody {
+        tr {
+          td {
+            &:last-child {
+              padding-right: 12px;
+              border-right: unset !important;
+            }
+            &:first-child {
+              padding-left: 12px;
+              border-left: unset !important;
+            }
+          }
+        }
+      }
+    }
+  }
+  .profile-greeting {
+    .greeting-img{
+      img{
+        height: 250px;
+      }
+    }
+    p {
+      width: 50%;
+    }
+  }
+}
+@media screen and (max-width: 1660px) and (min-width: 1200px) {
+  .xl-none {
+    display: none;
+  }
+  .xl-20 {
+    flex: 0 0 auto;
+    width: 20%;
+  }
+  .xl-30 {
+    max-width: 30%;
+    flex: 0 0 30%;
+  }
+
+  .xl-33 {
+    max-width: 33%;
+    flex: 0 0 33%;
+  }
+
+  .xl-33-33 {
+    max-width: 33.333%;
+    flex: 0 0 33.333%;
+  }
+
+  .xl-35 {
+    max-width: 35%;
+    flex: 0 0 35%;
+  }
+
+  .xl-40 {
+    max-width: 40%;
+    flex: 0 0 40%;
+  }
+
+  .xl-45 {
+    max-width: 45%;
+    flex: 0 0 45%;
+  }
+
+  .xl-55 {
+    max-width: 55%;
+    flex: 0 0 55%;
+  }
+
+  .xl-60 {
+    max-width: 60%;
+    flex: 0 0 60%;
+  }
+
+  .xl-65 {
+    max-width: 65%;
+    flex: 0 0 65%;
+  }
+  .xl-50 {
+    max-width: 50%;
+    flex: 0 0 50%;
+  }
+  .xl-70 {
+    max-width: 70%;
+    flex: 0 0 70%;
+  }
+  .xl-75 {
+    max-width: 75%;
+    flex: 0 0 75%;
+  }
+  .xl-80 {
+    max-width: 80%;
+    flex: 0 0 80%;
+  }
+  .xl-100 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .xl-23 {
+    max-width: 23%;
+    flex: 0 0 23%;
+  }
+
+  .xl-25 {
+    max-width: 25%;
+    flex: 0 0 25%;
+  }
+
+  .xl-40 {
+    max-width: 40%;
+    flex: 0 0 40%;
+  }
+
+  .xl-4 {
+    max-width: 33.33%;
+    flex: 0 0 33.33%;
+  }
+
+  .dash-xxl-100 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+  .dash-xxl-67 {
+    max-width: 67%;
+    flex: 0 0 67%;
+  }
+  .dash-xxl-60 {
+    max-width: 60%;
+    flex: 0 0 60%;
+  }
+  .dash-xxl-50 {
+    max-width: 50%;
+    flex: 0 0 50%;
+  }
+  .dash-xxl-40 {
+    max-width: 40%;
+    flex: 0 0 40%;
+  }
+  .dash-xxl-33 {
+    max-width: 33%;
+    flex: 0 0 33%;
+  }
+
+  .xxl-order1 {
+    order: 1;
+  }
+  .progress-circle{
+    input{
+      font: bold 18px Arial !important;
+    }
+  }
+}
+@media screen and (max-width: 1660px) and (min-width: 1470px){
+  .progress-circle{
+    > div{
+      width: 110px;
+      height: 110px;
+    }
+    canvas{
+      width: 110px;
+      height: 110px;
+    }
+  }
+  .value-chart{
+    .card-body{
+      padding: 40px 12px;
+    }
+  } 
+  .beyo-line{
+    .beyo-detail{
+      padding: 25px 20px;
+    }
+  } 
+  .profile-greeting{
+    .greeting-img{
+      img{
+        height: 195px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1470px) and (min-width: 1366px){
+  .investment-chart{
+    .investment-group{
+      .chart-detail{
+        h2{
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  .progress-circle{
+    > div{
+      width: 110px;
+      height: 110px;
+    }
+    canvas{
+      width: 110px;
+      height: 110px;
+    }
+  }
+  .upgrade-history{
+    .upgrade-img{
+      top: 38px;
+      img{
+        height: 170px;
+      }
+    }
+  }
+  .beyo-line{
+    .beyo-detail{
+      padding: 22px 20px;
+    }
+  } 
+  .value-chart{
+    h2{
+      font-size: 20px;
+    }
+    .card-body{
+      padding: 44px 12px;
+    }
+  }
+  .profile-greeting{
+    .greeting-img{
+      img{
+        height: 180px;
+      }
+    }
+  }  
+}
+@media screen and (max-width: 1400px) and (min-width: 1200px){
+  .profile-greeting {
+    height: 268px;
+    .greeting-img {
+      img {
+        height: 180px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1199px) and (min-width: 992px){ 
+  .upgrade-history{
+    height: 234px;
+  }
+  .profile-greeting{
+    p{
+      font-size: 15px;
+    }
+    .greeting-img{
+      img{
+        height: 145px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1365px) and (min-width: 992px) {
+  .yearly-view{
+    .card-header{
+      h3{
+        margin-bottom: 14px;
+      }
+    }
+  }
+  .beyo-line{
+    .beyoline-header{
+      #beyo-line{
+        margin-top: -32px;
+      }
+    }
+  } 
+  .progress-circle{
+    > div{
+      width: 90px;
+      height: 90px;
+    }
+    canvas{
+      width: 90px !important;
+      height: 90px !important;
+    }
+  }
+  .beyo-line{
+    .beyo-detail{
+      .date-history{
+        .date-lable{
+          padding: 6px;
+        }
+      }
+      ul{
+        li{
+          h2{
+            font-size: 14px;
+          }
+          &:last-child{
+            min-width: 48px;
+          }
+        }
+      }
+      > p{
+        width: 70%;
+      }
+      h3{
+        font-size: 18px;
+        .badge{
+          padding: 7px;
+        }
+      }
+    }
+  }
+  .value-chart{
+    .row{
+      div[class*="col-"]{
+        &:first-child{
+          padding: 0;
+        }
+        + div[class*="col-"]{
+          padding: 0 8px;
+        }
+      }
+    }
+    p{
+      font-size: 15px;
+    }
+    h2{
+      font-size: 16px;
+    }
+    .card-body{
+      padding: 38px 12px;
+    }
+  } 
+  .profile-greeting {
+    h1{
+      font-size: 26px;
+    }
+    p{
+      font-size: 14px;
+    }
+  }
+}
+@media screen and (max-width: 1365px) and (min-width: 1200px) {
+  .des-xl-25 {
+    max-width: 25%;
+    flex: 0 0 25%;
+  }
+  .des-xl-33 {
+    max-width: 33.333%;
+    flex: 0 0 33.333%;
+  }
+
+  .des-xl-50 {
+    max-width: 50%;
+    flex: 0 0 50%;
+  }
+
+  .des-xl-40 {
+    max-width: 40%;
+    flex: 0 0 40%;
+  }
+
+  .des-xl-45 {
+    max-width: 45%;
+    flex: 0 0 45%;
+  }
+
+  .des-xl-55 {
+    max-width: 55%;
+    flex: 0 0 55%;
+  }
+
+  .des-xl-60 {
+    max-width: 60%;
+    flex: 0 0 60%;
+  }
+
+  .des-xl-100 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+}
+@media screen and (max-width: 1470px) {
+  .transaction-history {
+    .card-body {
+      tbody {
+        tr {
+          td {
+            border-bottom: unset !important;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 1365px) {
+  // transaction history
+  .transaction-history {
+    .card-body {
+      overflow-x: auto;
+    }
+  }
+}
+@media screen and (max-width: 1199px) {
+  .upgrade-history{
+    .upgrade-img{
+      top: 38px;
+      img{
+        height: 160px;
+      }
+    }
+  }
+  .beyo-line {
+    display: block;
+  }
+  .transaction-history {
+    .card-body {
+      overflow-x: unset;
+    }
+  }
+  .xl-order1 {
+    order: 1;
+  }
+  .value-chart {
+    .card-body {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    &.stock-value {
+      .card-body {
+        padding-top: 30px;
+        padding-bottom: 30px;
+      }
+    }
+    .knob-block {
+      > div {
+        &:not(.chart-clock-main) {
+          input {
+            font-size: 18px !important;
+          }
+        }
+      }
+    }
+    .stock-value {
+      min-height: 130px !important;
+    }
+  }
+}
+@media screen and (max-width: 991px) {
+  .value-chart {
+    .stock-value {
+      .apexcharts-canvas {
+        padding-top: 10px;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 480px) and (max-width: 575px) {
+  .value-chart {
+    .stock-value {
+      .apexcharts-canvas {
+        padding-top: unset !important;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .profile-greeting {
+    h1 {
+      font-size: 22px;
+    }
+  }
+  .transaction-history {
+    .card-body {
+      overflow-x: auto;
+    }
+  }
+  .value-chart {
+    .card-body {
+      padding-top: 30px !important;
+      padding-bottom: 30px !important;
+    }
+    h2 {
+      font-size: 18px;
+    }
+    .badge {
+      top: 15px;
+      right: 15px;
+      padding: 4px 7px;
+    }
+    .stock-value {
+      min-height: 95px !important;
+    }
+    .knob-block {
+      width: fit-content;
+      text-align: left !important;
+      margin: auto;
+      > div {
+        &:not(.chart-clock-main) {
+          canvas {
+            width: 80px !important;
+            height: 80px !important;
+          }
+          input {
+            font-size: 16px !important;
+          }
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 600px) {
+  .profile-greeting {
+    .greeting-img {
+      img {
+        height: 220px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 575px) {
+  .value-chart {
+    .valuechart-detail {
+      text-align: right;
+      justify-content: flex-end;
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+  .investment-chart {
+    .card-body {
+      > div {
+        &:nth-child(n + 2) {
+          border-top: 2px solid rgba($primary-color, 0.1);
+          padding-top: 20px;
+          margin-top: 20px;
+          border-left: unset;
+        }
+      }
+    }
+  }
+  .upgrade-history {
+    position: relative;
+    .upgrade-img {
+      top: 0;
+      right: 0;
+      img {
+        height: 250px;
+      }
+    }
+    .card-body {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .profile-greeting {
+    .greeting-img {
+      img {
+        height: 195px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 480px) {
+  .profile-greeting {
+    text-align: center;
+    height: 200px;
+    .card-body {
+      display: flex;
+      align-items: center;
+      z-index: 1;
+    }
+    p {
+      width: auto;
+    }
+    .greeting-img {
+      display: none;
+    }
+    .btn {
+      margin-right: auto;
+      margin-left: auto;
+      padding: 7px 12px;
+      line-height: 1;
+    }
+  }
+
+  .upgrade-history {
+    height: unset;
+    text-align: center;
+    p {
+      width: auto;
+      font-size: 16px;
+    }
+    .upgrade-img {
+      display: none;
+    }
+  }
+  .beyo-line {
+    .beyo-detail {
+      padding: 15px;
+      > p {
+        width: auto;
+      }
+      ul {
+        li {
+          &:last-child {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .upgrade-history {
+    .card-body {
+      justify-content: center;
+    }
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .activity-review {
+    table {
+      tr {
+        td,
+        .d-flex {
+          img {
+            margin-right: 10px !important;
+          }
+          h5 {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  .social-shared{
+    table{
+      tr{
+        .icon{
+          margin-right: 12px;
+        }
+        td{
+          padding: 5px !important;
+        }
+      }
+    }
+  }
+  .upgrade-history {
+    position: relative;
+    p {
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+  }
+}
+@media screen and (max-width: 360px) {
+  .beyo-line {
+    .beyo-detail {
+      h3 {
+        .badge-primary {
+          width: fit-content;
+          display: block;
+          margin-left: unset;
+          margin-top: 5px;
+        }
+      }
+      ul {
+        li {
+          img {
+            height: 30px;
+          }
+        }
+      }
+      .date-history {
+        .date-lable {
+          width: 50px;
+          h3 {
+            font-size: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/**=====================
+53. Dashboard CSS Ends
+==========================**/

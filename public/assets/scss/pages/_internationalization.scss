@@ -1,0 +1,96 @@
+/**=====================
+     71. internationalization css start
+==========================**/
+.hdg_main{
+  position: relative;
+}
+.main {
+  .langChoice{
+    position: absolute;
+    right: 40px;
+    top: 20px;
+    padding: 10px 12px;
+    background-color:rgba(115,102,255,0.08);
+    border-color: $light-gray;
+    color: $primary-color;
+    text-align:left;
+    border-radius:10px;
+  }
+}
+.dropdown {
+  .dropdown-toggle {
+    background-color:rgba(115,102,255,0.08);
+    color:$primary-color;   
+    width:118px;
+    text-align:left;
+    border-radius:10px;
+    &:after {
+      position:absolute;
+      top:50%;
+      right:08px;     
+      transform: translateY(-50%);
+      content: "\f107";
+      border: none;
+      font-family: $font-awesome;
+      font-size: 18px;
+      margin: 0;
+    }
+  }
+  .dropdown-menu {
+    -webkit-box-shadow: 0 0 20px rgba(89,102,122,0.1);
+    box-shadow: 0 0 20px rgba(89,102,122,0.1);
+    border: none;
+    padding: 0;
+    .dropdown-item {
+      color: $theme-body-font-color;
+      opacity: 0.6;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-top: 1px solid $light-semi-gray;
+      background: $white;
+      &:hover {
+        background-color: $white;
+      }
+    }
+  }
+}
+// responsive css 
+@media (max-width: 991px) {
+  .main{
+    .langChoice {
+      right: 20px;
+      top: 11px;
+      padding: 8px;
+    }
+  }
+}
+
+@media only screen and (max-width: 575px) {
+   .main {
+    .langChoice {
+      top: 14px;
+      padding: 4px 7px;
+    }
+  }
+  .language-xs{
+    margin-top: 15px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+   .language-header{
+    padding-bottom: 60px !important;
+  }
+  .main  {
+    .langChoice {
+      left: 0;
+      margin: 0 auto;
+      top: 50px;
+      width: 30%;
+      right: 0;
+    }
+  }
+}
+/**=====================
+     71. internationalization CSS end
+==========================**/
