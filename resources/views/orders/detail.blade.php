@@ -1,17 +1,21 @@
 @extends('layout.master')
 
+@section('title')
+    Detalle de Pedido
+@endsection
+
 @section('main-content')
     <div class="container-fluid">
         <div class="page-title">
             <div class="row">
                 <div class="col-6">
-                    <h3>Invoice</h3>
+                    <h3>Factura</h3>
                 </div>
                 <div class="col-6">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"> <i data-feather="home"></i></a></li>
-                        <li class="breadcrumb-item">Ecommerce</li>
-                        <li class="breadcrumb-item active">Invoice </li>
+                        <li class="breadcrumb-item">Pedidos</li>
+                        <li class="breadcrumb-item active">Factura </li>
                     </ol>
                 </div>
             </div>

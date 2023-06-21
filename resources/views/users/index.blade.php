@@ -1,5 +1,8 @@
 @extends('layout.master')
 
+@section('title')
+    Usuarios
+@endsection
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatables.css') }}">
 @endsection
@@ -20,6 +23,9 @@
                 location.href='{{route('users.create')}}';
             });
             var table = $('#users-table').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"
+                },
                 processing: true,
                 serverSide: true,
                 colReorder: true,

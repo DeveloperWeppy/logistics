@@ -1,5 +1,8 @@
 @extends('others.layout_others.master')
 
+@section('title')
+    Iniciar Sesion
+@endsection
 @section('others-content')
     <div class="container-fluid p-0">
         <div class="row m-0">
@@ -11,14 +14,14 @@
                         <div class="login-main">
                             <form class="theme-form"  action="{{ route('login.perform') }}" method="POST">
                                 @csrf
-                                <h2 class="text-center">Sign in to account</h2>
-                                <p class="text-center">Enter your email & password to login</p>
+                                <h2 class="text-center">Iniciar Sesión</h2>
+                                <p class="text-center">Ingrese su correo electrónico y contraseña para iniciar sesión</p>
                                 <div class="form-group">
-                                    <label class="col-form-label">Email Address</label>
+                                    <label class="col-form-label">Correo electrónico</label>
                                     <input class="form-control" type="email" required="" name="email" placeholder="Test@gmail.com">
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label">Password</label>
+                                    <label class="col-form-label">Contraseña</label>
                                     <div class="form-input position-relative">
                                         <input class="form-control" type="password" name="password" required=""
                                             placeholder="*********">
@@ -28,29 +31,13 @@
                                 <div class="form-group mb-0">
                                     <div class="checkbox p-0">
                                         <input id="checkbox1" type="checkbox">
-                                        <label class="text-muted" for="checkbox1">Remember password</label>
-                                    </div><a class="link" href="">Forgot password?</a>
+                                        <label class="text-muted" for="checkbox1">Recordar Contraseña</label>
+                                    </div>
+                                    {{-- <a class="link" href="">Forgot password?</a> --}}
                                     <div class="text-end mt-3">
-                                        <button class="btn btn-primary btn-block w-100" type="submit">Sign in </button>
+                                        <button class="btn btn-primary btn-block w-100" type="submit">Ingresar </button>
                                     </div>
                                 </div>
-                                <div class="login-social-title">
-                                    <h3>Or Sign in with </h3>
-                                </div>
-                                <div class="form-group">
-                                    <ul class="login-social">
-                                        <li><a href="https://www.facebook.com" target="_blank"><i
-                                                    class="fa fa-facebook"></i></a></li>
-                                        <li><a href="https://www.linkedin.com" target="_blank"><i class="fa fa-linkedin">
-                                                </i></a></li>
-                                        <li><a href="https://www.twitter.com" target="_blank"><i
-                                                    class="fa fa-twitter"></i></a></li>
-                                        <li><a href="https://www.instagram.com" target="_blank"><i
-                                                    class="fa fa-instagram"></i></a></li>
-                                    </ul>
-                                </div>
-                                <p class="mt-4 mb-0 text-center">Don't have account?<a class="ms-2"
-                                        href="">Create Account</a></p>
                             </form>
                         </div>
                     </div>

@@ -11,6 +11,7 @@ $(
 
 //live customizer js
 $(document).ready(function () {
+  $('.customizer-links').hide();
   $(".customizer-color li").on("click", function () {
     $(".customizer-color li").removeClass("active");
     $(this).addClass("active");
