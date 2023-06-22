@@ -3,7 +3,12 @@
             <div class="col-sm-12">
                 <div class="card card-pc">
                     <div class="card-header pb-0" style="display:flex;justify-content: space-between;">
-                        <h3>{{Request::fullUrl() == Request::root().'/orders' ? 'Activos' : 'Completados'}}</h3>
+                        @if (Request::fullUrl() == Request::root().'/users')
+                            <h3>Lista de Usuarios</h3>
+                        @else
+                            <h3>{{Request::fullUrl() == Request::root().'/orders' ? 'Activos' : 'Completados'}}</h3>
+                        @endif
+                        
                         @if ( auth()->user()->getRoleNames()->first() != 'Despachador')
                         <button class="btn btn-primary btn-create" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">Agregar   <i style="color:white;" class="mdi mdi-clipboard-plus"></i></button>
                         @endif
