@@ -1,5 +1,8 @@
 @extends('layout.master')
 
+@section('title')
+    <?=isset($data)? 'Editar' : 'Crear'?> Usuario
+@endsection
 @section('main-content')
 @include('common.crumbs', ['title' => $title,'crumbs'=>['Usuarios',$title]])
     <!-- Container-fluid starts-->

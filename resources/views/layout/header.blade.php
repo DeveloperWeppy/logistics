@@ -22,67 +22,10 @@
       </div>
       <div class="nav-right col-6 pull-right right-header p-0">
         <ul class="nav-menus">
-          <li class="language-nav">
-            <div class="translate_wrapper">
-              <div class="current_lang">
-                <div class="lang"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">EN                               </span></div>
-              </div>
-              <div class="more_lang">
-                <div class="lang selected" data-value="en"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">English<span> (US)</span></span></div>
-                <div class="lang" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="lang-txt">Deutsch</span></div>
-                <div class="lang" data-value="es"><i class="flag-icon flag-icon-es"></i><span class="lang-txt">Español</span></div>
-                <div class="lang" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span class="lang-txt">Français</span></div>
-                <div class="lang" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span class="lang-txt">Português<span> (BR)</span></span></div>
-                <div class="lang" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span class="lang-txt">简体中文</span></div>
-                <div class="lang" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span class="lang-txt">لعربية <span> (ae)</span></span></div>
-              </div>
-            </div>
-          </li>
-          <li>
+          {{-- <li>
             <div class="mode"><i data-feather="moon"></i></div>
-          </li>
-          <li class="onhover-dropdown">
-            <div class="notification-box"><i data-feather="star"></i></div>
-            <div class="onhover-show-div bookmark-flip">
-              <div class="flip-card">
-                <div class="flip-card-inner">
-                  <div class="front">
-                    <ul class="droplet-dropdown bookmark-dropdown">
-                      <li class="gradient-primary"><i data-feather="star"></i>
-                        <h3 class="mb-0">Bookmark</h3>
-                      </li>
-                      <li>
-                        <div class="row">
-                          <div class="col-4 text-center"><a href="{{ route('dashboard') }}"><i data-feather="file-text"></i></a></div>
-                          <div class="col-4 text-center"><a href="{{ route('dashboard') }}"><i data-feather="activity"></i></a></div>
-                          <div class="col-4 text-center"><a href="{{ route('dashboard') }}"><i data-feather="users"></i></a></div>
-                          <div class="col-4 text-center"><a href="{{ route('dashboard') }}"><i data-feather="clipboard"></i></a></div>
-                          <div class="col-4 text-center"><a href="{{ route('dashboard') }}"><i data-feather="anchor"></i></a></div>
-                          <div class="col-4 text-center"><a href="{{ route('dashboard') }}"><i data-feather="settings"></i></a></div>
-                        </div>
-                      </li>
-                      <li class="text-center">
-                        <button class="flip-btn" id="flip-btn">Add New Bookmark</button>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="back">
-                    <ul>
-                      <li>
-                        <div class="droplet-dropdown bookmark-dropdown flip-back-content">
-                          <input type="text" placeholder="search...">
-                        </div>
-                      </li>
-                      <li class="pb-0">
-                        <button class="d-block flip-back" id="flip-back">Back </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="onhover-dropdown">
+          </li> --}}
+          {{-- <li class="onhover-dropdown">
             <div class="notification-box"><i data-feather="bell"></i><span class="badge rounded-pill badge-primary">4                                </span></div>
             <ul class="notification-dropdown onhover-show-div">
               <li><i data-feather="bell">            </i>
@@ -98,39 +41,7 @@
                   <p><i class="fa fa-circle-o me-3 font-danger"></i>Delivery Complete<span class="pull-right">6 hr</span></p></a></li>
               <li><a class="btn btn-primary" href="{{ route('dashboard')}}">Check all notification</a></li>
             </ul>
-          </li>
-          <li class="onhover-dropdown"><i data-feather="message-square"></i>
-            <ul class="chat-dropdown onhover-show-div">
-              <li><i data-feather="message-square"></i>
-                <h3 class="mb-0">Message Box</h3>
-              </li>
-              <li>
-                <div class="d-flex"><img class="img-fluid rounded-circle me-3" src="{{ asset('assets/images/user/6.jpg') }}" alt="">
-                  <div class="status-circle online"></div>
-                  <div class="flex-grow-1"><a href="{{ route('dashboard')}}"><span>Erica Hughes</span>
-                      <p>Do you want to go see movie?</p></a></div>
-                  <p class="f-12 font-success">2 mins ago</p>
-                </div>
-              </li>
-              <li>
-                <div class="d-flex"><img class="img-fluid rounded-circle me-3" src="{{ asset('assets/images/user/1.jpg') }}" alt="">
-                  <div class="status-circle online"></div>
-                  <div class="flex-grow-1"><a href="{{ route('dashboard')}}"><span>Kori Thomas</span>
-                      <p>Thank you for rating us.</p></a></div>
-                  <p class="f-12 font-success">5 mins ago</p>
-                </div>
-              </li>
-              <li>
-                <div class="d-flex"><img class="img-fluid rounded-circle me-3" src="{{ asset('assets/images/user/7.jpg') }}" alt="">
-                  <div class="status-circle offline"></div>
-                  <div class="flex-grow-1"><a href="{{ route('dashboard')}}"><span>Ain Chavez</span>
-                      <p>What`s the project report update?</p></a></div>
-                  <p class="f-12 font-danger">9 mins ago</p>
-                </div>
-              </li>
-              <li class="text-center"> <a class="btn btn-primary" href="{{ route('dashboard')}}">View All     </a></li>
-            </ul>
-          </li>
+          </li> --}}
           <li class="maximize"><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
           <li class="profile-nav onhover-dropdown p-0 me-0">
             <div class="d-flex profile-media"><img class="b-r-50" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
@@ -139,10 +50,8 @@
               </div>
             </div>
             <ul class="profile-dropdown onhover-show-div">
-              <li><a href="{{ route('dashboard')}}"><i data-feather="user"></i><span>Account </span></a></li>
-              <li><a href="{{ route('dashboard')}}"><i data-feather="mail"></i><span>Inbox</span></a></li>
-              <li><a href="{{ route('dashboard')}}"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
-              <li><a href="{{ route('login.logout')}}"><i data-feather="log-in"> </i><span>Log in</span></a></li>
+              <li><a href="{{ route('dashboard')}}"><i data-feather="user"></i><span>Cuenta </span></a></li>
+              <li><a href="{{ route('login.logout')}}"><i data-feather="log-in"> </i><span>Salir</span></a></li>
             </ul>
           </li>
         </ul>

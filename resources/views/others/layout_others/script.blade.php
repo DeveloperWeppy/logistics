@@ -12,3 +12,4 @@
     {{-- plugins strat  --}}
     @yield('others-scripts')
     {{-- plugins end  --}}
+   
