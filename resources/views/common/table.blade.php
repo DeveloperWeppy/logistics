@@ -1,7 +1,7 @@
 <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class="card">
+                <div class="card card-pc">
                     <div class="card-header pb-0" style="display:flex;justify-content: space-between;">
                         <h3>{{$title}}</h3>
                         @if ( auth()->user()->getRoleNames()->first() != 'Despachador')
@@ -22,9 +22,11 @@
                                   
                                 </tbody>
                             </table>
+                           
                         </div>
                     </div>
                 </div>
+                <div id="tarjeta-table"></div>
             </div>
         </div>
     </div>

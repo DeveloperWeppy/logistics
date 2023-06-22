@@ -61,6 +61,9 @@
     <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
     <script src="{{ asset('assets/js/codeScanner/minified/html5-qrcode.min.js') }}"></script>
     <script> 
+     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+
     function docReady(fn) {
         if (document.readyState === "complete"
             || document.readyState === "interactive") {
@@ -134,8 +137,46 @@
                     alert("Completa el campo");
                 }
             } );
-            
-            var table = $('#users-table').DataTable({
+            if (isMobile) {
+               $(".card-pc").hide();
+               fetch("{{ route('orders.get') }}", {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+                })
+                .then(res => res.json())
+                .catch(error => console.error('Error:', error))
+                .then(response => {
+                    alert(response.data[0].billing);
+                    var list="";
+                    for (let i = 0; i < response.data.length; i++) {
+                        const billing =JSON.parse(response.data[i].billing);
+                        list+= `
+                        <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="row">
+                                <div class="col-10">
+                                <h5 class="card-title">Cliente: <span class="name">${billing.first_name} ${billing.last_name}</span></h5>
+                                <p class="card-text">Creador: <span class="email">${response.data[i].customer}</span></p>
+                                <p class="card-text">Estado: <span class="phone">${response.data[i].status_name}</span></p>
+                                <!-- Agrega más campos según tus necesidades -->
+                                </div>
+                                <a class="col-2" href="{{url('orders/create')}}/${response.data[i].wc_order_id}" style="display: flex;justify-content: center;align-items: center">
+                                <i class="mdi mdi-checkbox-blank-outline"></i>
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    `;
+                    }
+                    $("#tarjeta-table").html(list);
+                });
+
+            } else {
+                var table = $('#users-table').DataTable({
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"
                 },
@@ -161,7 +202,8 @@
                     { data: 'edit', name: 'edit' }
                     
                 ]
-            });
+                });
+            }
         });
     </script>
 @endsection

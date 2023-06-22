@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
 
@@ -29,7 +29,18 @@ Route::name('login.')->group(function () {
     Route::post('perform',[LoginController::class,'login'])->name('perform');
     Route::get('logout',[LoginController::class,'logout'])->name('logout');
 });
+Route::get('/clear-cache', function () {
+    try {
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
 
+        return "Cache cleared successfully.";
+    } catch (\Exception $e) {
+        return "Failed to clear cache: " . $e->getMessage();
+    }
+});
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard',[HomeController::class,'index'])->name('dashboard');
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
