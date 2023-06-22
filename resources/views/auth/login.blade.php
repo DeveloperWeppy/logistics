@@ -10,7 +10,7 @@
                 <div class="login-card">
                     <div>
                         <div><a class="logo" href="{{ route('login.login') }}"><img class="img-fluid for-light"
-                                    src="{{ asset('assets/images/logo/logo.png') }}" alt="logo image"></a></div>
+                                    src="{{ asset('assets/images/logo/LOGO80px.png') }}" alt="logo image"></a></div>
                         <div class="login-main">
                             <form class="theme-form"  action="{{ route('login.perform') }}" method="POST">
                                 @csrf
