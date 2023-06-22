@@ -4,7 +4,8 @@
     Pedidos
 @endsection
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatables.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 @endsection
 
 @section('main-content')
@@ -57,8 +58,8 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
     <script src="{{ asset('assets/js/codeScanner/minified/html5-qrcode.min.js') }}"></script>
     <script> 
     function docReady(fn) {
@@ -146,12 +147,7 @@
                 lengthChange: true, 
                 lengthMenu: [10, 25, 50, 75, 100],
                 ajax: '{{route('orders.get')."/".$type}}',
-                responsive: {
-                    details: {
-                        type: 'column',
-                        target: 'tr'
-                    }
-                },
+                
                 order: [[0, 'DESC']],
                 columns: [
                     { data: 'wc_order_id', name: 'wc_order_id' },
