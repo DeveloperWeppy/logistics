@@ -104,15 +104,19 @@ class OrderController extends Controller
     public function store(Request $request,$id,$type=0)
     {
         $order = Order::findOrFail($id);
+        $currentDateTime = date('Y-m-d H:i:s');
         if($type==1){
             $order->finalized_user_id= auth()->user()->id;
             $order->status=3;
+            $order->date_delivery=$currentDateTime;
         }else{
             if($order->status==1){
                 $order->status=2;
+                $order->date_packing=$currentDateTime;
                 $order->packing_user_id=auth()->user()->id;
             }else{
                 $order->status=1;
+                $order->date_picking=$currentDateTime;
                 $order->picking_user_id=auth()->user()->id;
             }
         }
