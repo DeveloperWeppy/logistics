@@ -41,7 +41,7 @@ class OrderController extends Controller
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
             if(($data[$i]['status']==0 && $rol=="Picking") || ($data[$i]['status']==1  && $rol=="Packing") ){
-                $data[$i]['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-multiple-blank-outline"></i></a>';
+                $data[$i]['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
             if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
                 $data[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
@@ -104,15 +104,19 @@ class OrderController extends Controller
     public function store(Request $request,$id,$type=0)
     {
         $order = Order::findOrFail($id);
+        $currentDateTime = date('Y-m-d H:i:s');
         if($type==1){
             $order->finalized_user_id= auth()->user()->id;
             $order->status=3;
+            $order->date_delivery=$currentDateTime;
         }else{
             if($order->status==1){
                 $order->status=2;
+                $order->date_packing=$currentDateTime;
                 $order->packing_user_id=auth()->user()->id;
             }else{
                 $order->status=1;
+                $order->date_picking=$currentDateTime;
                 $order->picking_user_id=auth()->user()->id;
             }
         }

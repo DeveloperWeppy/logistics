@@ -20,6 +20,9 @@ class Order extends Model
         'picking_user_id',
         'packing_user_id',
         'finalized_user_id',
+        'date_picking',
+        'date_packing',
+        'date_delivery',
         'status',
     ];
     public function creatorUser()
