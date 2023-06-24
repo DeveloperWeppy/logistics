@@ -13,6 +13,7 @@
                         <button class="btn btn-primary btn-create" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">Agregar   <i style="color:white;" class="mdi mdi-clipboard-plus"></i></button>
                         @endif
                     </div>
+                    
                     <div class="card-body">
                         {{-- <div class="order-history table-responsive"> --}}
                             <table id="users-table" class="display responsive nowrap" style="width:100%">
@@ -31,7 +32,12 @@
                         {{-- </div> --}}
                     </div>
                 </div>
-                <div id="tarjeta-table"></div>
+
+                <div id="tarjeta-table">
+                    @if ( auth()->user()->getRoleNames()->first() != 'Despachador')
+                        <button class="btn btn-primary btn-create" style="margin-bottom:10px" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">Agrega pedido   <i style="color:white;" class="mdi mdi-clipboard-plus"></i></button>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

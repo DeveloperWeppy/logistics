@@ -149,31 +149,39 @@
                 .then(res => res.json())
                 .catch(error => console.error('Error:', error))
                 .then(response => {
-                    alert(response.data[0].billing);
                     var list="";
+                    var cont=$("#tarjeta-table").html();
                     for (let i = 0; i < response.data.length; i++) {
                         const billing =JSON.parse(response.data[i].billing);
+                        const fecha = new Date(response.data[i].created_at);
+                        let fechat= fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" "+fecha.getHours()+":"+fecha.getMinutes();
                         list+= `
                         <div class="col-md-12 mb-3">
-                        <div class="card">
-                            <div class="card-body">
-                            <div class="row">
-                                <div class="col-10">
-                                <h5 class="card-title">Cliente: <span class="name">${billing.first_name} ${billing.last_name}</span></h5>
-                                <p class="card-text">Creador: <span class="email">${response.data[i].customer}</span></p>
-                                <p class="card-text">Estado: <span class="phone">${response.data[i].status_name}</span></p>
-                                <!-- Agrega más campos según tus necesidades -->
+                            <div class="card">
+                                <div class="card-body">
+                                <div class="row">
+                                    <div class="col-10">
+                                    <div class="row">
+                                        <h5 class="card-title col-8">Cliente: <span class="name">${billing.first_name} ${billing.last_name}</span></h5>
+                                        <h5 class="card-title col-4">#: <span class="name" style="word-break: break-all; max-width: 100%;">${response.data[i].wc_order_id}</span></h5>
+                                    </div>
+                                    Creador: <span class="email">${response.data[i].customer}</span>
+                                    <div class="row">
+                                        <span class="name col-6">Estado: ${response.data[i].status_name}</span>
+                                        <span class="name col-6">Fecha: ${fechat}</span><br>  
+                                    </div>
+                                    </div>
+                                    <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+                                      ${response.data[i].edit}
+                                    </div>
                                 </div>
-                                <a class="col-2" href="{{url('orders/create')}}/${response.data[i].wc_order_id}" style="display: flex;justify-content: center;align-items: center">
-                                <i class="mdi mdi-checkbox-blank-outline"></i>
-                                </a>
+                                </div>
                             </div>
-                            </div>
-                        </div>
                         </div>
                     `;
                     }
-                    $("#tarjeta-table").html(list);
+
+                    $("#tarjeta-table").html(cont+"<div style='width:100%'>"+list+"</div>");
                 });
 
             } else {

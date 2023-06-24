@@ -19,7 +19,7 @@ class OrderController extends Controller
         $arrayStatus=['Procesando','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
         $search = $request->input('search.value');
         $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
-        ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing', 'orders.wc_status', 'orders.status', 'users.name as name_user');
+        ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing', 'orders.wc_status', 'orders.status', 'orders.created_at', 'users.name as name_user');
         $type_s='<';
         if($type=="completed"){
             $type_s='=';
@@ -60,8 +60,9 @@ class OrderController extends Controller
                 $data[$i]['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
              }
              if($type=="completed"){
-                $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
-             }
+               // $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
+               $data[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
+            }
             $data[$i]['status_name']=$arrayStatus[ $data[$i]['status']];
             $customer=json_decode($data[$i]['billing'],true);
             if(isset($customer['first_name'],$customer['last_name'])){

@@ -67,7 +67,7 @@
                            
                            
                             <div>
-                                <div class="table-responsive invoice-table" id="table">
+                                <div class="table-responsive invoice-table card-pc" id="table">
                                     <table class="table table-bordered table-striped">
                                         <tr>    
                                                 <td class="item">
@@ -104,7 +104,10 @@
                                         </tbody>
                                     </table>
                                 </div>
-
+                                <div style="width:93%;margin-left:7%">
+                                    <div id="tarjeta-table">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-12 text-center mt-3">
@@ -141,7 +144,41 @@
      var audioScanner = new Audio('{{asset('assets/audio/scanner.mp3') }}');
      var audioError= new Audio('{{asset('assets/audio/error.mp3') }}');
      var arrayData = @json($data_items);
-
+     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+     if (isMobile) {
+        let list="";
+        let cont="";
+        $(".card-pc").hide();
+        for (var i = 0; i < arrayData.length; i++) {
+            icon="";
+            if(arrayData[i].quantity==arrayData[i].scann){
+                cont++;
+                icon='<i class="mdi mdi-check" style="color:#28a745"></i>';
+            }
+            list+= `
+                        <div class="col-md-12 mb-3">
+                            <div class="card">
+                                <div class="card-body" style="padding: 0;">
+                                <div class="row">
+                                    <div class="col-4" style="background-image: url('${arrayData[i].image}'); background-size: contain;background-repeat: no-repeat;">
+                                        
+                                    </div>
+                                    <div class="col-8 row" style="display: flex; justify-content: center; align-items: center;padding-top:10px;">
+                                         <span class="name col-12">${arrayData[i].name}</span>
+                                         <span class="name col-12">sku: ${arrayData[i].sku}</span>
+                                         <span class="name col-12">cantidad: ${arrayData[i].quantity}</span>
+                                         <span class="name col-12">Scann:${arrayData[i].quantity}</span>
+                                         <span class="name col-12">Validado: ${icon}</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+             
+                        `;
+        }
+        $("#tarjeta-table").html(list);
+     }
 
     function docReady(fn) {
         if (document.readyState === "complete"
@@ -207,7 +244,30 @@
                 cont++;
                 icon='<i class="mdi mdi-check" style="color:#28a745"></i>';
             }
-            tabla += `
+            if (isMobile) {
+                tabla+= `
+                        <div class="col-md-12 mb-3">
+                            <div class="card">
+                                <div class="card-body" style="padding: 0;">
+                                <div class="row">
+                                    <div class="col-4" style="background-image: url('${arrayData[i].image}'); background-size: contain;background-repeat: no-repeat;">
+                                        
+                                    </div>
+                                    <div class="col-8 row" style="display: flex; justify-content: center; align-items: center;padding-top:10px;">
+                                         <span class="name col-12">${arrayData[i].name}</span>
+                                         <span class="name col-12">sku: ${arrayData[i].sku}</span>
+                                         <span class="name col-12">cantidad: ${arrayData[i].quantity}</span>
+                                         <span class="name col-12">Scann:${arrayData[i].quantity}</span>
+                                         <span class="name col-12">Validado: ${icon}</span>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+             
+                        `;
+            }else{
+                tabla += `
             <tr>
                 <td class="sorting_1"><img src="${arrayData[i].image}" alt="" style="width: 80px;height:auto"></td>
                 <td><label> ${arrayData[i].sku}</label></td>
@@ -217,6 +277,8 @@
                 <td>${icon}</td>
             </tr>
             `;
+            }
+
         }
         if(cont==arrayData.length){
             html5QrcodeScanner.clear().then(_ => {    
