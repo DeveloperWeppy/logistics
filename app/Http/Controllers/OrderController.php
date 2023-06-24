@@ -40,7 +40,7 @@ class OrderController extends Controller
         $data= $users->items();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
-            if(($data[$i]['status']==0 && $rol=="Picking") || ($data[$i]['status']==1  && $rol=="Packing") ){
+            if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
                 $data[$i]['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
             if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
