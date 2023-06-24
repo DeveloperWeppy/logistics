@@ -312,7 +312,7 @@
         }).then(res => res.json())
         .catch(error => console.error('Error:', error))
         .then(response =>  {
-            alert(JSON.stringify(response));
+            //alert(JSON.stringify(response));
             swal({
             icon: 'success',
             title: 'Guardado',
