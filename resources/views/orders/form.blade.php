@@ -167,7 +167,7 @@
                                          <span class="name col-12">${arrayData[i].name}</span>
                                          <span class="name col-12">sku: ${arrayData[i].sku}</span>
                                          <span class="name col-12">cantidad: ${arrayData[i].quantity}</span>
-                                         <span class="name col-12">Scann:${arrayData[i].quantity}</span>
+                                         <span class="name col-12">Scann:${arrayData[i].scann}</span>
                                          <span class="name col-12">Validado: ${icon}</span>
                                     </div>
                                 </div>
