@@ -162,8 +162,8 @@
                                 <div class="row">
                                     <div class="col-10">
                                     <div class="row">
-                                        <h5 class="card-title col-8">Cliente: <span class="name">${billing.first_name} ${billing.last_name}</span></h5>
-                                        <h5 class="card-title col-4">#: <span class="name" style="word-break: break-all; max-width: 100%;">${response.data[i].wc_order_id}</span></h5>
+                                        <h5 class="card-title col-6">Cliente: <span class="name">${billing.first_name} ${billing.last_name}</span></h5>
+                                        <h5 class="card-title col-6">#: <span class="name" style="word-break: break-all; max-width: 100%;">${response.data[i].wc_order_id}</span></h5>
                                     </div>
                                     Creador: <span class="email">${response.data[i].customer}</span>
                                     <div class="row">
