@@ -140,7 +140,7 @@
             } );
             if (isMobile) {
                $(".card-pc").hide();
-               fetch("{{ route('orders.get') }}", {
+               fetch("{{route('orders.get')."/".$type}}", {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json'
