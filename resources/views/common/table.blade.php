@@ -9,7 +9,7 @@
                             <h3>{{Request::fullUrl() == Request::root().'/orders' ? 'Activos' : 'Completados'}}</h3>
                         @endif
                         
-                        @if ( auth()->user()->getRoleNames()->first() != 'Despachador')
+                        @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
                         <button class="btn btn-primary btn-create" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">Agregar   <i style="color:white;" class="mdi mdi-clipboard-plus"></i></button>
                         @endif
                     </div>
@@ -34,8 +34,8 @@
                 </div>
 
                 <div id="tarjeta-table">
-                    @if ( auth()->user()->getRoleNames()->first() != 'Despachador')
-                        <button class="btn btn-primary btn-create" style="margin-bottom:10px" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">Agrega pedido   <i style="color:white;" class="mdi mdi-clipboard-plus"></i></button>
+                    @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
+                        <button class="btn btn-primary btn-create" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">Agregar   <i style="color:white;" class="mdi mdi-clipboard-plus"></i></button>
                     @endif
                 </div>
             </div>

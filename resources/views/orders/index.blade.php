@@ -9,7 +9,7 @@
 @endsection
 
 @section('main-content')
-    @include('common.crumbs', ['title' => 'Pedidos','crumbs'=>['Pedidos']])
+    @include('common.crumbs', ['title' => 'Pedidos','crumbs'=>['Pedidos', $type == "" ? 'Activos' : 'Completados']])
     @include('common.table', ['title' => $type == "" ? 'Activos' : 'Completados', 'titles' => ['#', 'Cliente', 'Creador', 'Estado', 'Acción']])
     <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
             <div class="modal-dialog" role="document">
