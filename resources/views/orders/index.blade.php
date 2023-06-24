@@ -161,15 +161,11 @@
                                 <div class="card-body">
                                 <div class="row">
                                     <div class="col-10">
-                                    <div class="row">
-                                        <h5 class="card-title col-6">Cliente: <span class="name">${billing.first_name} ${billing.last_name}</span></h5>
-                                        <h5 class="card-title col-6">#: <span class="name" style="word-break: break-all; max-width: 100%;">${response.data[i].wc_order_id}</span></h5>
-                                    </div>
-                                    Creador: <span class="email">${response.data[i].customer}</span>
-                                    <div class="row">
-                                        <span class="name col-6">Estado: ${response.data[i].status_name}</span>
-                                        <span class="name col-6">Fecha: ${fechat}</span><br>  
-                                    </div>
+                                    #: <span class="email">${response.data[i].wc_order_id}</span><br>
+                                    Fecha: <span class="email">${fechat}</span><br>
+                                    Cliente: <span class="email">${response.data[i].customer}</span><br>
+                                    Creador: <span class="email">${response.data[i].customer}</span><br>
+                                    Estado: <span class="email">${response.data[i].status_name}</span>
                                     </div>
                                     <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
                                       ${response.data[i].edit}
