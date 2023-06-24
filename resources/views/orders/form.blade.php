@@ -104,7 +104,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div style="width:93%;margin-left:7%">
+                                <div style="width:93%;margin-left:7%;margin-top:15px">
                                     <div id="tarjeta-table">
                                     </div>
                                 </div>
@@ -289,7 +289,12 @@
              $("#btn-finalizar").show();
              
         }
-        document.getElementById("t-products").innerHTML = tabla;
+        if (isMobile) {
+            $("#tarjeta-table").html(tabla);
+        }else{
+            document.getElementById("t-products").innerHTML = tabla;
+        }
+     
        
     }
     $("#btn-finalizar").on( "click", function() {
