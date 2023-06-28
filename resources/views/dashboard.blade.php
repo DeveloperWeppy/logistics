@@ -46,8 +46,8 @@
                                 <div class="sale-detail">
                                     <div class="icon"><i data-feather="shopping-bag"></i></div>
                                     <div class="sale-content">
-                                        <h3>Total en Ventas</h3>
-                                        <p>{{convertirValor($total_sales)}} </p>
+                                        <h3>Total de Pedido</h3>
+                                        <p>{{$total_sales}} </p>
                                     </div>
                                 </div>
                             </div>
@@ -64,8 +64,8 @@
                                 <div class="sale-detail">
                                     <div class="icon"><i data-feather="dollar-sign"></i></div>
                                     <div class="sale-content">
-                                        <h3>Total Hoy</h3>
-                                        <p>{{convertirValor($total_sales_today)}} </p>
+                                        <h3>Pedidos Completados</h3>
+                                        <p>{{$order_complet}}  </p>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                 <div class="sale-detail">
                                     <div class="icon"><i data-feather="file-text"></i></div>
                                     <div class="sale-content">
-                                        <h3>Ordenes en Picking</h3>
+                                        <h3>Pedidos en Picking</h3>
                                         <p>{{$order_picking}} </p>
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@
                                 <div class="sale-detail">
                                     <div class="icon"><i data-feather="file-text"></i></div>
                                     <div class="sale-content">
-                                        <h3>Ordenes en Packing</h3>
+                                        <h3>Pedidos en Packing</h3>
                                         <p>{{$order_packing}} </p>
                                     </div>
                                 </div>
@@ -111,8 +111,108 @@
                 </div>
             </div>
             
+            
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card recent-order">
+                    <div class="card-header pb-0">
+                        <h3>Tiempo Promedio Procesos</h3>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li>
+                                    <div><i class="icon-settings"></i></div>
+                                </li>
+                                <li><i class="view-html fa fa-code"></i></li>
+                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                <li><i class="icofont icofont-error close-card"> </i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="medium-chart">
+                            <div id="recent-chart"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card recent-order">
+                    <div class="card-header pb-0">
+                        <h3>Tiempo Promedio Rol Picking</h3>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li>
+                                    <div><i class="icon-settings"></i></div>
+                                </li>
+                                <li><i class="view-html fa fa-code"></i></li>
+                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                <li><i class="icofont icofont-error close-card"> </i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="medium-chart">
+                            <div id="recent-chart2"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card recent-order">
+                    <div class="card-header pb-0">
+                        <h3>Tiempo Promedio Rol Packing</h3>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li>
+                                    <div><i class="icon-settings"></i></div>
+                                </li>
+                                <li><i class="view-html fa fa-code"></i></li>
+                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                <li><i class="icofont icofont-error close-card"> </i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="medium-chart">
+                            <div id="recent-chart3"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card recent-order">
+                    <div class="card-header pb-0">
+                        <h3>Tiempo Promedio Rol Delivery</h3>
+                        <div class="card-header-right">
+                            <ul class="list-unstyled card-option">
+                                <li>
+                                    <div><i class="icon-settings"></i></div>
+                                </li>
+                                <li><i class="view-html fa fa-code"></i></li>
+                                <li><i class="icofont icofont-maximize full-card"></i></li>
+                                <li><i class="icofont icofont-minus minimize-card"></i></li>
+                                <li><i class="icofont icofont-refresh reload-card"></i></li>
+                                <li><i class="icofont icofont-error close-card"> </i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="medium-chart">
+                            <div id="recent-chart4"></div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -131,5 +231,278 @@
     <script src="{{ asset('assets/js/typeahead/typeahead.custom.js') }}"></script>
     <script src="{{ asset('assets/js/typeahead-search/handlebars.js') }}"></script>
     <script src="{{ asset('assets/js/typeahead-search/typeahead-custom.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/dashboard_2.js') }}"></script>
+    <script>
+var options = {
+  series: [
+    {
+      name: "Picking",
+      data:  @json($picking_g['data']),
+    },
+    {
+      name: "Packing",
+      data:   @json($packing_g['data']),
+    },
+    {
+      name: "Completado",
+      data:   @json($delivery_g['data']),
+    }
+  ],
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#77B6EA', '#545454','#FF9800'],
+  dataLabels: {
+    enabled: true,
+    formatter: function(value) {
+      return value + " min";
+    }
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  title: {
+    text: '',
+    align: 'left'
+  },
+  grid: {
+    borderColor: '#e7e7e7',
+    row: {
+      colors: ['#f3f3f3', 'transparent'], 
+      opacity: 0.5
+    },
+  },
+  markers: {
+    size: 1
+  },
+  xaxis: {
+    categories: @json($picking_g['categories']),
+    title: {
+      text: 'Meses'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Minutos'
+    },
+    min: 0,
+    max: 60 // Ajusta este valor según tus necesidades
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right',
+    floating: true,
+    offsetY: -25,
+    offsetX: -5
+  }
+};
+var chart = new ApexCharts(document.querySelector("#recent-chart"), options);
+chart.render();
+
+var options = {
+  series: @json($picking_user['data']),
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#77B6EA', '#545454','#FF9800','#546E7A', '#E91E63'],
+  dataLabels: {
+    enabled: true,
+    formatter: function(value) {
+      return value + " min";
+    }
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  title: {
+    text: '',
+    align: 'left'
+  },
+  grid: {
+    borderColor: '#e7e7e7',
+    row: {
+      colors: ['#f3f3f3', 'transparent'], 
+      opacity: 0.5
+    },
+  },
+  markers: {
+    size: 1
+  },
+  xaxis: {
+    categories: @json($picking_g['categories']),
+    title: {
+      text: 'Meses'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Minutos'
+    },
+    min: 0,
+    max: 60 // Ajusta este valor según tus necesidades
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right',
+    floating: true,
+    offsetY: -25,
+    offsetX: -5
+  }
+};
+var chart = new ApexCharts(document.querySelector("#recent-chart2"), options);
+chart.render();
+var options = {
+  series: @json($packing_user['data']),
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#77B6EA', '#545454','#FF9800','#546E7A', '#E91E63'],
+  dataLabels: {
+    enabled: true,
+    formatter: function(value) {
+      return value + " min";
+    }
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  title: {
+    text: '',
+    align: 'left'
+  },
+  grid: {
+    borderColor: '#e7e7e7',
+    row: {
+      colors: ['#f3f3f3', 'transparent'], 
+      opacity: 0.5
+    },
+  },
+  markers: {
+    size: 1
+  },
+  xaxis: {
+    categories: @json($picking_g['categories']),
+    title: {
+      text: 'Meses'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Minutos'
+    },
+    min: 0,
+    max: 60 
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right',
+    floating: true,
+    offsetY: -25,
+    offsetX: -5
+  }
+};
+var chart = new ApexCharts(document.querySelector("#recent-chart3"), options);
+
+chart.render();
+var options = {
+  series: @json($delivery_user['data']),
+  chart: {
+    height: 350,
+    type: 'line',
+    dropShadow: {
+      enabled: true,
+      color: '#000',
+      top: 18,
+      left: 7,
+      blur: 10,
+      opacity: 0.2
+    },
+    toolbar: {
+      show: false
+    }
+  },
+  colors: ['#77B6EA', '#545454','#FF9800','#546E7A', '#E91E63'],
+  dataLabels: {
+    enabled: true,
+    formatter: function(value) {
+      return value + " min";
+    }
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  title: {
+    text: '',
+    align: 'left'
+  },
+  grid: {
+    borderColor: '#e7e7e7',
+    row: {
+      colors: ['#f3f3f3', 'transparent'], 
+      opacity: 0.5
+    },
+  },
+  markers: {
+    size: 1
+  },
+  xaxis: {
+    categories: @json($picking_g['categories']),
+    title: {
+      text: 'Meses'
+    }
+  },
+  yaxis: {
+    title: {
+      text: 'Minutos'
+    },
+    min: 0,
+    max: 60 
+  },
+  legend: {
+    position: 'top',
+    horizontalAlign: 'right',
+    floating: true,
+    offsetY: -25,
+    offsetX: -5
+  }
+};
+var chart = new ApexCharts(document.querySelector("#recent-chart4"), options);
+
+chart.render();
+    </script>
 @endsection

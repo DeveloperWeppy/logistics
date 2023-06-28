@@ -43,6 +43,7 @@ Route::get('/clear-cache', function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard',[HomeController::class,'index'])->name('dashboard');
+    Route::get('/estadistica/{status?}/{rol?}',[HomeController::class,'estadistica'])->name('dashboard.estadistica');
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
     Route::get('/users/get', [App\Http\Controllers\UserController::class, 'get'])->name('users.get');
     Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
@@ -54,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/get/{type?}',[OrderController::class,'get'])->name('orders.get');
     Route::get('orders/create/{id?}',[OrderController::class,'create'])->name('orders.create');
     Route::get('orders/detail/{id?}',[OrderController::class,'detail'])->name('orders.detail');
-    
+    Route::get('orders/estadistica/{type?}',[OrderController::class,'estadistica'])->name('orders.estadistica'); 
     Route::post('orders/store/{id?}/{type?}',[OrderController::class,'store'])->name('orders.store');
     //Route::get('product',[MaterialController::class,'index'])->name('product');
 

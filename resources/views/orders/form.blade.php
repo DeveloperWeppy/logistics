@@ -46,26 +46,41 @@
                                             <h3>Pedido #<span class="digits counter"><?=$data['id']?></span></h3>
                                             <p>Fecha: <span class="digits"><?=$data['date_created']?></span></p>
                                         </div>
-                                        <button onclick="abrirCamara()"  style="float: right;margin-top:20px" class="btn btn-primary" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">   <i style="color:white;" class="mdi mdi-qrcode"></i></button>
+                                </div>
+                                <div class="col-xl-12">
+                                        <div style="width:100%;align-items:center;display:flex;justify-content: space-between;">
+                                           <span><span class="font-weight-bold">Estado:</span> {{$status_name}} </span>
+                                           <button onclick="abrirCamara()"  style="float: right;" class="btn btn-primary" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">   <i style="color:white;" class="mdi mdi-qrcode"></i></button>
+                                        </div>
+                                        <div>
+                                            <div class="progress-bar2">
+                                                <div class="step active2"><i class="mdi mdi-format-list-checks"></i></div>
+                                                <div class="line2 active2"></div>
+                                                <div class="step {{ isset($picking) ? 'active2' : '' }}"><i class="mdi mdi-package-variant"></i></div>
+                                                <div class="line2  {{ isset($picking) ? 'active2' : '' }}"></div>
+                                                <div class="step {{ isset($packing) ? 'active2' : '' }}"><i class="mdi mdi-package-variant-closed"></i></div>
+                                                <div class="line2  {{ isset($packing) ? 'active2' : '' }}"></div>
+                                                <div class="step"><i class="mdi mdi-approval"></i></div>
+                                            </div>
+                                            <div class="progress-content active2" id="content-1">
+                                                <h3>Creador:{{$creador->value('name')}} {{$creador->value('last_name')}}</h3>
+                                                <span>Fecha:{{$order->created_at}}</span>
+                                            </div>
+                                            @if ($status == 1)
+                                                <div class="progress-content " id="content-2">
+                                                    <h3>Picking:{{$picking->value('name')}} {{$picking->value('last_name')}}</h3>
+                                                    <span>Fecha:{{$order->date_picking}}</span>
+                                                </div> 
+                                            @endif
+                                            @if ($status == 2)
+                                                <div class="progress-content " id="content-3">
+                                                    <h3>Packing:{{$packing->value('name')}} {{$delivery->value('last_name')}}</h3>
+                                                    <span>Fecha:{{$order->date_delivery}}</span>
+                                                </div> 
+                                            @endif
+                                        </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                   Creado por:{{$creador->value('name')}} {{$creador->value('last_name')}}
-                                </div>
-                                 @if ($status == 1)
-                                <div class="col-12">
-                                         Seleccionados por:{{$creador->value('name')}} {{$creador->value('last_name')}}
-                                </div>
-                                @endif
-                                @if ($status == 2)
-                                <div class="col-12">
-                                         Seleccionados por:{{$picking->value('name')}} {{$creador->value('last_name')}}
-                                </div>
-                                @endif
-                            </div>
-                           
-                           
                             <div>
                                 <div class="table-responsive invoice-table card-pc" id="table">
                                     <table class="table table-bordered table-striped">
@@ -136,11 +151,93 @@
                 </div>
             </div>
     </div>
+    <style>
+    .progress-bar2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 80%;
+      margin: 20px auto;
+    }
+    
+    .step {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #ccc;
+      color: #fff;
+    }
+    
+    .step.active2 {
+      background-color: #007bff;
+    }
+    
+    .progress-bar2::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      right: 50%;
+      height: 2px;
+      background-color: #ccc;
+      z-index: 1;
+    }
+    
+    .progress-bar2 .line2 {
+      flex-grow: 1;
+      height: 2px;
+      background-color: #ccc;
+      z-index: 1;
+    }
+    
+    .progress-bar2 .line2.active2 {
+      background-color: #007bff;
+    }
+    .progress-content {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+    }
+    
+    .progress-content.active2 {
+      display: block;
+    }
+    .font-weight-bold{
+        font-weight: bold;
+    }
+  </style>
 @endsection
 
 @section('scripts')
     <script src="{{ asset('assets/js/codeScanner/minified/html5-qrcode.min.js') }}"></script>
     <script>
+            window.addEventListener('DOMContentLoaded', function() {
+      var steps = document.querySelectorAll('.step');
+      var progressContents = document.querySelectorAll('.progress-content');
+
+      steps.forEach(function(step, index) {
+        step.addEventListener('click', function() {
+          // Ocultar todos los contenidos
+          progressContents.forEach(function(content) {
+            content.classList.remove('active2');
+          });
+
+          // Mostrar el contenido correspondiente al paso seleccionado
+          var contentId = 'content-' + (index + 1);
+          var selectedContent = document.getElementById(contentId);
+          if (selectedContent) {
+            selectedContent.classList.add('active2');
+          }
+        });
+      });
+    });
      var audioScanner = new Audio('{{asset('assets/audio/scanner.mp3') }}');
      var audioError= new Audio('{{asset('assets/audio/error.mp3') }}');
      var arrayData = @json($data_items);
@@ -164,11 +261,11 @@
                                         
                                     </div>
                                     <div class="col-8 row" style="display: flex; justify-content: center; align-items: center;padding-top:10px;">
-                                         <span class="name col-12">${arrayData[i].name}</span>
-                                         <span class="name col-12">sku: ${arrayData[i].sku}</span>
-                                         <span class="name col-12">cantidad: ${arrayData[i].quantity}</span>
-                                         <span class="name col-12">Scann:${arrayData[i].scann}</span>
-                                         <span class="name col-12">Validado: ${icon}</span>
+                                         <span class="name col-12 font-weight-bold" >${arrayData[i].name}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Sku:</span> ${arrayData[i].sku}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Cantidad</span>: ${arrayData[i].quantity}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Scann</span>:${arrayData[i].scann}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Validado</span>: ${icon}</span>
                                     </div>
                                 </div>
                                 </div>
@@ -254,11 +351,11 @@
                                         
                                     </div>
                                     <div class="col-8 row" style="display: flex; justify-content: center; align-items: center;padding-top:10px;">
-                                         <span class="name col-12">${arrayData[i].name}</span>
-                                         <span class="name col-12">sku: ${arrayData[i].sku}</span>
-                                         <span class="name col-12">cantidad: ${arrayData[i].quantity}</span>
-                                         <span class="name col-12">Scann:${arrayData[i].scann}</span>
-                                         <span class="name col-12">Validado: ${icon}</span>
+                                         <span class="name col-12 font-weight-bold">${arrayData[i].name}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">sku:</span> ${arrayData[i].sku}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Cantidad:</span>: ${arrayData[i].quantity}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Scann:</span>${arrayData[i].scann}</span>
+                                         <span class="name col-12"><span class="font-weight-bold">Validado:</span>${icon}</span>
                                     </div>
                                 </div>
                                 </div>

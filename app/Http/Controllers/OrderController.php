@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Carbon\Carbon;
 class OrderController extends Controller
 {   
     public function index()
@@ -53,12 +54,9 @@ class OrderController extends Controller
             if(!isset($data[$i]['edit'])){
                 $data[$i]['edit']="";
             }
-            if(($rol=="admin" || $rol=="Delivery") && $data[$i]['status']==2){
-               $data[$i]['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
+            if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
+               $data[$i]['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
-            if(($rol=="admin" || $rol=="Delivery") && $data[$i]['status']==2){
-                $data[$i]['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
-             }
              if($type=="completed"){
                // $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
                $data[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
@@ -75,6 +73,7 @@ class OrderController extends Controller
     }
     public function create($id)
     {
+        $arrayStatus=['Procesando','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
         $data=$this->apiWc("orders/".$id);
         $data_items=[];
         $order = Order::where('wc_order_id',$id)->first();
@@ -100,7 +99,7 @@ class OrderController extends Controller
             }
             $data_items[]=['sku'=> $dataP['sku'],'image'=>$image, 'name'=>$dataP['name'],'id'=>$dataP['id'],'quantity'=>$data['line_items'][$i]['quantity'],'scann'=>0];
         }
-        return view('orders.form',['title' =>'Agregar Orden','data'=>$data,'data_items'=>$data_items,'id'=> $order->id,'creador'=>$order->creatorUser(),'picking'=>$order->pickingUser(),'status'=>$order->status]);
+        return view('orders.form',['title' =>'Agregar Orden','data'=>$data,'order'=>$order,'data_items'=>$data_items,'id'=> $order->id,'creador'=>$order->creatorUser(),'picking'=>$order->pickingUser(),'delivery'=>$order->deliveryUser,'status'=>$order->status,'status_name'=>$arrayStatus[$order->status]]);
     }
     public function store(Request $request,$id,$type=0)
     {
@@ -142,4 +141,53 @@ class OrderController extends Controller
         }
         return view('orders.detail',['order'=> $data]);
     }
+    public function estadistica()
+    {
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $startOfMonth = Carbon::create($currentYear, $currentMonth)->subMonths(6)->startOfMonth();
+        $endOfMonth = Carbon::create($currentYear, $currentMonth)->endOfMonth();
+    
+        $query = Order::select('id', 'created_at', 'date_delivery', 'status')
+            ->where('status', 3)
+            ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            ->orderBy('created_at', 'asc')
+            ->get();
+        
+        $promedioPorMes = [];
+        
+        foreach ($query as $index => $order) {
+            $month = Carbon::parse($order->created_at)->format('M');
+            $createdDate = Carbon::parse($order->created_at);
+            $deliveryDate = Carbon::parse($order->date_delivery);
+            $differenceInSeconds = $createdDate->diffInSeconds($deliveryDate);
+            $differenceInMinutes = $differenceInSeconds / 60;
+            if (!isset($promedioPorMes[$month])) {
+                $promedioPorMes[$month] = [];
+            }
+            $promedioPorMes[$month][] = $differenceInMinutes;
+        }
+        
+        $promedioFinal = [];
+        
+        $allMonths = Carbon::now()->subMonths(6)->monthsUntil(Carbon::now()->endOfMonth());
+        
+        foreach ($allMonths as $month) {
+            $monthLabel = $month->format('M');
+            if (isset($promedioPorMes[$monthLabel])) {
+                $promedio = round(array_sum($promedioPorMes[$monthLabel]) / count($promedioPorMes[$monthLabel]));
+            } else {
+                $promedio = 0;
+            }
+            $promedioFinal[$monthLabel] = $promedio;
+        }
+        $data=[];
+        $cateogories=[];
+        foreach ($promedioFinal as $month => $promedio) {
+            array_push($cateogories, $month);
+            array_push($data, $promedio);
+        }
+        return response()->json( ['data'=>$data,'cateogories'=>$cateogories]);
+    }
+    
 }

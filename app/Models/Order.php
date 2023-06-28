@@ -33,4 +33,12 @@ class Order extends Model
     {
         return $this->hasMany(User::class, 'id', 'picking_user_id');
     }
+    public function packingUser()
+    {
+        return $this->hasMany(User::class, 'id', 'packing_user_id');
+    }
+    public function deliveryUser()
+    {
+        return $this->hasMany(User::class, 'id', 'finalized_user_id');
+    }
 }
