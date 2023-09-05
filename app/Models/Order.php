@@ -23,6 +23,8 @@ class Order extends Model
         'date_picking',
         'date_packing',
         'date_delivery',
+        'siigo_invoice',
+        'tracking_code',
         'status',
     ];
     public function creatorUser()

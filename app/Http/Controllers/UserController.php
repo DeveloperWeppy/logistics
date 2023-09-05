@@ -38,12 +38,22 @@ class UserController extends Controller
        
         return view('users.form',['title' =>'Crear Usuario']);
     }
+    public function profile()
+    {
+        $id = auth()->user()->id;
+        $user = User::find($id);
+        $rol = [];
+        foreach ($user->roles as $role) {
+            $rol[] = $role->name;
+        }
+        return view('users.form',['title' =>'Mi Perfil','data'=>$user,'rol'=>$rol]);
+    }
     public function edit($id)
     {
         $user = User::find($id);
-        $rol="";
-        if(isset($user->roles[0])) {
-            $rol= $user->roles[0]->name;
+        $rol = [];
+        foreach ($user->roles as $role) {
+            $rol[] = $role->name;
         }
         return view('users.form',['title' =>'Modificar Usuario','data'=>$user,'rol'=>$rol]);
     }
@@ -54,14 +64,26 @@ class UserController extends Controller
             $rules=[
                 'name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
-                'status' => 'required|integer',
             ];
+            if ($request->filled('status')) {
+                $rules['status'] =  'required|integer';
+            }
             if ($request->input('email') !== $user->email) {
+                $rules['password'] = 'required|string|min:6';
+            }
+           
+            if ($request->filled('password')) {
                 $rules['email'] =  'required|string|email|max:255';
             }
             $validatedData = $request->validate($rules);
+        
+            if ($request->filled('password')) {
+                $validatedData['password'] = bcrypt($request->input('password'));
+            }
             User::where('id', $id)->update($validatedData);
-            $user->syncRoles([$request->input('rol')]);
+            if ($request->filled('rol')) {
+                $user->syncRoles([$request->input('rol')]);
+            }
             return response()->json(['status' => true, 'msj' => 'Modificado']);
         } catch (\Exception $e) {
             return response()->json(['status' => false, 'msj' => $e->getMessage()]);

@@ -50,7 +50,7 @@
               </div>
             </div>
             <ul class="profile-dropdown onhover-show-div">
-              <li><a href="{{ route('dashboard')}}"><i data-feather="user"></i><span>Cuenta </span></a></li>
+              <li><a href="{{ route('users.profile')}}"><i data-feather="user"></i><span>Cuenta </span></a></li>
               <li><a href="{{ route('login.logout')}}"><i data-feather="log-in"> </i><span>Salir</span></a></li>
             </ul>
           </li>

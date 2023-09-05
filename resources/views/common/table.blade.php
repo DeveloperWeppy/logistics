@@ -6,7 +6,7 @@
                         @if (Request::fullUrl() == Request::root().'/users')
                             <h3>Lista de Usuarios</h3>
                         @else
-                            <h3>{{Request::fullUrl() == Request::root().'/orders' ? 'Activos' : 'Completados'}}</h3>
+                            <h3>{{$title}}</h3>
                         @endif
                         
                         @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))

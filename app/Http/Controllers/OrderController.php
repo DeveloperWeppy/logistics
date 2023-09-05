@@ -78,6 +78,12 @@ class OrderController extends Controller
         $data_items=[];
         $order = Order::where('wc_order_id',$id)->first();
         if (!$order) {
+            $siigo_invoice_id="";
+            foreach ($data['meta_data'] as $meta_data) {
+                if($meta_data['key']=='_siigo_invoice_id'){
+                   $siigo_invoice_id=$meta_data['value'];
+                }
+            }
             $order = Order::create([
                 'wc_order_id' => $data['id'],
                 'wc_status' => $data['status'],
@@ -87,9 +93,12 @@ class OrderController extends Controller
                 'total_amount' =>$data['total'],
                 'create_user_id' =>  auth()->user()->id,
                 'picking_user_id'=>0,
+                'siigo_invoice'=>$siigo_invoice_id,
                 'status' => 0,
             ]);
         }
+     
+  
         for($i = 0; $i < count($data['line_items']); $i++) {
             $dataP=$this->apiWc("products/".$data['line_items'][$i]['product_id']);
             $images= $dataP['images'];
@@ -97,7 +106,7 @@ class OrderController extends Controller
             if(count($images)>0){
                 $image=$images[0]['src'];
             }
-            $data_items[]=['sku'=> $dataP['sku'],'image'=>$image, 'name'=>$dataP['name'],'id'=>$dataP['id'],'quantity'=>$data['line_items'][$i]['quantity'],'scann'=>0];
+            $data_items[]=['sku'=> $data['line_items'][$i]['sku'],'image'=>$image, 'name'=>$dataP['name'],'id'=>$dataP['id'],'quantity'=>$data['line_items'][$i]['quantity'],'scann'=>0];
         }
         return view('orders.form',['title' =>'Agregar Orden','data'=>$data,'order'=>$order,'data_items'=>$data_items,'id'=> $order->id,'creador'=>$order->creatorUser(),'picking'=>$order->pickingUser(),'delivery'=>$order->deliveryUser,'status'=>$order->status,'status_name'=>$arrayStatus[$order->status]]);
     }
@@ -109,11 +118,39 @@ class OrderController extends Controller
             $order->finalized_user_id= auth()->user()->id;
             $order->status=3;
             $order->date_delivery=$currentDateTime;
+            $order->tracking_code= $request->input('cod');
+            $siigo_invoice_id=$order->siigo_invoice;
+            if($siigo_invoice_id==""){
+                $data=$this->apiWc("orders/".$order->wc_order_id);
+                foreach ($data['meta_data'] as $meta_data) {
+                    if($meta_data['key']=='_siigo_invoice_id'){
+                       $siigo_invoice_id=$meta_data['value'];
+                    }
+                }
+            }
+            $this->siigoEnviar($siigo_invoice_id);
+            $data=$this->apiWc("orders/".$order->wc_order_id,["status"=>"completed"]);
+
         }else{
             if($order->status==1){
-                $order->status=2;
+                //paquin
+                //$order->status=2;
+                $order->finalized_user_id= auth()->user()->id;
+                $order->status=3;
                 $order->date_packing=$currentDateTime;
+                $order->date_delivery=$currentDateTime;
                 $order->packing_user_id=auth()->user()->id;
+                $siigo_invoice_id=$order->siigo_invoice;
+                if($siigo_invoice_id==""){
+                    $data=$this->apiWc("orders/".$order->wc_order_id);
+                    foreach ($data['meta_data'] as $meta_data) {
+                        if($meta_data['key']=='_siigo_invoice_id'){
+                           $siigo_invoice_id=$meta_data['value'];
+                        }
+                    }
+                }
+                $this->siigoEnviar($siigo_invoice_id);
+                $data=$this->apiWc("orders/".$order->wc_order_id,["status"=>"completed"]);
             }else{
                 $order->status=1;
                 $order->date_picking=$currentDateTime;
@@ -189,5 +226,54 @@ class OrderController extends Controller
         }
         return response()->json( ['data'=>$data,'cateogories'=>$cateogories]);
     }
+    public function prueba()
+    {
+        echo "<br>-----";
+        $id=256276;
+        $order = Order::where('wc_order_id',$id)->first();
+        $siigo_invoice_id=$order->siigo_invoice;
+        if($siigo_invoice_id==""){
+            $data=$this->apiWc("orders/".$id);
+            foreach ($data['meta_data'] as $meta_data) {
+                if($meta_data['key']=='_siigo_invoice_id'){
+                   $siigo_invoice_id=$meta_data['value'];
+                }
+            }
+        }
+      
+        $this->siigoEnviar($siigo_invoice_id);
+    }
+    public function siigoEnviar($siigo_invoice_id)
+    {
+        $value = session('siigo_data');
+        //Order::truncate();
+        if ($value) {
+            $expirationTime = Carbon::parse($value)->addHours(12);
+            $currentTime = Carbon::now();
+            if ($expirationTime > $currentTime) {
     
+            } else {
+                $auth = $this->apiSiigo("auth");
+            }
+        } else {
+            $auth = $this->apiSiigo("auth");
+        }
+        $invoice=$this->apiSiigo("invoices/".$siigo_invoice_id);
+        if(isset($invoice['stamp']['status'])){
+              if($invoice['stamp']['status']=="Draft"){
+                    $data=[
+                      "document"=>$invoice['document'],
+                      "date"=>$invoice['date'],
+                      "customer"=>$invoice['customer'],
+                      "items"=>$invoice['items'],
+                      "payments"=>$invoice['payments'],
+                      "seller"=>$invoice['seller'],
+                      "stamp"=>[ "send"=> true ],
+                      "mail"=>["send"=> true],     
+                    ];
+                    $invoice=$this->apiSiigo("invoices/".$siigo_invoice_id,$data,"put");
+              }
+        }
+        return true;
+    }
 }

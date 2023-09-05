@@ -39,7 +39,16 @@
                     { data: 'id', name: 'id' },
                     { data: 'name', name: 'name' },
                     { data: 'email', name: 'email' },
-                    { data: 'roles[0].name', name: 'rol_name' },
+                    { 
+                data: 'roles', 
+                name: 'roles', 
+                render: function(data) {
+                    var roleNames = data.map(function(role) {
+                        return role.name;
+                    }).join(', ');
+                    return roleNames;
+                }
+            },
                     { data: 'edit', name: 'edit' }
                 ]
             });

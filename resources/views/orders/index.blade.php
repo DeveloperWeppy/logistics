@@ -11,6 +11,7 @@
 @section('main-content')
     @include('common.crumbs', ['title' => 'Pedidos','crumbs'=>['Pedidos', $type == "" ? 'Activos' : 'Completados']])
     @include('common.table', ['title' => $type == "" ? 'Activos' : 'Completados', 'titles' => ['#', 'Cliente', 'Creador', 'Estado', 'Acción']])
+
     <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -44,7 +45,7 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="col-md-12">
                                 <label class="form-label" for="validationCustom01">Código de rastreo </label>
-                                <input class="form-control" id="validationCustom01" type="text" value="" required="">
+                                <input class="form-control" id="codrastreo" type="text" value="" required="">
                                 <div class="valid-feedback"></div>
                             </div>
                     </div>
@@ -108,7 +109,7 @@
                 var csrfToken = document.querySelector('input[name="_token"]').value;
                 fetch("{{ route('orders.store');}}/"+order_id+"/"+1, {
                 method: 'POST',
-                body: JSON.stringify({}), 
+                body: JSON.stringify({cod:$("#codrastreo").val()}), 
                 headers:{
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken
@@ -181,6 +182,7 @@
                 });
 
             } else {
+                $("#tarjeta-table").hide();
                 var table = $('#users-table').DataTable({
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"
