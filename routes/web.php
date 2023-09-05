@@ -49,9 +49,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
     Route::post('/users/store', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');  
     Route::get('/users/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');  
+    Route::get('/users/profile/', [App\Http\Controllers\UserController::class, 'profile'])->name('users.profile');  
     Route::post('/users/update/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update'); 
 
     Route::get('orders',[OrderController::class,'index'])->name('orders');
+    Route::get('orders/prueba',[OrderController::class,'prueba'])->name('orders.prueba');
     Route::get('orders/get/{type?}',[OrderController::class,'get'])->name('orders.get');
     Route::get('orders/create/{id?}',[OrderController::class,'create'])->name('orders.create');
     Route::get('orders/detail/{id?}',[OrderController::class,'detail'])->name('orders.detail');
