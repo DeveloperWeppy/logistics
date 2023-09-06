@@ -41,7 +41,7 @@
                                
                                     <div class="col-sm-6 col-md-4">
                                         <div class="mb-3">
-                                            <label class="form-label">Contrase�a</label>
+                                            <label class="form-label">Contrase�a</label>
                                             @if ($title=="Mi Perfil")
                                                <input class="form-control" name="password" type="password" placeholder="password" >
                                             @elseif (isset($data))
@@ -64,6 +64,8 @@
                                                 <option value="Picking" >Picking</option>
                                                 <option value="Packing" >Packing</option>
                                                 <option value="Delivery">Delivery</option>
+                                                <option value="Inventario">Inventario</option>
+                                                <option value="Facturador">Facturador</option>
                                             </select>
                                         @endif
                                     </div>
@@ -79,6 +81,18 @@
                                                 <option value="0"  <?=isset($data['status']) && $data['status']==0? "selected":"";?>>Deshabilitado</option>
                                             </select>
                                         @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-4" id="div_bodega" style="display: none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Bodega</label>
+                                            <select class="form-control btn-square" name="warehouse">
+                                                <option >UNICENTRO</option>
+                                                <option >PAGINA WEB</option>
+                                                <option >JARDIN PLAZA</option>
+                                                <option >TIENDA NORTE</option>
+                                                <option >FERIAS</option>
+                                            </select>
                                     </div>
                                 </div>
                             </div>
@@ -107,11 +121,56 @@ if (!isset($rol)) {
 ?>
 <script> 
 $(document).ready(function() {
+    $('#div_bodega').hide();
     var roles = {!! json_encode($rol) !!};
     $('#select-rol').select2({
         multiple: true
     });
     $('#select-rol').val(roles).trigger('change');
+    function toggleBodegaField() {
+        var selectedOptions = $('#select-rol').val() || [];
+        if (selectedOptions.indexOf('Inventario') !== -1 || selectedOptions.indexOf('Facturador') !== -1) {
+            // Si 'Inventario' está en las opciones seleccionadas, muestra el div_bodega
+            $('#div_bodega').show();
+            // Deshabilita la validación del campo "warehouse"
+            $('select[name="warehouse"]').prop('required', true);
+        } else {
+            // Si 'Inventario' no está en las opciones seleccionadas, oculta el div_bodega
+            $('#div_bodega').hide();
+            // Habilita la validación del campo "warehouse" si es necesario
+            $('select[name="warehouse"]').prop('required', false);
+        }
+    }
+    
+    // Maneja el cambio en el select-rol al cargar la página
+    toggleBodegaField();
+
+    // Obtén el valor de warehouse almacenado en la base de datos si está definido
+    var valorAlmacenadoEnBD = {!! isset($data->warehouse) ? json_encode($data->warehouse) : 'null' !!};
+
+    // Solo establece el valor almacenado si estás editando un usuario existente
+    if (valorAlmacenadoEnBD !== null) {
+        $('select[name="warehouse"]').val(valorAlmacenadoEnBD);
+    }
+    
+    $('#select-rol').on('change', function() {
+        toggleBodegaField();
+    });
+    
+    // Restablece el valor del select de la bodega cuando cambias a otro rol
+    $('#select-rol').on('change', function() {
+        if ($(this).val().indexOf('Inventario') === -1 || $(this).val().indexOf('Facturador') === -1) {
+            $('select[name="warehouse"]').val(null);
+        }
+    });
+    
+    // Restablece el valor del select de la bodega cuando envías el formulario
+    // $('#from_user').on('submit', function() {
+    //     if ($('#select-rol').val().indexOf('Inventario') === -1 || $('#select-rol').val().indexOf('Facturador') === -1) {
+    //         $('select[name="warehouse"]').val(null);
+    //     }
+    // });
+
     $('#from_user').on('submit', function(e) {
         swal({
             title: 'Guardando ',

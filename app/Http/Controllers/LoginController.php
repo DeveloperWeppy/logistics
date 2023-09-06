@@ -39,6 +39,12 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $request->session()->regenerate();
 
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+
+            if ($user->hasRole('Inventario') || $user->hasRole('Facturador')) {
+                return redirect()->intended('/inventario');
+            }
             return redirect()->intended('/dashboard');
         }
 

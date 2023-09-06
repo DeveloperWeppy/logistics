@@ -22,19 +22,23 @@
                                 aria-hidden="true"></i></div>
                     </li>
 
+                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador'))
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                         href="{{ route('dashboard') }}"><i
                         data-feather="home"></i><span>Dashboard
                             </span></a></li>
-
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i
-                                data-feather="shopping-bag"></i><span>Pedidos</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('orders') }}">Activos</a></li>
-                            <li><a href="{{ route('orders') }}?type=completed">Completados</a></li>
-                            
-                        </ul>
-                    </li>
+                    @endif
+                    
+                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador'))
+                        <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i
+                                    data-feather="shopping-bag"></i><span>Pedidos</span></a>
+                            <ul class="sidebar-submenu">
+                                <li><a href="{{ route('orders') }}">Activos</a></li>
+                                <li><a href="{{ route('orders') }}?type=completed">Completados</a></li>
+                                
+                            </ul>
+                        </li>
+                    @endif
                     @if( auth()->user()->hasRole('Admin'))
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                         href="{{ route('users') }}"><i
@@ -43,10 +47,20 @@
                     @endif
 
 
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                        href="{{ route('dashboard') }}"><i
-                        data-feather="settings"></i><span>Configuración
-                            </span></a></li>
+                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador'))
+                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="{{ route('dashboard') }}"><i
+                            data-feather="settings"></i><span>Configuración
+                                </span></a></li>
+                    @endif
+                    
+                    @if (auth()->user()->hasRole('Inventario') || auth()->user()->hasRole('Facturador'))
+                        <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                            href="{{ route('inventory.index') }}"><i
+                            data-feather="list"></i><span>Inventario
+                                </span></a></li>      
+                    @endif
+                            
 
                 </ul>
              

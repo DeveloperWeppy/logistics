@@ -75,10 +75,18 @@ class UserController extends Controller
             if ($request->filled('password')) {
                 $rules['email'] =  'required|string|email|max:255';
             }
+
+            // Agrega el campo 'warehouse' a las reglas de validación
+            $rules['warehouse'] = 'nullable|string|max:255';
             $validatedData = $request->validate($rules);
         
             if ($request->filled('password')) {
                 $validatedData['password'] = bcrypt($request->input('password'));
+            }
+
+            // Actualiza el campo 'warehouse' si está presente en la solicitud
+            if ($request->filled('warehouse')) {
+                $user->warehouse = $request->input('warehouse');
             }
             User::where('id', $id)->update($validatedData);
             if ($request->filled('rol')) {
@@ -99,9 +107,11 @@ class UserController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|max:255',
                 'status' => 'required|integer',
+                'warehouse' => 'nullable|in:UNICENTRO,PAGINA WEB,JARDIN PLAZA,TIENDA NORTE,FERIAS'
             ]);
     
             $register_user = array(
+                'warehouse' => isset($request->warehouse) ? $request->warehouse : null,
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),

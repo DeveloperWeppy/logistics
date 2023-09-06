@@ -47,7 +47,7 @@ class Controller extends BaseController
             ];
             if($url=="auth"){
                $url='https://api.siigo.com/auth';
-               $data=['username'=>env('API_SIIGO_USERNAME'),'access_key'=>env('API_SIIGO_ACCESS_KEY')];
+               $data=['username'=>env('SIIGO_API_USERNAME'),'access_key'=>env('SIIGO_API_ACCESS_KEY')];
             }else{
                 $url='https://api.siigo.com/v1/'.$url;
                 $authorization = session('siigo_token');

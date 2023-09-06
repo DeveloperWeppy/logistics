@@ -19,6 +19,8 @@ class RolSeeder extends Seeder
         $roleDespachador = Role::create(['name' => 'Packing']);
         $roleDespachador = Role::create(['name' => 'Delivery ']);
         $roleAdmin = Role::create(['name' => 'Admin']);
+        $roleAdmin = Role::create(['name' => 'Inventario']);
+        $roleAdmin = Role::create(['name' => 'Facturador']);
         $permission = Permission::create(['name' => 'orders']);
         
     }

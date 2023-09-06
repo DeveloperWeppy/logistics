@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
@@ -61,6 +61,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('orders/store/{id?}/{type?}',[OrderController::class,'store'])->name('orders.store');
     //Route::get('product',[MaterialController::class,'index'])->name('product');
 
+
+    Route::get('inventario',[InventoryController::class,'index'])->name('inventory.index');
+    Route::get('inventario/respuesta/{id?}',[InventoryController::class,'search'])->name('inventory.search');
+    Route::post('inventario/actualizar-sctock',[InventoryController::class,'updateStock'])->name('inventory.updateStock');
 
     //Route::view('product', 'ecommerce.product')->name('product');
     //Route::view('add_product', 'ecommerce.add_product')->name('add_product');
