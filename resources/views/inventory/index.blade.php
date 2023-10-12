@@ -23,10 +23,8 @@
     <div class="container-fluid">
         <div class="page-title">
             <div class="row">
-                <div class="col-6">
+                <div class="col-12">
                     <h3>Consultar Inventario</h3>
-                </div>
-                <div class="col-6">
                 </div>
             </div>
         </div>
@@ -140,12 +138,12 @@
                             if (response.data) {
                                 //console.log(response.user_role);
                                 if (response.data.results && response.data.results.length > 0) {
-                                    swal({
-                                        icon: 'success',
-                                        title: 'Información cargada correctamente',
-                                        button: false,
-                                        timer: 2500
-                                    });
+                                    // swal({
+                                    //     icon: 'success',
+                                    //     title: 'Información cargada correctamente',
+                                    //     button: false,
+                                    //     timer: 2500
+                                    // });
                                     $('#name_product').text('Referencia: ' + response.data
                                         .results[0].name);
 
@@ -158,21 +156,37 @@
                                         var name = warehouse.name;
 
                                         // Crear una nueva tarjeta
+                                        // var cardHtml =
+                                        //     '<div class="col-xl-3 col-sm-6 xl-25 box-col-3">';
+                                        // cardHtml +=
+                                        //     '<div class="card text-center pricing-simple">';
+                                        // cardHtml += '<div class="card-body">';
+                                        // cardHtml += '<h1> Stock:' + quantity + '</h1>';
+                                        // cardHtml += '</div>';
+                                        // cardHtml +=
+                                        //     '<a class="btn btn-lg btn-secondary btn-block" href="javascript:void(0)">';
+                                        // cardHtml += '<h5 class="mb-0">' + name + '</h5>';
+                                        // cardHtml += '</a>';
+                                        // cardHtml += '</div>';
+                                        // cardHtml += '</div>';
                                         var cardHtml =
-                                            '<div class="col-xl-3 col-sm-6 xl-25 box-col-3">';
-                                        cardHtml +=
-                                            '<div class="card text-center pricing-simple">';
-                                        cardHtml += '<div class="card-body">';
-                                        cardHtml += '<h1> Stock:' + quantity + '</h1>';
-                                        cardHtml += '</div>';
-                                        cardHtml +=
-                                            '<a class="btn btn-lg btn-secondary btn-block" href="javascript:void(0)">';
-                                        cardHtml += '<h5 class="mb-0">' + name + '</h5>';
-                                        cardHtml += '</a>';
-                                        cardHtml += '</div>';
-                                        cardHtml += '</div>';
+                                            '<div class="col-xl-3 col-sm-6 xl-25 box-col-3 mt-3">' +
+                                            '<div class="row">' +
+                                            '<div class="col-md-12">' +
+                                            '<div class="btn-group btn-block d-flex">' +
+                                            '<a class="btn btn-lg btn-info flex-fill" href="javascript:void(0)">' +
+                                            '<h5 class="mb-0">' + name + '</h5>' +
+                                            '</a>' +
+                                            '<button class="btn btn-lg flex-fill" style="background-color: #534686; color: white;">' +
+                                            '<h5 class="mb-0">' + quantity + '</h5>' +
+                                            '</button>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>';
 
-                                        if (name !== response.user_warehouse) {
+
+                                        if (name !== response.user_warehouse && name !== "Sin asignar" ) {
                                             // Agregar la tarjeta al contenedor deseado
                                             $('#warehouses-container').append(cardHtml);
                                         }
@@ -186,60 +200,82 @@
                                         //console.log(response.product.stock);
 
                                         var cardHtmlOriginal =
-                                            '<div class="col-md-6 offset-md-3">';
-                                        cardHtmlOriginal +=
-                                            '<div class="card text-center pricing-simple">';
-                                        cardHtmlOriginal += '<div class="card-body">';
-                                        cardHtmlOriginal += '<h1 class="stock_total">Stock: ' + stock +
-                                            '</h1>';
+                                            '<div class="col-md-6 offset-md-3">' +
+                                            '<div class="card text-center pricing-simple">' +
+                                            '<div class="card-body">';
 
-                                        if (response.user_role !== "Inventario") {
+                                            if (response.user_role !== "Inventario") {
                                             cardHtmlOriginal +=
-                                                '<div class="input-group" id="stockInputGroup">';
-                                            cardHtmlOriginal +=
-                                                '<span class="input-group-text">Restar del stock:</span>';
-                                            cardHtmlOriginal +=
-                                                '<input type="number" class="form-control stock-input" value="0" id="stockInput" min="0">';
-                                            // cardHtmlOriginal += '<div class="input-group-append">';
-                                            cardHtmlOriginal +=
+                                                '<div class="input-group" id="stockInputGroup">' +
+                                                '<span class="input-group-text">Restar del stock:</span>' +
+                                                '<input type="number" class="form-control stock-input" value="0" id="stockInput" min="0">' +
                                                 '<button class="btn btn-outline-secondary input-group-append update-stock-button" data-id="' +
                                                 response.product.id + '" data-stock-actual="' +
                                                 stock +
-                                                '" type="button"><i class="fa fa-refresh"></i> Actualizar</button>';
-                                            // cardHtmlOriginal += '</div>';
-                                            cardHtmlOriginal += '</div>';
-                                        }
+                                                '" type="button"><i class="fa fa-refresh"></i> Actualizar</button>' +
+                                                '</div>';
+                                            }
 
-                                        cardHtmlOriginal += '</div>';
-                                        cardHtmlOriginal +=
-                                            '<a class="btn btn-lg btn-info btn-block" href="javascript:void(0)">';
-                                        cardHtmlOriginal += '<h5 class="mb-0">' + response
-                                            .user_warehouse + '</h5>';
-                                        cardHtmlOriginal += '</a>';
-                                        cardHtmlOriginal += '</div>';
-                                        cardHtmlOriginal += '</div>';
+                                            cardHtmlOriginal +=
+                                            '<div class="row mt-2">' +
+                                            '<div class="col-md-12">' +
+                                            '<div class="btn-group btn-block d-flex">' +
+                                            '<a class="btn btn-lg btn-primary flex-fill" href="javascript:void(0)">' +
+                                            '<h5 class="mb-0">' + response.user_warehouse + '</h5>' +
+                                            '</a>' +
+                                            '<button class="btn btn-lg flex-fill" style="background-color: #534686; color: white;">' +
+                                            '<h5 class="mb-0">' + stock + '</h5>' +
+                                            '</button>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>';
 
 
                                     } else {
+                                        // var cardHtmlOriginal =
+                                        //     '<div class="col-md-6 offset-md-3">';
+                                        // cardHtmlOriginal +=
+                                        //     '<div class="card text-center pricing-simple">';
+                                        // cardHtmlOriginal += '<div class="card-body">';
+                                        // cardHtmlOriginal += '<h1> Stock:' +
+                                        //     value_stock_original + '</h1>';
+                                        // cardHtmlOriginal += '</div>';
+                                        // cardHtmlOriginal +=
+                                        //     '<a class="btn btn-lg btn-info btn-block" href="javascript:void(0)">';
+                                        // cardHtmlOriginal += '<h5 class="mb-0">' + response
+                                        //     .user_warehouse + '</h5>';
+                                        // cardHtmlOriginal += '</a>';
+                                        // cardHtmlOriginal += '</div>';
+                                        // cardHtmlOriginal += '</div>';
                                         var cardHtmlOriginal =
-                                            '<div class="col-md-6 offset-md-3">';
-                                        cardHtmlOriginal +=
-                                            '<div class="card text-center pricing-simple">';
-                                        cardHtmlOriginal += '<div class="card-body">';
-                                        cardHtmlOriginal += '<h1> Stock:' +
-                                            value_stock_original + '</h1>';
-                                        cardHtmlOriginal += '</div>';
-                                        cardHtmlOriginal +=
-                                            '<a class="btn btn-lg btn-info btn-block" href="javascript:void(0)">';
-                                        cardHtmlOriginal += '<h5 class="mb-0">' + response
-                                            .user_warehouse + '</h5>';
-                                        cardHtmlOriginal += '</a>';
-                                        cardHtmlOriginal += '</div>';
-                                        cardHtmlOriginal += '</div>';
+                                            '<div class="col-md-6 offset-md-3">' +
+                                            '<div class="card text-center pricing-simple">' +
+                                            '<div class="card-body">' +
+                                            '<div class="row">' +
+                                            '<div class="col-md-12">' +
+                                            '<div class="btn-group btn-block d-flex">' +
+                                            '<a class="btn btn-lg btn-primary flex-fill" href="javascript:void(0)">' +
+                                            '<h5 class="mb-0">' + response.user_warehouse + '</h5>' +
+                                            '</a>' +
+                                            '<button class="btn btn-lg flex-fill" style="background-color: #534686; color: white;">' +
+                                            '<h5 class="mb-0">' + value_stock_original + '</h5>' +
+                                            '</button>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div>';
+
+
+
+
                                     }
 
-                                    $('#warehouses-container-original').append(
-                                    cardHtmlOriginal);
+                                    $('#warehouses-container-original').append(cardHtmlOriginal);
                                     var stockInput = document.getElementById("stockInput");
 
                                     // Escucha el evento "change" para verificar el valor después de que se cambie
@@ -269,6 +305,7 @@
                             swal({
                                 icon: 'error',
                                 title: 'Error',
+                                text: 'Comunicate con el administrador',
                                 button: false,
                                 timer: 1500
                             });
@@ -319,14 +356,23 @@
                                 button: false,
                                 timer: 1500
                             });
+                        }else{
+                            swal({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.message,
+                                button: false,
+                                timer: 2500
+                            });
                         }
                     },
                     error: function(xhr, textStatus, errorThrown) {
                         // Maneja los errores de la solicitud aquí
-                        console.error('Error en la petición AJAX');
+                        console.error('Error en la petición AJAX ');
                         swal({
                             icon: 'error',
                             title: 'Error',
+                            text: response.message,
                             button: false,
                             timer: 1500
                         });

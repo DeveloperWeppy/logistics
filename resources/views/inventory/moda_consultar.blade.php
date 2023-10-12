@@ -19,7 +19,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="btn-create" type="button" data-bs-dismiss="modal"
-                    data-bs-original-title="" title="">Crear</button>
+                    data-bs-original-title="" title="">Consultar</button>
             </div>
         </div>
     </div>

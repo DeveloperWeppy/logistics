@@ -22,14 +22,14 @@
                                 aria-hidden="true"></i></div>
                     </li>
 
-                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador'))
+                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador') || auth()->user()->hasRole('Admin'))
                     <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                         href="{{ route('dashboard') }}"><i
                         data-feather="home"></i><span>Dashboard
                             </span></a></li>
                     @endif
-                    
-                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador'))
+
+                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador') || auth()->user()->hasRole('Admin'))
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i
                                     data-feather="shopping-bag"></i><span>Pedidos</span></a>
                             <ul class="sidebar-submenu">
@@ -47,7 +47,7 @@
                     @endif
 
 
-                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador'))
+                    @if (!auth()->user()->hasRole('Inventario') && !auth()->user()->hasRole('Facturador') || auth()->user()->hasRole('Admin'))
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
                             href="{{ route('dashboard') }}"><i
                             data-feather="settings"></i><span>Configuración

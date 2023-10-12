@@ -19,8 +19,8 @@ class InventoryController extends Controller
 
     public function auth_siigo()
     {
-        $username = env('SIIGO_API_USERNAME');
-        $accessKey = env('SIIGO_API_ACCESS_KEY');
+        $username = env('API_SIIGO_USERNAME');
+        $accessKey = env('API_SIIGO_ACCESS_KEY');
         try {
             $response = Http::post('https://api.siigo.com/auth', [
                 'username' => $username,
@@ -85,6 +85,16 @@ class InventoryController extends Controller
         $productId = $request->input('productId');
         $newStockValue = $request->input('newStockValue');
         $stockActual = $request->input('stockActual');
+
+        // Comprueba si $newStockValue es negativo
+        if ($newStockValue <= 0 ) {
+            $response = [
+                'success' => false,
+                'message' => 'El valor a restar del stock debe ser un número positivo mayor que 0.'
+            ];
+
+            return response()->json($response); // 400 Bad Request
+        }
 
         // Calcula el nuevo stock
         $new_stock = $stockActual - $newStockValue;
