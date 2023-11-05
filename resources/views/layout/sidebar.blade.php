@@ -61,6 +61,10 @@
                                 </span></a></li>      
                     @endif
                             
+                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
+                        href="{{ route('orders.get_orders') }}"><i
+                        data-feather="list"></i><span>Pedidos 2
+                            </span></a></li> 
 
                 </ul>
              

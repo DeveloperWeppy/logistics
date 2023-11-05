@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Order;
 use Carbon\Carbon;
+use App\Models\Order;
+use Illuminate\Http\Request;
+use App\Models\LastSyncInvoices;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
 class OrderController extends Controller
 {   
     public function index()
@@ -275,5 +279,120 @@ class OrderController extends Controller
               }
         }
         return true;
+    }
+
+    public function get_orders()
+    {
+        return view('orders.indexnew');
+
+    }
+
+    public function get_orders_datatable()
+    {
+        try {
+            $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
+    
+            $headers = [
+                'Authorization' => 'Basic ' . $authorization,
+                'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
+            ];
+            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders');
+
+            if ($response->successful()) {
+                $orders = json_decode($response->body(), true);
+
+                // estados a filtrar
+                $desiredStatuses = ["processing", "addi-approved"];
+
+                // Filtra las órdenes por estado
+                $filteredOrders = array_filter($orders, function ($order) use ($desiredStatuses) {
+                    return in_array($order["status"], $desiredStatuses);
+                });
+
+                // Ahora, $filteredOrders contiene solo las órdenes con estado "processing" o "addi-approved"
+                // Puedes trabajar con este array filtrado según tus necesidades.
+                dd($filteredOrders);
+            }else{
+                dd( 'false api'. $response) ;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+        // $data=$this->apiWc("orders");
+
+        // dd($data);
+
+    }
+
+    public function sync_invoices()
+    {
+        try {
+            // Obtén la fecha y hora de la última sincronización exitosa
+            $lastSync = LastSyncInvoices::first(); // Suponiendo que LastSync es el modelo para tu tabla auxiliar
+            $day = date("Y-m-d");
+            $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
+    
+            $headers = [
+                'Authorization' => 'Basic ' . $authorization,
+                'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
+            ];
+            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders');
+
+            if ($response->successful()) {
+                $orders = json_decode($response->body(), true);
+
+                // estados a filtrar
+                $desiredStatuses = ["processing", "addi-approved"];
+
+                // Filtra las órdenes por estado
+                $filteredOrders = array_filter($orders, function ($order) use ($desiredStatuses) {
+                    return in_array($order["status"], $desiredStatuses);
+                });
+                $totalInvoicesresults= 0;
+                // Ahora, $filteredOrders contiene solo las órdenes con estado "processing" o "addi-approved"
+                // Puedes trabajar con este array filtrado según tus necesidades.
+                foreach ($filteredOrders as $key => $invoice) {
+                    $totalInvoicesresults++;
+                    $createdTimestamp = strtotime($invoice['date_created']);
+                    if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register)->timestamp) {
+                        $siigo_invoice_id="";
+                        foreach ($invoice['meta_data'] as $meta_data) {
+                            if($meta_data['key']=='_siigo_invoice_id'){
+                            $siigo_invoice_id=$meta_data['value'];
+                            }
+                        }
+                        $order = Order::create([
+                            'wc_order_id' => $invoice['id'],
+                            'wc_status' => $invoice['status'],
+                            'shipping' => json_encode($invoice['shipping']),
+                            'billing' => json_encode($invoice['billing']),
+                            'line_items' =>json_encode($invoice['line_items']),
+                            'total_amount' =>$invoice['total'],
+                            'create_user_id' =>  auth()->user()->id,
+                            'picking_user_id'=>0,
+                            'siigo_invoice'=>$siigo_invoice_id,
+                            'status' => 0,
+                        ]);
+                    }
+                }
+                // Actualiza la fecha y hora de la última sincronización exitosa
+                if (!$lastSync) {
+                    $lastSync = new LastSyncInvoices();
+                }
+
+                $lastSync->last_register = now();
+                $lastSync->save();
+                Log::info('Cantidad de facturas: ' . $totalInvoicesresults);
+                $error = false;
+                $mensaje = 'Exitoso';
+            }else{
+                dd( 'false api'. $response);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            return false;
+        }
+        return response()->json(['error' => $error, 'mensaje' => $mensaje]);
     }
 }

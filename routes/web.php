@@ -60,6 +60,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/estadistica/{type?}',[OrderController::class,'estadistica'])->name('orders.estadistica'); 
     Route::post('orders/store/{id?}/{type?}',[OrderController::class,'store'])->name('orders.store');
     //Route::get('product',[MaterialController::class,'index'])->name('product');
+    Route::get('orders/web',[OrderController::class,'get_orders'])->name('orders.get_orders');
+    Route::get('orders/web-datatable',[OrderController::class,'get_orders_datatable'])->name('orders.get_orders_datatable');
+    Route::get('orders/sync-invoices',[OrderController::class,'sync_invoices'])->name('orders.sync_invoices');
 
 
     Route::get('inventario',[InventoryController::class,'index'])->name('inventory.index');
