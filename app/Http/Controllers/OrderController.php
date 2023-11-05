@@ -391,7 +391,7 @@ class OrderController extends Controller
             }
         } catch (\Throwable $th) {
             //throw $th;
-            return false;
+            Log::error('Error en la sincronización de facturas: ' . $th->getMessage());
         }
         return response()->json(['error' => $error, 'mensaje' => $mensaje]);
     }
