@@ -313,7 +313,7 @@ class OrderController extends Controller
                 // Puedes trabajar con este array filtrado según tus necesidades.
                 dd($filteredOrders);
             }else{
-                dd( 'false api'. $response) ;
+                dd( 'false api'. $response->throw()->json()) ;
             }
         } catch (\Throwable $th) {
             //throw $th;
