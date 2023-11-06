@@ -291,12 +291,13 @@ class OrderController extends Controller
     {
         try {
             $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
-    
+            $consumer_key = env('API_WOOCOMMERCE_USER');
+            $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
             $headers = [
                 'Authorization' => 'Basic ' . $authorization,
                 'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
             ];
-            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders');
+            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
 
             if ($response->successful()) {
                 $orders = json_decode($response->body(), true);
@@ -332,12 +333,13 @@ class OrderController extends Controller
             $lastSync = LastSyncInvoices::first(); // Suponiendo que LastSync es el modelo para tu tabla auxiliar
             $day = date("Y-m-d");
             $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
-    
+            $consumer_key = env('API_WOOCOMMERCE_USER');
+            $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
             $headers = [
-                'Authorization' => 'Basic ' . $authorization,
+                //'Authorization' => 'Basic ' . $authorization,
                 'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
             ];
-            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders');
+            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'consumer_secret'.$consumer_secret);
 
             if ($response->successful()) {
                 $orders = json_decode($response->body(), true);
