@@ -387,7 +387,7 @@ class OrderController extends Controller
                 $error = false;
                 $mensaje = 'Exitoso';
             }else{
-                dd( 'false api'. $response);
+                dd( 'false api'. $response->throw()->json());
             }
         } catch (\Throwable $th) {
             //throw $th;
