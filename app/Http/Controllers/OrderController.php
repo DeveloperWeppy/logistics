@@ -297,7 +297,7 @@ class OrderController extends Controller
                 'Authorization' => 'Basic ' . $authorization,
                 'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
             ];
-            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
+            $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
 
             if ($response->successful()) {
                 $orders = json_decode($response->body(), true);
