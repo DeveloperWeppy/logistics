@@ -299,6 +299,7 @@ class OrderController extends Controller
             ];
             $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
 
+            dd($response);
             if ($response->successful()) {
                 $orders = json_decode($response->body(), true);
 
