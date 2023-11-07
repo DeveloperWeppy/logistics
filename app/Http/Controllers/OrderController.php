@@ -389,7 +389,7 @@ class OrderController extends Controller
                     $lastSync = new LastSyncInvoices();
                 }
 
-                $lastSync->last_register = now();
+                $lastSync->last_register = now()->setTimezone('America/Bogota');
                 $lastSync->save();
                 Log::info('Cantidad de facturas: ' . $totalInvoicesresults);
                 $error = false;
