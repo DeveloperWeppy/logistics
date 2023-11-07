@@ -290,7 +290,7 @@ class OrderController extends Controller
     public function get_orders_datatable()
     {
         try {
-            $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
+            //$authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
             $consumer_key = env('API_WOOCOMMERCE_USER');
             $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
             //dd('URL de la solicitud: https://natylondon.com/wp-json/wc/v3/orders?consumer_key=' . $consumer_key . '&consumer_secret=' . $consumer_secret);
@@ -302,7 +302,7 @@ class OrderController extends Controller
             $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
 
             //dd($response);
-            if ($response->status() === 200) {
+            if ($response->status() == 200) {
                 $orders = json_decode($response->body(), true);
 
                 // estados a filtrar
@@ -331,6 +331,8 @@ class OrderController extends Controller
 
     public function sync_invoices()
     {
+        $error = false;
+        $mensaje = '';
         try {
             // Obtén la fecha y hora de la última sincronización exitosa
             $lastSync = LastSyncInvoices::first(); // Suponiendo que LastSync es el modelo para tu tabla auxiliar
@@ -342,9 +344,9 @@ class OrderController extends Controller
                 //'Authorization' => 'Basic ' . $authorization,
                 'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
             ];
-            $response = Http::withHeaders($headers)->get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'consumer_secret'.$consumer_secret);
+            $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
 
-            if ($response->successful()) {
+            if ($response->status() == 200) {
                 $orders = json_decode($response->body(), true);
 
                 // estados a filtrar
@@ -358,9 +360,10 @@ class OrderController extends Controller
                 // Ahora, $filteredOrders contiene solo las órdenes con estado "processing" o "addi-approved"
                 // Puedes trabajar con este array filtrado según tus necesidades.
                 foreach ($filteredOrders as $key => $invoice) {
-                    $totalInvoicesresults++;
+                    
                     $createdTimestamp = strtotime($invoice['date_created']);
                     if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register)->timestamp) {
+                        $totalInvoicesresults++;
                         $siigo_invoice_id="";
                         foreach ($invoice['meta_data'] as $meta_data) {
                             if($meta_data['key']=='_siigo_invoice_id'){

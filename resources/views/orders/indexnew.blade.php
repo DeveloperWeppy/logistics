@@ -255,8 +255,6 @@
 
                             success: function(respuesta) {
                                 swal.close();
-                                // Obtener el porcentaje de la respuesta
-                                var porcentaje = respuesta.porcentaje;
                                 //console.log(respuesta);
 
                                 // Mostrar el mensaje de éxito después de actualizar el mensaje de SweetAlert
