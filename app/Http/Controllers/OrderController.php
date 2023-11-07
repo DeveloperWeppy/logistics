@@ -293,6 +293,8 @@ class OrderController extends Controller
             $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
             $consumer_key = env('API_WOOCOMMERCE_USER');
             $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
+            dd('URL de la solicitud: https://natylondon.com/wp-json/wc/v3/orders?consumer_key=' . $consumer_key . '&consumer_secret=' . $consumer_secret);
+
             $headers = [
                 'Authorization' => 'Basic ' . $authorization,
                 'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
