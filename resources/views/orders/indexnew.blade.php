@@ -48,12 +48,14 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Pedido</th>
+                                        <th scope="col">Estado</th>
                                         <th scope="col">Cliente</th>
                                         <th scope="col">Teléfono</th>
                                         <th scope="col">Método de Pago</th>
                                         <th scope="col">Ciudad</th>
                                         <th scope="col">Fecha</th>
                                         <th scope="col">Total</th>
+                                        <th scope="col">Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,28 +74,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Agregar Pedido</h3>
-                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close" data-bs-original-title="" title=""></button>
-                    </div>
-                    <div class="modal-body row">
-                        <div class="input-group pill-input-group leftright-radius" id="cont-input-id"><span  id="btn-scann-qr" class="input-group-text"><i class="icofont icofont-qr-code"> </i></span>
-                                            <input id="input-order-id" class="form-control" type="number" ><span class="input-group-text"><i class="icofont icofont-stock-search">
-                                                </i></span>
-                        </div>
-                        <div id="qr-reader" style="width:500px"></div>
-                        <div id="qr-reader-results"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" id="btn-create" type="button" data-bs-dismiss="modal" data-bs-original-title="" title="">Crear</button>
-                        <button class="btn btn-secondary" type="button" data-bs-original-title="" title="">Cerrar</button>
-                    </div>
-                </div>
-            </div>
     </div>
     <div class="modal fade " id="modalAprobar" tabindex="-1" aria-labelledby="modalAprobar" aria-modal="true" role="dialog">
             <div class="modal-dialog" role="document">
@@ -220,7 +200,7 @@
                                 // Mostrar el mensaje de carga inicial
                                 swal({
                                     title: "Cargando",
-                                    html: "Procesando la información, espere un momento...",
+                                    text: "Procesando la información, espere un momento...",
                                     timerProgressBar: true,
                                     didOpen: () => {
                                         swal.showLoading();
@@ -228,29 +208,6 @@
                                     showConfirmButton: false,
                                     allowOutsideClick: false,
                                 });
-
-                                var porcentaje = 0;
-
-                                // // Actualizar el porcentaje cada segundo
-                                var interval = setInterval(function() {
-                                    porcentaje += 1; // Incrementar el porcentaje de ejemplo
-
-                                    if (porcentaje <= 300) {
-                                        // Actualizar el porcentaje en el SweetAlert
-                                        swal.update({
-                                            title: "Cargando",
-                                            html: `Procesando la información, espere... ${porcentaje}% completado`,
-                                            timerProgressBar: true,
-                                            showCancelButton: false,
-                                            showConfirmButton: false,
-                                            allowOutsideClick: false,
-                                        });
-                                    } else {
-                                        // Detener el intervalo y cerrar el SweetAlert
-                                        clearInterval(interval);
-                                        swal.close();
-                                    }
-                                }, 1000);
                             },
 
                             success: function(respuesta) {
@@ -342,9 +299,14 @@
                 order: [[0, 'DESC']],
                 columns: [
                     { data: 'wc_order_id', name: 'wc_order_id' },
+                    { data: 'status_name', name: 'status_name' }
                     { data: 'customer', name: 'customer' },
-                    { data: 'name_user', name: 'name_user' },
-                    { data: 'status_name', name: 'status_name' },
+                    { data: 'phone', name: 'phone' },
+                    { data: 'payment_method', name: 'payment_method' },
+                    { data: 'city', name: 'city' },
+                    { data: 'date', name: 'date' },
+                    { data: 'total', name: 'total' },
+                    //{ data: 'name_user', name: 'name_user' },
                     { data: 'edit', name: 'edit' }
                     
                 ]

@@ -283,50 +283,63 @@ class OrderController extends Controller
 
     public function get_orders()
     {
-        return view('orders.indexnew');
+        $type="";
+        if(isset($_GET['type'])){
+            $type=$_GET['type'];              
+        }
+        return view('orders.indexnew',['type'=>$type]);
 
     }
 
-    public function get_orders_datatable()
+    public function get_orders_datatable(Request $request)
     {
-        try {
-            //$authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
-            $consumer_key = env('API_WOOCOMMERCE_USER');
-            $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
-            //dd('URL de la solicitud: https://natylondon.com/wp-json/wc/v3/orders?consumer_key=' . $consumer_key . '&consumer_secret=' . $consumer_secret);
 
-            $headers = [
-                //'Authorization' => 'Basic ' . $authorization,
-                'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
-            ];
-            $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
-
-            //dd($response);
-            if ($response->status() == 200) {
-                $orders = json_decode($response->body(), true);
-
-                // estados a filtrar
-                $desiredStatuses = ["processing", "addi-approved"];
-
-                // Filtra las órdenes por estado
-                $filteredOrders = array_filter($orders, function ($order) use ($desiredStatuses) {
-                    return in_array($order["status"], $desiredStatuses);
-                });
-
-                // Ahora, $filteredOrders contiene solo las órdenes con estado "processing" o "addi-approved"
-                // Puedes trabajar con este array filtrado según tus necesidades.
-                dd($filteredOrders);
-            }else{
-                dd( 'false api'. $response) ;
+       $arrayStatus=['Procesando','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
+        $search = $request->input('search.value');
+        $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
+        ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
+        
+        //$l=$request->input('start') / $request->input('length') + 1;
+        $l=1;
+        $users = $query->paginate($request->input('length'), ['*'], 'page',1 );
+        $count = $users->total();
+        $data= $users->items();
+        $rol=auth()->user()->getRoleNames()->first();
+        for ($i=0;$i<count($data);$i++){
+            if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
+                $data[$i]['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
-        } catch (\Throwable $th) {
-            //throw $th;
-            return false;
+            if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
+                $data[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
+            }
+            
+            if($rol=="Despachador"){
+                $data[$i]['edit']="";
+            }
+            if(!isset($data[$i]['edit'])){
+                $data[$i]['edit']="";
+            }
+            if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
+               $data[$i]['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+            }
+             if($data[$i]['status']==3){
+               // $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
+               $data[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
+            }
+            $data[$i]['status_name']=$arrayStatus[ $data[$i]['status']];
+            
+            $customer=json_decode($data[$i]['billing'],true);
+            if(isset($customer['first_name'],$customer['last_name'])){
+                $data[$i]['customer']=$customer['first_name']." ".$customer['last_name'];
+            }
+            $data[$i]['phone']= $customer['phone'];
+            $data[$i]['city']= $customer['city'];
+            $data[$i]['payment_method']= $data[$i]['payment_method'];
+            $data[$i]['total_amount']= $data[$i]['total_amount'];
+           
         }
-        // $data=$this->apiWc("orders");
-
-        // dd($data);
-
+        
+        return response()->json(['data'=>$data,'recordsTotal' => $count,'recordsFiltered' => $count]);
     }
 
     public function sync_invoices()
@@ -372,6 +385,7 @@ class OrderController extends Controller
                         }
                         $order = Order::create([
                             'wc_order_id' => $invoice['id'],
+                            'payment_method' => $invoice['payment_method_title'], 
                             'wc_status' => $invoice['status'],
                             'shipping' => json_encode($invoice['shipping']),
                             'billing' => json_encode($invoice['billing']),

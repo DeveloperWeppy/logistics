@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('line_items');
             $table->string('total_amount');
             $table->string('siigo_invoice');
+            $table->string('payment_method');
             $table->unsignedBigInteger('create_user_id');
             $table->unsignedBigInteger('finalized_user_id');
             $table->integer('status');

@@ -26,6 +26,7 @@ class Order extends Model
         'siigo_invoice',
         'tracking_code',
         'status',
+        'payment_method'
     ];
     public function creatorUser()
     {
