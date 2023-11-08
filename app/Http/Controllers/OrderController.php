@@ -8,9 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\LastSyncInvoices;
 use chillerlan\QRCode\QROptions;
 use chillerlan\QRCode\QRCode;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use TCPDF;
+//use TCPDF;
 
 class OrderController extends Controller
 {   
@@ -513,8 +514,8 @@ class OrderController extends Controller
         ]);
     
         //$orderIds = $request->input('order_ids');
-    
-        $pdf = new TCPDF();
+        $html="";
+        //$pdf = new TCPDF();
     
         // foreach ($orderIds as $orderId) {
             $order = Order::where('wc_order_id',$id)->first();
@@ -549,11 +550,55 @@ class OrderController extends Controller
             $html .= '</tr>';
             $html .= '</table>';
     
-            $pdf->AddPage();
-            $pdf->writeHTML($html, true, false, true, false, '');
+            // $pdf->AddPage();
+            // $pdf->writeHTML($html, true, false, true, false, '');
         // }
-    
-        $pdf->Output();
+
+        //$pdf->Output();
+        $this->getPdf($html);
+        exit();
+    }
+
+    function getPdf($html,$conf="") {
+        $tabla="<style>
+                @font-face {
+                font-family:'Monea Alegante';           
+                src: url('https://ceramik.com.co/wp-content/uploads/2022/11/Monea-Alegante.otf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                }
+            body{
+                font-family: 'Monea Alegante', sans-serif;
+                
+            }
+                  td {
+                  border:0px;
+                  padding:0;
+                  border-collapse: collapse;
+                  height:50%;
+                }
+                html{margin:0;padding:0}
+                table{margin:0;padding:0;height:100%;width:100%;
+                }
+                .title-qr-content{
+                    width:100%;
+                    text-align: center;
+                    margin-top:-15px;
+                    font-weight: 500;
+                    padding-left:-2px;
+                    font-family: 'Monea Alegante', sans-serif;
+                    }
+                </style>";
+                $tabla.=$html;
+                $dompdf = new Dompdf();
+                $dompdf->loadHtml($tabla);
+                $dompdf->set_paper(array(0,0,147,71));
+                $dompdf->set_option('dpi', 52);
+                $dompdf->render();
+                
+                header("Content-type: application/pdf");
+                header("Content-Disposition: inline; filename=documento.pdf");
+                echo $dompdf->output();
     }
 
 
