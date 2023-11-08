@@ -332,11 +332,14 @@ class OrderController extends Controller
             if(isset($customer['first_name'],$customer['last_name'])){
                 $data[$i]['customer']=$customer['first_name']." ".$customer['last_name'];
             }
+            $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['created_at']));
+
             $data[$i]['phone']= $customer['phone'];
             $data[$i]['city']= $customer['city'];
             $data[$i]['payment_method']= $data[$i]['payment_method'];
             $data[$i]['total_amount']= $data[$i]['total_amount'];
-           
+            $data[$i]['city']= $customer['city'];
+            $data[$i]['date']= $fecha_hora;
         }
         
         return response()->json(['data'=>$data,'recordsTotal' => $count,'recordsFiltered' => $count]);

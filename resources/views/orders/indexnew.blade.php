@@ -305,7 +305,7 @@
                     { data: 'payment_method', name: 'payment_method' },
                     { data: 'city', name: 'city' },
                     { data: 'date', name: 'date' },
-                    { data: 'total', name: 'total' },
+                    { data: 'total_amount', name: 'total_amount' },
                     //{ data: 'name_user', name: 'name_user' },
                     { data: 'edit', name: 'edit' }
                     
