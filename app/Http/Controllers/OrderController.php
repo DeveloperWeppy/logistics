@@ -523,7 +523,7 @@ class OrderController extends Controller
                 return ["status" => false];
             }
     
-            $logo=base64_encode(file_get_contents("https://natylondon.com/wp-content/uploads/2022/06/LOGO-NATY-LONDON-sin-fondo-1.jpg"));
+            $logo=base64_encode(file_get_contents( asset('assets/images/LOGO-NATY-LONDON-sin-fondo-1.jpg') ));
             $logo ='data:image/jpeg;base64,'.$logo;
             $customer=json_decode($order['billing'],true);
 
@@ -531,6 +531,7 @@ class OrderController extends Controller
             $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
             $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
             $identification = $customer['document_number'] ? $customer['document_number'] : 0;
+            $phone = $customer['phone'] ? $customer['phone'] : 0;
             $html = '<table style="width: 100%; height:90%;">';
             $html .= '<tr style="height: 100%;width: 100%;padding:0px;margin:0px;">';
             $html .= '<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105">';
@@ -538,11 +539,11 @@ class OrderController extends Controller
             $html .= '</td>';
             $html .= '<td style="width:49%;height:50%;padding:0px;margin:0px;">';
             $html .= '<img class="qr-image" src="' . $logo . '" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">';
-            $html .= '<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:' . $order->id . '</div>';
+            $html .= '<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:' . $order->wc_order_id . '</div>';
             $html .= '<div style="font-size:6px;margin-top:-5px;font-weight: bold;">D:' . $identification . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">' . $first_name . '</div>';
-            $html .= '<div style="font-size:6px;font-weight: bold;">' . $order->billing_phone . '</div>';
-            $html .= '<div style="font-size:6px;font-weight: bold;">$' . number_format($order->total, 2) . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $phone . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">$' . number_format($order->total_amount, 2) . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">' . $order->payment_method . '</div>';
             $html .= '</td>';
             $html .= '</tr>';
