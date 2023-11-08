@@ -68,9 +68,9 @@
                 </div>
 
                 <div id="tarjeta-table">
-                    @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
+                    {{-- @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
                         <button class="btn btn-primary btn-create" type="button">Sincronizar Pedidos   <i style="color:white;" class="mdi mdi-sync"></i></button>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>
@@ -299,7 +299,7 @@
                 order: [[0, 'DESC']],
                 columns: [
                     { data: 'wc_order_id', name: 'wc_order_id' },
-                    { data: 'status_name', name: 'status_name' }
+                    { data: 'status_name', name: 'status_name' },
                     { data: 'customer', name: 'customer' },
                     { data: 'phone', name: 'phone' },
                     { data: 'payment_method', name: 'payment_method' },
