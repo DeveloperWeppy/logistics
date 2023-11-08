@@ -42,6 +42,11 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         array (
             'voku\\' => 5,
         ),
+        'c' => 
+        array (
+            'chillerlan\\Settings\\' => 20,
+            'chillerlan\\QRCode\\' => 18,
+        ),
         'W' => 
         array (
             'Whoops\\' => 7,
@@ -146,6 +151,7 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         ),
         'E' => 
         array (
+            'Elibyy\\TCPDF\\' => 13,
             'Egulias\\EmailValidator\\' => 23,
         ),
         'D' => 
@@ -181,6 +187,14 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+        ),
+        'chillerlan\\Settings\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/chillerlan/php-settings-container/src',
+        ),
+        'chillerlan\\QRCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/chillerlan/php-qrcode/src',
         ),
         'Whoops\\' => 
         array (
@@ -460,6 +474,10 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
+        ),
+        'Elibyy\\TCPDF\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src',
         ),
         'Egulias\\EmailValidator\\' => 
         array (
@@ -760,6 +778,7 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\RolSeeder' => __DIR__ . '/../..' . '/database/seeders/RolSeeder.php',
+        'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
         'DeepCopy\\Exception\\PropertyException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/PropertyException.php',
@@ -969,6 +988,11 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'Egulias\\EmailValidator\\Warning\\QuotedString' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/QuotedString.php',
         'Egulias\\EmailValidator\\Warning\\TLD' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/TLD.php',
         'Egulias\\EmailValidator\\Warning\\Warning' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/Warning.php',
+        'Elibyy\\TCPDF\\Facades\\TCPDF' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/Facades/TCPDF.php',
+        'Elibyy\\TCPDF\\FpdiTCPDFHelper' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/FpdiTCPDFHelper.php',
+        'Elibyy\\TCPDF\\ServiceProvider' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/ServiceProvider.php',
+        'Elibyy\\TCPDF\\TCPDF' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/TCPDF.php',
+        'Elibyy\\TCPDF\\TCPDFHelper' => __DIR__ . '/..' . '/elibyy/tcpdf-laravel/src/TCPDFHelper.php',
         'Faker\\Calculator\\Ean' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Ean.php',
         'Faker\\Calculator\\Iban' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Iban.php',
         'Faker\\Calculator\\Inn' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Inn.php',
@@ -3492,6 +3516,7 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'NunoMaduro\\Collision\\Provider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Provider.php',
         'NunoMaduro\\Collision\\SolutionsRepositories\\NullSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/SolutionsRepositories/NullSolutionsRepository.php',
         'NunoMaduro\\Collision\\Writer' => __DIR__ . '/..' . '/nunomaduro/collision/src/Writer.php',
+        'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\ActualValueIsNotAnObjectException' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/ActualValueIsNotAnObjectException.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
@@ -4405,6 +4430,7 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'Psy\\VersionUpdater\\IntervalChecker' => __DIR__ . '/..' . '/psy/psysh/src/VersionUpdater/IntervalChecker.php',
         'Psy\\VersionUpdater\\NoopChecker' => __DIR__ . '/..' . '/psy/psysh/src/VersionUpdater/NoopChecker.php',
         'Psy\\VersionUpdater\\SelfUpdate' => __DIR__ . '/..' . '/psy/psysh/src/VersionUpdater/SelfUpdate.php',
+        'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'Ramsey\\Collection\\AbstractArray' => __DIR__ . '/..' . '/ramsey/collection/src/AbstractArray.php',
         'Ramsey\\Collection\\AbstractCollection' => __DIR__ . '/..' . '/ramsey/collection/src/AbstractCollection.php',
         'Ramsey\\Collection\\AbstractSet' => __DIR__ . '/..' . '/ramsey/collection/src/AbstractSet.php',
@@ -5801,6 +5827,17 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'Symfony\\Polyfill\\Php81\\Php81' => __DIR__ . '/..' . '/symfony/polyfill-php81/Php81.php',
         'Symfony\\Polyfill\\Uuid\\Uuid' => __DIR__ . '/..' . '/symfony/polyfill-uuid/Uuid.php',
+        'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
+        'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
+        'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
+        'TCPDF_COLORS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_colors.php',
+        'TCPDF_FILTERS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_filters.php',
+        'TCPDF_FONTS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_fonts.php',
+        'TCPDF_FONT_DATA' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_font_data.php',
+        'TCPDF_IMAGES' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_images.php',
+        'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
+        'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
+        'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
         'Termwind\\Actions\\StyleToMethod' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Actions/StyleToMethod.php',
         'Termwind\\Components\\Anchor' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Components/Anchor.php',
         'Termwind\\Components\\BreakLine' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Components/BreakLine.php',
@@ -5880,6 +5917,31 @@ class ComposerStaticInit73182c5a8a9abfb2bbf69fda228d567d
         'Whoops\\Util\\Misc' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/Misc.php',
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
+        'chillerlan\\QRCode\\Data\\AlphaNum' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/AlphaNum.php',
+        'chillerlan\\QRCode\\Data\\Byte' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/Byte.php',
+        'chillerlan\\QRCode\\Data\\Kanji' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/Kanji.php',
+        'chillerlan\\QRCode\\Data\\MaskPatternTester' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/MaskPatternTester.php',
+        'chillerlan\\QRCode\\Data\\Number' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/Number.php',
+        'chillerlan\\QRCode\\Data\\QRCodeDataException' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/QRCodeDataException.php',
+        'chillerlan\\QRCode\\Data\\QRDataAbstract' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/QRDataAbstract.php',
+        'chillerlan\\QRCode\\Data\\QRDataInterface' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/QRDataInterface.php',
+        'chillerlan\\QRCode\\Data\\QRMatrix' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Data/QRMatrix.php',
+        'chillerlan\\QRCode\\Helpers\\BitBuffer' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Helpers/BitBuffer.php',
+        'chillerlan\\QRCode\\Helpers\\Polynomial' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Helpers/Polynomial.php',
+        'chillerlan\\QRCode\\Output\\QRCodeOutputException' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QRCodeOutputException.php',
+        'chillerlan\\QRCode\\Output\\QRFpdf' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QRFpdf.php',
+        'chillerlan\\QRCode\\Output\\QRImage' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QRImage.php',
+        'chillerlan\\QRCode\\Output\\QRImagick' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QRImagick.php',
+        'chillerlan\\QRCode\\Output\\QRMarkup' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QRMarkup.php',
+        'chillerlan\\QRCode\\Output\\QROutputAbstract' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QROutputAbstract.php',
+        'chillerlan\\QRCode\\Output\\QROutputInterface' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QROutputInterface.php',
+        'chillerlan\\QRCode\\Output\\QRString' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/Output/QRString.php',
+        'chillerlan\\QRCode\\QRCode' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/QRCode.php',
+        'chillerlan\\QRCode\\QRCodeException' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/QRCodeException.php',
+        'chillerlan\\QRCode\\QROptions' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/QROptions.php',
+        'chillerlan\\QRCode\\QROptionsTrait' => __DIR__ . '/..' . '/chillerlan/php-qrcode/src/QROptionsTrait.php',
+        'chillerlan\\Settings\\SettingsContainerAbstract' => __DIR__ . '/..' . '/chillerlan/php-settings-container/src/SettingsContainerAbstract.php',
+        'chillerlan\\Settings\\SettingsContainerInterface' => __DIR__ . '/..' . '/chillerlan/php-settings-container/src/SettingsContainerInterface.php',
         'voku\\helper\\ASCII' => __DIR__ . '/..' . '/voku/portable-ascii/src/voku/helper/ASCII.php',
     );
 

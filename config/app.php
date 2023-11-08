@@ -196,6 +196,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Elibyy\TCPDF\ServiceProvider::class,
 
     ],
 
@@ -212,6 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'PDF' => Elibyy\TCPDF\Facades\TCPDF::class
     ])->toArray(),
 
 ];

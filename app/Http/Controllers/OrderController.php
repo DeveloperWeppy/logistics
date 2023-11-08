@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\LastSyncInvoices;
+use chillerlan\QRCode\QROptions;
+use chillerlan\QRCode\QRCode;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use TCPDF;
 
 class OrderController extends Controller
 {   
@@ -336,7 +338,7 @@ class OrderController extends Controller
             }
             $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['created_at']));
             //$qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.get_site_url().'/wp-json/picking-weppy/order/qr?id='.$pedido->get_id().'"><i class="mdi mdi-qrcode"></i></a></td>';
-            $qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-qrcode"></i></a></td>';
+            $qr = '<td style="display:flex;justify-content:center;"><a class="" target="_blank" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-qrcode"></i></a></td>';
             $datos[$i]['phone']= $customer['phone'];
             $datos[$i]['city']= $customer['city'];
             $datos[$i]['payment_method']= $data[$i]['payment_method'];
@@ -345,8 +347,8 @@ class OrderController extends Controller
             $datos[$i]['date']= $fecha_hora;
             $datos[$i]['wc_order_id']= $data[$i]['wc_order_id'];
             
-            // $qrCode = QrCode::size(150)->generate(route('orders.qr', ['id' => $data[$i]['id']]));
-            // $qrCodePath = public_path("qrcodes/{$data[$i]['id']}.png");
+            // $qrCode = QrCode::size(150)->generate(route('orders.qr', ['id' => $data[$i]['wc_order_id']]));
+            // $qrCodePath = public_path("qrcodes/{$data[$i]['wc_order_id']}.png");
             // $qrCode->format('png')->generate($qrCodePath);
     
             // Almacena la ruta al código QR en tus datos
@@ -440,60 +442,111 @@ class OrderController extends Controller
         return response()->json(['error' => $error, 'mensaje' => $mensaje]);
     }
 
-    // public function qr($params=[]) {
-    //     $options = new QROptions(
-    //         [
-    //           'eccLevel' => QRCode::ECC_L,
-    //           'outputType' => QRCode::OUTPUT_MARKUP_SVG,
-    //           'version' => 5,
-    //         ]
-    //       );
-    //     if(!isset($params['id'])){
-    //        return ["status"=>false]; 
-    //     }
-    //     $repetir=1;
-    //     if(isset($params['repetir'])){
-    //         $repetir=$params['repetir'];
-    //      }
-    //    $order_ids = explode(",", urldecode(rawurldecode($params['id'])));
-    //    //print_r($order_ids);
+    public function qr($params=[]) {
+        $options = new QROptions(
+            [
+              'eccLevel' => QRCode::ECC_L,
+              'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+              'version' => 5,
+            ]
+          );
+        if(!isset($params['id'])){
+           return ["status"=>false]; 
+        }
+        $repetir=1;
+        if(isset($params['repetir'])){
+            $repetir=$params['repetir'];
+         }
+       $order_ids = explode(",", urldecode(rawurldecode($params['id'])));
+       //print_r($order_ids);
 		
-    //     $html="";
-	// 	$dd="";
-	// 	$logo=base64_encode(file_get_contents("https://natylondon.com/wp-content/uploads/2022/06/LOGO-NATY-LONDON-sin-fondo-1.jpg"));
-    //     $logo ='data:image/jpeg;base64,'.$logo;
-    //     for ($i = 0; $i <count($order_ids); $i++) {
-    //         $order = wc_get_order(trim($order_ids[$i]));
-    //         $qrcode = (new QRCode($options))->render(get_site_url()."/".$order->get_id());
-    //         $first_name = $order->get_billing_first_name()." ".$order->get_billing_last_name();
-    //         $first_name=strlen($first_name) > 10? substr($first_name, 0, 10) : $first_name;
-    //         $customer_id = $customer->ID;
-    //         $identification= get_post_meta( $order->get_id(), '_billing_document_number', true ) ? get_post_meta( $order->get_id(), '_billing_document_number', true ) : (get_post_meta( $order->get_id(), 'cedula', true )?get_post_meta( $order->get_id(), 'cedula', true ):0);
-    //         //$chtml=$this->views("qr",['image'=>$qrcode,'logo'=>$logo,'id'=>$order->get_id()]);
-	// 	     $html.='<table style="width: 100%; height:90%;">
-	// 		  <tr style="height: 100%;width: 100%;padding:0px;margin:0px;">
-	// 			<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105"> 
-	// 				<img class="qr-image" src="'.$qrcode.'" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">
-	// 			 </td>
-	// 			<td style="width:49%;height:50%;padding:0px;margin:0px;">
-	// 				<img class="qr-image" src="'.$logo.'" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">
+        $html="";
+		$dd="";
+		$logo=base64_encode(file_get_contents("https://natylondon.com/wp-content/uploads/2022/06/LOGO-NATY-LONDON-sin-fondo-1.jpg"));
+        $logo ='data:image/jpeg;base64,'.$logo;
+        for ($i = 0; $i <count($order_ids); $i++) {
+            $order = wc_get_order(trim($order_ids[$i]));
+            $qrcode = (new QRCode($options))->render(get_site_url()."/".$order->get_id());
+            $first_name = $order->get_billing_first_name()." ".$order->get_billing_last_name();
+            $first_name=strlen($first_name) > 10? substr($first_name, 0, 10) : $first_name;
+            $customer_id = $customer->ID;
+            $identification= get_post_meta( $order->get_id(), '_billing_document_number', true ) ? get_post_meta( $order->get_id(), '_billing_document_number', true ) : (get_post_meta( $order->get_id(), 'cedula', true )?get_post_meta( $order->get_id(), 'cedula', true ):0);
+            //$chtml=$this->views("qr",['image'=>$qrcode,'logo'=>$logo,'id'=>$order->get_id()]);
+		     $html.='<table style="width: 100%; height:90%;">
+			  <tr style="height: 100%;width: 100%;padding:0px;margin:0px;">
+				<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105"> 
+					<img class="qr-image" src="'.$qrcode.'" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">
+				 </td>
+				<td style="width:49%;height:50%;padding:0px;margin:0px;">
+					<img class="qr-image" src="'.$logo.'" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">
                     
-	// 				<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:'.$order->get_id().'</div>
-    //                 <div style="font-size:6px;margin-top:-5px;font-weight: bold;">D:'.$identification.'</div>
-    //                 <div style="font-size:6px;font-weight: bold;">'.$first_name.'</div>
-    //                 <div style="font-size:6px;font-weight: bold;">'.$order->get_billing_phone().'</div>
-    //                 <div style="font-size:6px;font-weight: bold;">$'.number_format($order->get_total(),2).'</div>
-    //                 <div style="font-size:6px;font-weight: bold;">'.$order->get_payment_method().'</div>
+					<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:'.$order->get_id().'</div>
+                    <div style="font-size:6px;margin-top:-5px;font-weight: bold;">D:'.$identification.'</div>
+                    <div style="font-size:6px;font-weight: bold;">'.$first_name.'</div>
+                    <div style="font-size:6px;font-weight: bold;">'.$order->get_billing_phone().'</div>
+                    <div style="font-size:6px;font-weight: bold;">$'.number_format($order->get_total(),2).'</div>
+                    <div style="font-size:6px;font-weight: bold;">'.$order->get_payment_method().'</div>
 
                    
-	// 			</td>
-	// 		  </tr>
-	// 		</table>';
-    //     }
+				</td>
+			  </tr>
+			</table>';
+        }
 		
-    //     getPdf($html);
-    //     exit();
+        getPdf($html);
+        exit();
         
-    // }
+    }
+
+    public function getQrCode($id)
+    {
+        $options = new QROptions([
+            'eccLevel' => QRCode::ECC_L,
+            'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+            'version' => 5,
+        ]);
+    
+        //$orderIds = $request->input('order_ids');
+    
+        $pdf = new TCPDF();
+    
+        // foreach ($orderIds as $orderId) {
+            $order = Order::find($$id);
+    
+            if (!$order) {
+                return ["status" => false];
+            }
+    
+            $logo=base64_encode(file_get_contents("https://natylondon.com/wp-content/uploads/2022/06/LOGO-NATY-LONDON-sin-fondo-1.jpg"));
+            $logo ='data:image/jpeg;base64,'.$logo;
+
+            $qrcode = (new QRCode($options))->render(env('APP_URL')."/".$order->id());
+            $first_name = $order->billing_first_name . ' ' . $order->billing_last_name;
+            $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
+            $identification = $order->billing_document_number ? $order->billing_document_number : 0;
+            $html = '<table style="width: 100%; height:90%;">';
+            $html .= '<tr style="height: 100%;width: 100%;padding:0px;margin:0px;">';
+            $html .= '<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105">';
+            $html .= '<img class="qr-image" src="data:image/svg+xml;base64,' . base64_encode($qrcode) . '" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">';
+            $html .= '</td>';
+            $html .= '<td style="width:49%;height:50%;padding:0px;margin:0px;">';
+            $html .= '<img class="qr-image" src="' . $logo . '" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">';
+            $html .= '<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:' . $order->id . '</div>';
+            $html .= '<div style="font-size:6px;margin-top:-5px;font-weight: bold;">D:' . $identification . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $first_name . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $order->billing_phone . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">$' . number_format($order->total, 2) . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $order->payment_method . '</div>';
+            $html .= '</td>';
+            $html .= '</tr>';
+            $html .= '</table>';
+    
+            $pdf->AddPage();
+            $pdf->writeHTML($html, true, false, true, false, '');
+        // }
+    
+        $pdf->Output();
+    }
+
 
 }
