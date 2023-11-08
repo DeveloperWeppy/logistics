@@ -352,7 +352,16 @@ class OrderController extends Controller
             // Almacena la ruta al código QR en tus datos
             $datos[$i]['qr'] = $qr;
         }
-        return response()->json(['data'=>$datos]);
+        $totalRecords = count($datos); // Obtener la cantidad total de registros
+
+        $filteredRecords = $totalRecords; // En este ejemplo, asumimos que no se realiza filtrado
+
+        $start = $request->input('start');
+        $length = $request->input('length');
+
+        // Paginación
+        $datos = array_slice($datos, $start, $length);
+        return response()->json(['data'=>$datos, 'recordsTotal' => $totalRecords,'recordsFiltered' => $filteredRecords]);
     }
 
     public function sync_invoices()
