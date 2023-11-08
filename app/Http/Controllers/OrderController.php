@@ -511,7 +511,7 @@ class OrderController extends Controller
         $pdf = new TCPDF();
     
         // foreach ($orderIds as $orderId) {
-            $order = Order::find($id);
+            $order = Order::where('wc_order_id',$id)->first();
     
             if (!$order) {
                 return ["status" => false];
