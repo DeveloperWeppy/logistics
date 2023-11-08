@@ -300,8 +300,17 @@ class OrderController extends Controller
         $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
         ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
         
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('orders.id', 'like', '%'.$search.'%')
+                    ->orWhere('orders.wc_status', 'like', '%'.$search.'%')
+                    ->orWhere('orders.status', '<', 3);
+            });
+        } else {
+            $query->where('orders.status', '=', 3);
+        }
         //$l=$request->input('start') / $request->input('length') + 1;
-        $users = $query;
+        $users = $query->paginate($request->input('length'), ['*'], 'page',1 );
         $count = count($users);
         $data= $users->items();
         $rol=auth()->user()->getRoleNames()->first();
