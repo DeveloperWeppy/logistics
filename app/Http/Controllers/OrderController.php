@@ -319,7 +319,7 @@ class OrderController extends Controller
                 $datos['edit']="";
             }
             if(!isset($data[$i]['edit'])){
-                $data[$i]['edit']="";
+                $datos['edit']="";
             }
             if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
                $datos['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
@@ -352,7 +352,7 @@ class OrderController extends Controller
             $datos['qr'] = $qr;
         }
         
-        return response()->json(['data'=>$data]);
+        return response()->json(['data'=>$datos]);
     }
 
     public function sync_invoices()
