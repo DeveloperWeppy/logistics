@@ -303,7 +303,7 @@ class OrderController extends Controller
         //$l=$request->input('start') / $request->input('length') + 1;
         $users = $query;
         //$count = $users->total();
-        $data= $users->items();
+        $data= $users->get();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
             if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
