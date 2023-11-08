@@ -309,40 +309,40 @@ class OrderController extends Controller
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
             if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
-                $datos['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+                $datos[$i]['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
             if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
-                $datos['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
+                $datos[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
             }
             
             if($rol=="Despachador"){
-                $datos['edit']="";
+                $datos[$i]['edit']="";
             }
             if(!isset($data[$i]['edit'])){
-                $datos['edit']="";
+                $datos[$i]['edit']="";
             }
             if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
-               $datos['edit']= '<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+               $datos[$i]['edit']= '<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
              if($data[$i]['status']==3){
                // $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
-               $datos['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
+               $datos[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
             }
-            $datos['status_name']=$arrayStatus[ $data[$i]['status']];
+            $datos[$i]['status_name']=$arrayStatus[ $data[$i]['status']];
             
             $customer=json_decode($data[$i]['billing'],true);
             if(isset($customer['first_name'],$customer['last_name'])){
-                $datos['customer']=$customer['first_name']." ".$customer['last_name'];
+                $datos[$i]['customer']=$customer['first_name']." ".$customer['last_name'];
             }
             $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['created_at']));
             //$qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.get_site_url().'/wp-json/picking-weppy/order/qr?id='.$pedido->get_id().'"><i class="mdi mdi-qrcode"></i></a></td>';
             $qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-qrcode"></i></a></td>';
-            $datos['phone']= $customer['phone'];
-            $datos['city']= $customer['city'];
-            $datos['payment_method']= $data[$i]['payment_method'];
-            $datos['total_amount']= number_format($data[$i]['total_amount'], 2, '.', ',');
-            $datos['city']= $customer['city'];
-            $datos['date']= $fecha_hora;
+            $datos[$i]['phone']= $customer['phone'];
+            $datos[$i]['city']= $customer['city'];
+            $datos[$i]['payment_method']= $data[$i]['payment_method'];
+            $datos[$i]['total_amount']= number_format($data[$i]['total_amount'], 2, '.', ',');
+            $datos[$i]['city']= $customer['city'];
+            $datos[$i]['date']= $fecha_hora;
             
             // $qrCode = QrCode::size(150)->generate(route('orders.qr', ['id' => $data[$i]['id']]));
             // $qrCodePath = public_path("qrcodes/{$data[$i]['id']}.png");
