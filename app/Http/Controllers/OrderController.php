@@ -348,7 +348,7 @@ class OrderController extends Controller
             // $qrCode->format('png')->generate($qrCodePath);
     
             // Almacena la ruta al código QR en tus datos
-            $data[$i]['$qr'] = $qr;
+            $data[$i]['qr'] = $qr;
         }
         
         return response()->json(['data'=>$data,'recordsTotal' => $count,'recordsFiltered' => $count]);
