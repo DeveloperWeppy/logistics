@@ -301,8 +301,7 @@ class OrderController extends Controller
         ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
         
         //$l=$request->input('start') / $request->input('length') + 1;
-        $l=1;
-        $users = $query->paginate($request->input('length'), ['*'], 'page',1 );
+        $users = $query;
         $count = $users->total();
         $data= $users->items();
         $rol=auth()->user()->getRoleNames()->first();
