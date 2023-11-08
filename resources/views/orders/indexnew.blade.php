@@ -56,6 +56,7 @@
                                         <th scope="col">Fecha</th>
                                         <th scope="col">Total</th>
                                         <th scope="col">Acción</th>
+                                        <th scope="col">QR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -307,7 +308,8 @@
                     { data: 'date', name: 'date' },
                     { data: 'total_amount', name: 'total_amount' },
                     //{ data: 'name_user', name: 'name_user' },
-                    { data: 'edit', name: 'edit' }
+                    { data: 'edit', name: 'edit' },
+                    { data: 'qr', name: 'qr' },
                     
                 ]
                 });
