@@ -302,8 +302,8 @@ class OrderController extends Controller
         
         //$l=$request->input('start') / $request->input('length') + 1;
         $users = $query;
-        //$count = $users->total();
-        $data= $users->get();
+        $count = count($users);
+        $data= $users->items();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
             if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
@@ -350,7 +350,7 @@ class OrderController extends Controller
             $data[$i]['qr'] = $qr;
         }
         
-        return response()->json(['data'=>$data]);
+        return response()->json(['data'=>$data,'recordsTotal' => $count,'recordsFiltered' => $count]);
     }
 
     public function sync_invoices()
