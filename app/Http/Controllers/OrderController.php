@@ -304,7 +304,7 @@ class OrderController extends Controller
         //$l=$request->input('start') / $request->input('length') + 1;
         //$users = $query->paginate($request->input('length'), ['*'], 'page',1 );
         //$count = count($users);
-        $data= $query->items();dd($data);
+        $data= $query->get();dd($data);
         $datos = array();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
