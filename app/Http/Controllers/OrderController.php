@@ -402,11 +402,17 @@ class OrderController extends Controller
                     if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register)->timestamp) {
                         $totalInvoicesresults++;
                         $siigo_invoice_id="";
+                        $cedula = ""; 
                         foreach ($invoice['meta_data'] as $meta_data) {
                             if($meta_data['key']=='_siigo_invoice_id'){
                             $siigo_invoice_id=$meta_data['value'];
                             }
+                            if ($meta_data['key'] == 'cedula') {
+                                $cedula = $meta_data['value'];
+                            }
                         }
+                        // Agregar "cedula" al arreglo "billing"
+                        $invoice['billing']['document_number'] = $cedula;
                         $order = Order::create([
                             'wc_order_id' => $invoice['id'],
                             'payment_method' => $invoice['payment_method_title'], 
