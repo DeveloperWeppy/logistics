@@ -335,11 +335,11 @@ class OrderController extends Controller
             }
             $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['created_at']));
             //$qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.get_site_url().'/wp-json/picking-weppy/order/qr?id='.$pedido->get_id().'"><i class="mdi mdi-qrcode"></i></a></td>';
-            $qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.route('orders.qr', ['id' => $data[$i]['id']]).'" <i class="mdi mdi-qrcode"></i></a></td>';
+            $qr = '<a class="" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'" <i class="mdi mdi-qrcode"></i></a>';
             $data[$i]['phone']= $customer['phone'];
             $data[$i]['city']= $customer['city'];
             $data[$i]['payment_method']= $data[$i]['payment_method'];
-            $data[$i]['total_amount']= $data[$i]['total_amount'];
+            $data[$i]['total_amount']= number_format($data[$i]['total_amount'], 2, '.', ',');
             $data[$i]['city']= $customer['city'];
             $data[$i]['date']= $fecha_hora;
             
