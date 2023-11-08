@@ -343,15 +343,15 @@ class OrderController extends Controller
             $datos[$i]['total_amount']= number_format($data[$i]['total_amount'], 2, '.', ',');
             $datos[$i]['city']= $customer['city'];
             $datos[$i]['date']= $fecha_hora;
+            $datos[$i]['wc_order_id']= $data[$i]['wc_order_id'];
             
             // $qrCode = QrCode::size(150)->generate(route('orders.qr', ['id' => $data[$i]['id']]));
             // $qrCodePath = public_path("qrcodes/{$data[$i]['id']}.png");
             // $qrCode->format('png')->generate($qrCodePath);
     
             // Almacena la ruta al código QR en tus datos
-            $datos['qr'] = $qr;
+            $datos[$i]['qr'] = $qr;
         }
-        dd($datos);
         return response()->json(['data'=>$datos]);
     }
 
