@@ -290,10 +290,10 @@
                     url: "//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"
                 },
                 processing: true,
-                serverSide: true,
-                colReorder: true,
-                pageLength: 10,
-                lengthChange: true, 
+                // serverSide: true,
+                // colReorder: true,
+                //pageLength: 10,
+                //lengthChange: true, 
                 lengthMenu: [10, 25, 50, 75, 100],
                 ajax: '{{route('orders.get_orders_datatable')}}',
                 
