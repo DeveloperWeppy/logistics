@@ -290,7 +290,7 @@
                     url: "//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"
                 },
                 processing: true,
-                // serverSide: true,
+                serverSide: true,
                 // colReorder: true,
                 //pageLength: 10,
                 //lengthChange: true, 
