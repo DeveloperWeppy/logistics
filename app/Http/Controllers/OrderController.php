@@ -304,7 +304,7 @@ class OrderController extends Controller
         //$l=$request->input('start') / $request->input('length') + 1;
         //$users = $query->paginate($request->input('length'), ['*'], 'page',1 );
         //$count = count($users);
-        $data= $query->get();
+        $data= $query->get();dd($data);
         $datos = array();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
@@ -322,7 +322,7 @@ class OrderController extends Controller
                 $datos['edit']="";
             }
             if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
-               $datos['edit']= $data[$i]['edit'].'<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+               $datos['edit']= '<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
              if($data[$i]['status']==3){
                // $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
