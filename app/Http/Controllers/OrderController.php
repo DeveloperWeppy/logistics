@@ -527,7 +527,7 @@ class OrderController extends Controller
             $logo ='data:image/jpeg;base64,'.$logo;
             $customer=json_decode($order['billing'],true);
 
-            $qrcode = (new QRCode($options))->render(env('APP_URL')."/".$order->id);
+            $qrcode = (new QRCode($options))->render(env('APP_URL')."/".$order->wc_order_id);
             $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
             $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
             $identification = $customer['document_number'] ? $customer['document_number'] : 0;
