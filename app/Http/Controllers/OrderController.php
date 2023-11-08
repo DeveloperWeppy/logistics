@@ -302,7 +302,7 @@ class OrderController extends Controller
         
         //$l=$request->input('start') / $request->input('length') + 1;
         $users = $query;
-        $count = $users->total();
+        //$count = $users->total();
         $data= $users->items();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
@@ -350,7 +350,7 @@ class OrderController extends Controller
             $data[$i]['qr'] = $qr;
         }
         
-        return response()->json(['data'=>$data,'recordsTotal' => $count,'recordsFiltered' => $count]);
+        return response()->json(['data'=>$data]);
     }
 
     public function sync_invoices()
