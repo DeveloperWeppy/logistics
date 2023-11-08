@@ -207,7 +207,7 @@
                                         swal.showLoading();
                                     },
                                     showConfirmButton: false,
-                                    allowOutsideClick: false,
+                                    modal: true,
                                 });
                             },
 
