@@ -541,7 +541,7 @@ class OrderController extends Controller
             $html .= '<td style="width:49%;height:50%;padding:0px;margin:0px;">';
             $html .= '<img class="qr-image" src="' . $logo . '" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">';
             $html .= '<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:' . $order->wc_order_id . '</div>';
-            $html .= '<div style="font-size:6px;margin-top:-2px;font-weight: bold;">D:' . $identification . '</div>';
+            $html .= '<div style="font-size:6px;margin-top:3px;font-weight: bold;">D:' . $identification . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">' . $first_name . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">' . $phone . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">$' . number_format($order->total_amount, 2) . '</div>';
