@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/web-datatable',[OrderController::class,'get_orders_datatable'])->name('orders.get_orders_datatable');
     Route::get('orders/sync-invoices',[OrderController::class,'sync_invoices'])->name('orders.sync_invoices');
     Route::get('orders/qr/{id}', [OrderController::class,'getQrCode'])->name('orders.qr');
+    Route::get('orders/qr-validation/{order_id}', [OrderController::class,'redirectToDetail'])->name('orders.qr_validation');
 
 
 

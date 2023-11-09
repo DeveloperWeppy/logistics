@@ -526,7 +526,7 @@ class OrderController extends Controller
             $customer=json_decode($order['billing'],true);
 
             $payment_methid = $order->payment_method == 'Paga a cuotas' ? 'Addi' : $order->payment_method;
-            $qrcode = (new QRCode($options))->render(env('APP_URL')."/".$order->wc_order_id);
+            $qrcode = (new QRCode($options))->render(env('APP_URL').$order->wc_order_id);
             $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
             $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
             $identification = $customer['document_number'] ? $customer['document_number'] : 0;
@@ -599,5 +599,19 @@ class OrderController extends Controller
                 echo $dompdf->output();
     }
 
+
+    public function redirectToDetail($order_id)
+    {
+        // Verificar si el pedido existe en la base de datos
+        $order = Order::where('wc_order_id', $order_id)->first();
+
+        if ($order) {
+            // Si existe, devolver una respuesta JSON válida
+            return response()->json(['valid' => true]);
+        } else {
+            // Si no existe, devolver una respuesta JSON no válida
+            return response()->json(['valid' => false]);
+        }
+    }
 
 }

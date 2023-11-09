@@ -40,6 +40,7 @@
                         <button class="btn btn-primary btn-create" type="button" >Sincronizar Pedidos
                                <i style="color:white;" class="mdi mdi-sync"></i></button>
                         @endif
+                        <input type="hidden" id="order_id_input">
                     </div>
                     
                     <div class="card-body">
@@ -313,6 +314,38 @@
                 ]
                 });
             }
+            // Supongamos que tienes un campo de entrada oculto con el ID "order_id_input"
+            let orderInput = document.getElementById('order_id_input');
+
+            // Escucha el evento de escaneo del QR
+            tuElementoQRScanner.addEventListener('scan', function (event) {
+                //let scannedOrderId = event.detail; // Suponiendo que el evento devuelve el ID del pedido escaneado
+                let qrUrl = event.detail;
+                let orderId = qrUrl.split("/").pop();
+
+                // Realiza una solicitud Ajax para verificar el ID del pedido
+                $.ajax({
+                    url: '/orders/qr-validation/' + orderId,
+                    method: 'GET',
+                    success: function (data) {
+                        // Manejar la respuesta del servidor
+                        if (data.valid) {
+                            // Si el pedido es válido, redirige al detalle del pedido
+                            window.location.href = '/orders/create/' + orderId;
+                        } else {
+                            // Si el pedido no es válido, muestra un mensaje de error o maneja según sea necesario
+                            //alert('Número de pedido no válido');
+                            swal("Error!", "Número de pedido no válido!", "error");
+                        }
+                    },
+                    error: function () {
+                        // Manejar errores de la solicitud Ajax
+                        //alert('Error al verificar el número de pedido');
+                        swal("Error!", "Error al verificar el número de pedido!", "error");
+                    }
+                });
+            });
+
         });
     </script>
 @endsection
