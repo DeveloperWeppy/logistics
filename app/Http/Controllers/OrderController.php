@@ -509,7 +509,7 @@ class OrderController extends Controller
     {
         $options = new QROptions([
             'eccLevel' => QRCode::ECC_L,
-            'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+            'outputType' => QRCode::OUTPUT_IMAGE_PNG,
             'version' => 5,
         ]);
     
@@ -528,7 +528,7 @@ class OrderController extends Controller
             $logo ='data:image/jpeg;base64,'.$logo;
             $customer=json_decode($order['billing'],true);
 
-            $qrcode = (new QRCode)->render(env('APP_URL')."/".$order->wc_order_id);
+            $qrcode = (new QRCode($options))->render(env('APP_URL')."/".$order->wc_order_id);
             $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
             $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
             $identification = $customer['document_number'] ? $customer['document_number'] : 0;
@@ -536,7 +536,7 @@ class OrderController extends Controller
             $html = '<table style="width: 100%; height:90%;">';
             $html .= '<tr style="height: 100%;width: 100%;padding:0px;margin:0px;">';
             $html .= '<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105">';
-            $html .= '<img class="qr-image" src="data:image/svg+xml;base64,' . base64_encode($qrcode) . '" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">';
+            $html .= '<img class="qr-image" src="' . $qrcode . '" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">';
             $html .= '</td>';
             $html .= '<td style="width:49%;height:50%;padding:0px;margin:0px;">';
             $html .= '<img class="qr-image" src="' . $logo . '" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">';
