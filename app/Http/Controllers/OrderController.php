@@ -298,7 +298,7 @@ class OrderController extends Controller
     public function get_orders_datatable(Request $request)
     {
 
-       $arrayStatus=['Procesando','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
+       $arrayStatus=['En cola','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
     
         $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
         ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
@@ -348,10 +348,6 @@ class OrderController extends Controller
             $datos[$i]['city']= $customer['city'];
             $datos[$i]['date']= $fecha_hora;
             $datos[$i]['wc_order_id']= $data[$i]['wc_order_id'];
-            
-            // $qrCode = QrCode::size(150)->generate(route('orders.qr', ['id' => $data[$i]['wc_order_id']]));
-            // $qrCodePath = public_path("qrcodes/{$data[$i]['wc_order_id']}.png");
-            // $qrCode->format('png')->generate($qrCodePath);
     
             // Almacena la ruta al código QR en tus datos
             $datos[$i]['qr'] = $qr;
