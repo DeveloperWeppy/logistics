@@ -338,11 +338,12 @@ class OrderController extends Controller
                 $datos[$i]['customer']=$customer['first_name']." ".$customer['last_name'];
             }
             $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['created_at']));
+            $payment_methid = $data[$i]['payment_method'] == 'Paga a cuotas' ? 'Addi' : $data[$i]['payment_method'];
             //$qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.get_site_url().'/wp-json/picking-weppy/order/qr?id='.$pedido->get_id().'"><i class="mdi mdi-qrcode"></i></a></td>';
             $qr = '<td style="display:flex;justify-content:center;"><a class="" target="_blank" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-qrcode"></i></a></td>';
             $datos[$i]['phone']= $customer['phone'];
             $datos[$i]['city']= $customer['city'];
-            $datos[$i]['payment_method']= $data[$i]['payment_method'];
+            $datos[$i]['payment_method']= $payment_methid;
             $datos[$i]['total_amount']= number_format($data[$i]['total_amount'], 2, '.', ',');
             $datos[$i]['city']= $customer['city'];
             $datos[$i]['date']= $fecha_hora;
@@ -449,61 +450,61 @@ class OrderController extends Controller
         return response()->json(['error' => $error, 'mensaje' => $mensaje]);
     }
 
-    public function qr($params=[]) {
-        $options = new QROptions(
-            [
-              'eccLevel' => QRCode::ECC_L,
-              'outputType' => QRCode::OUTPUT_MARKUP_SVG,
-              'version' => 5,
-            ]
-          );
-        if(!isset($params['id'])){
-           return ["status"=>false]; 
-        }
-        $repetir=1;
-        if(isset($params['repetir'])){
-            $repetir=$params['repetir'];
-         }
-       $order_ids = explode(",", urldecode(rawurldecode($params['id'])));
-       //print_r($order_ids);
+    // public function qr($params=[]) {
+    //     $options = new QROptions(
+    //         [
+    //           'eccLevel' => QRCode::ECC_L,
+    //           'outputType' => QRCode::OUTPUT_MARKUP_SVG,
+    //           'version' => 5,
+    //         ]
+    //       );
+    //     if(!isset($params['id'])){
+    //        return ["status"=>false]; 
+    //     }
+    //     $repetir=1;
+    //     if(isset($params['repetir'])){
+    //         $repetir=$params['repetir'];
+    //      }
+    //    $order_ids = explode(",", urldecode(rawurldecode($params['id'])));
+    //    //print_r($order_ids);
 		
-        $html="";
-		$dd="";
-		$logo=base64_encode(file_get_contents("https://natylondon.com/wp-content/uploads/2022/06/LOGO-NATY-LONDON-sin-fondo-1.jpg"));
-        $logo ='data:image/jpeg;base64,'.$logo;
-        for ($i = 0; $i <count($order_ids); $i++) {
-            $order = wc_get_order(trim($order_ids[$i]));
-            $qrcode = (new QRCode($options))->render(get_site_url()."/".$order->get_id());
-            $first_name = $order->get_billing_first_name()." ".$order->get_billing_last_name();
-            $first_name=strlen($first_name) > 10? substr($first_name, 0, 10) : $first_name;
-            $customer_id = $customer->ID;
-            $identification= get_post_meta( $order->get_id(), '_billing_document_number', true ) ? get_post_meta( $order->get_id(), '_billing_document_number', true ) : (get_post_meta( $order->get_id(), 'cedula', true )?get_post_meta( $order->get_id(), 'cedula', true ):0);
-            //$chtml=$this->views("qr",['image'=>$qrcode,'logo'=>$logo,'id'=>$order->get_id()]);
-		     $html.='<table style="width: 100%; height:90%;">
-			  <tr style="height: 100%;width: 100%;padding:0px;margin:0px;">
-				<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105"> 
-					<img class="qr-image" src="'.$qrcode.'" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">
-				 </td>
-				<td style="width:49%;height:50%;padding:0px;margin:0px;">
-					<img class="qr-image" src="'.$logo.'" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">
+    //     $html="";
+	// 	$dd="";
+	// 	$logo=base64_encode(file_get_contents("https://natylondon.com/wp-content/uploads/2022/06/LOGO-NATY-LONDON-sin-fondo-1.jpg"));
+    //     $logo ='data:image/jpeg;base64,'.$logo;
+    //     for ($i = 0; $i <count($order_ids); $i++) {
+    //         $order = wc_get_order(trim($order_ids[$i]));
+    //         $qrcode = (new QRCode($options))->render(get_site_url()."/".$order->get_id());
+    //         $first_name = $order->get_billing_first_name()." ".$order->get_billing_last_name();
+    //         $first_name=strlen($first_name) > 10? substr($first_name, 0, 10) : $first_name;
+    //         $customer_id = $customer->ID;
+    //         $identification= get_post_meta( $order->get_id(), '_billing_document_number', true ) ? get_post_meta( $order->get_id(), '_billing_document_number', true ) : (get_post_meta( $order->get_id(), 'cedula', true )?get_post_meta( $order->get_id(), 'cedula', true ):0);
+    //         //$chtml=$this->views("qr",['image'=>$qrcode,'logo'=>$logo,'id'=>$order->get_id()]);
+	// 	     $html.='<table style="width: 100%; height:90%;">
+	// 		  <tr style="height: 100%;width: 100%;padding:0px;margin:0px;">
+	// 			<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105"> 
+	// 				<img class="qr-image" src="'.$qrcode.'" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">
+	// 			 </td>
+	// 			<td style="width:49%;height:50%;padding:0px;margin:0px;">
+	// 				<img class="qr-image" src="'.$logo.'" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">
                     
-					<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:'.$order->get_id().'</div>
-                    <div style="font-size:6px;margin-top:-5px;font-weight: bold;">D:'.$identification.'</div>
-                    <div style="font-size:6px;font-weight: bold;">'.$first_name.'</div>
-                    <div style="font-size:6px;font-weight: bold;">'.$order->get_billing_phone().'</div>
-                    <div style="font-size:6px;font-weight: bold;">$'.number_format($order->get_total(),2).'</div>
-                    <div style="font-size:6px;font-weight: bold;">'.$order->get_payment_method().'</div>
+	// 				<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:'.$order->get_id().'</div>
+    //                 <div style="font-size:6px;margin-top:-5px;font-weight: bold;">D:'.$identification.'</div>
+    //                 <div style="font-size:6px;font-weight: bold;">'.$first_name.'</div>
+    //                 <div style="font-size:6px;font-weight: bold;">'.$order->get_billing_phone().'</div>
+    //                 <div style="font-size:6px;font-weight: bold;">$'.number_format($order->get_total(),2).'</div>
+    //                 <div style="font-size:6px;font-weight: bold;">'.$order->get_payment_method().'</div>
 
                    
-				</td>
-			  </tr>
-			</table>';
-        }
+	// 			</td>
+	// 		  </tr>
+	// 		</table>';
+    //     }
 		
-        getPdf($html);
-        exit();
+    //     getPdf($html);
+    //     exit();
         
-    }
+    // }
 
     public function getQrCode($id)
     {
@@ -528,6 +529,7 @@ class OrderController extends Controller
             $logo ='data:image/jpeg;base64,'.$logo;
             $customer=json_decode($order['billing'],true);
 
+            $payment_methid = $order->payment_method == 'Paga a cuotas' ? 'Addi' : $order->payment_method;
             $qrcode = (new QRCode($options))->render(env('APP_URL')."/".$order->wc_order_id);
             $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
             $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
@@ -545,7 +547,7 @@ class OrderController extends Controller
             $html .= '<div style="font-size:6px;font-weight: bold;">' . $first_name . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">' . $phone . '</div>';
             $html .= '<div style="font-size:6px;font-weight: bold;">$' . number_format($order->total_amount, 2) . '</div>';
-            $html .= '<div style="font-size:6px;font-weight: bold;">' . $order->payment_method . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $payment_methid . '</div>';
             $html .= '</td>';
             $html .= '</tr>';
             $html .= '</table>';
