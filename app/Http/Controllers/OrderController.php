@@ -312,7 +312,7 @@ class OrderController extends Controller
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
             if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
-                $datos[$i]['edit']='<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+                $datos[$i]['edit'] = '<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
             if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
                 $datos[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
@@ -321,9 +321,9 @@ class OrderController extends Controller
             if($rol=="Despachador"){
                 $datos[$i]['edit']="";
             }
-            if(!isset($data[$i]['edit'])){
-                $datos[$i]['edit']="";
-            }
+            // if(!isset($data[$i]['edit'])){
+            //     $datos[$i]['edit']="";
+            // }
             if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
                $datos[$i]['edit']= '<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }

@@ -299,17 +299,6 @@
                 
                 order: [[0, 'DESC']],
                 columns: [
-                    // { data: 'wc_order_id', name: 'wc_order_id' },
-                    // { data: 'status_name', name: 'status_name' },
-                    // { data: 'customer', name: 'customer' },
-                    // { data: 'phone', name: 'phone' },
-                    // { data: 'payment_method', name: 'payment_method' },
-                    // { data: 'city', name: 'city' },
-                    // { data: 'date', name: 'date' },
-                    // { data: 'total_amount', name: 'total_amount' },
-                    // //{ data: 'name_user', name: 'name_user' },
-                    // { data: 'edit', name: 'edit' },
-                    // { data: 'qr', name: 'qr' },
                     { data: 'wc_order_id' },
                     { data: 'status_name' },
                     { data: 'customer' },
@@ -318,7 +307,6 @@
                     { data: 'city' },
                     { data: 'date' },
                     { data: 'total_amount' },
-                    //{ data: 'name_user', name: 'name_user' },
                     { data: 'edit' },
                     { data: 'qr' },
                     
