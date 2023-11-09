@@ -315,37 +315,68 @@
                 });
             }
             // Supongamos que tienes un campo de entrada oculto con el ID "order_id_input"
-            let orderInput = document.getElementById('order_id_input');
+            // let orderInput = document.getElementById('order_id_input');
 
-            // Escucha el evento de escaneo del QR
-            tuElementoQRScanner.addEventListener('scan', function (event) {
-                //let scannedOrderId = event.detail; // Suponiendo que el evento devuelve el ID del pedido escaneado
-                let qrUrl = event.detail;
-                let orderId = qrUrl.split("/").pop();
+            // // Escucha el evento de escaneo del QR
+            // tuElementoQRScanner.addEventListener('scan', function (event) {
+            //     //let scannedOrderId = event.detail; // Suponiendo que el evento devuelve el ID del pedido escaneado
+            //     let qrUrl = event.detail;
+            //     let orderId = qrUrl.split("/").pop();
 
-                // Realiza una solicitud Ajax para verificar el ID del pedido
-                $.ajax({
-                    url: '/orders/qr-validation/' + orderId,
-                    method: 'GET',
-                    success: function (data) {
-                        // Manejar la respuesta del servidor
-                        if (data.valid) {
-                            // Si el pedido es válido, redirige al detalle del pedido
-                            window.location.href = '/orders/create/' + orderId;
-                        } else {
-                            // Si el pedido no es válido, muestra un mensaje de error o maneja según sea necesario
-                            //alert('Número de pedido no válido');
-                            swal("Error!", "Número de pedido no válido!", "error");
-                        }
-                    },
-                    error: function () {
-                        // Manejar errores de la solicitud Ajax
-                        //alert('Error al verificar el número de pedido');
-                        swal("Error!", "Error al verificar el número de pedido!", "error");
-                    }
-                });
+            //     // Realiza una solicitud Ajax para verificar el ID del pedido
+            //     $.ajax({
+            //         url: '/orders/qr-validation/' + orderId,
+            //         method: 'GET',
+            //         success: function (data) {
+            //             // Manejar la respuesta del servidor
+            //             if (data.valid) {
+            //                 // Si el pedido es válido, redirige al detalle del pedido
+            //                 window.location.href = '/orders/create/' + orderId;
+            //             } else {
+            //                 // Si el pedido no es válido, muestra un mensaje de error o maneja según sea necesario
+            //                 //alert('Número de pedido no válido');
+            //                 swal("Error!", "Número de pedido no válido!", "error");
+            //             }
+            //         },
+            //         error: function () {
+            //             // Manejar errores de la solicitud Ajax
+            //             //alert('Error al verificar el número de pedido');
+            //             swal("Error!", "Error al verificar el número de pedido!", "error");
+            //         }
+            //     });
+            // });
+            // Agrega un escuchador de eventos para la entrada de teclado
+            document.addEventListener('keydown', function (event) {
+                console.log('keydown: '+document.activeElement.id);
+                // Verifica si el campo de entrada oculto está enfocado
+                if (document.activeElement.id === 'order_id_input') {
+                    // Llama a la función de manejo del escaneo
+                    handleScan({ data: event.key });
+                }
             });
 
         });
+        // Función para manejar el escaneo
+        function handleScan(scannedOrderId) {
+            // Extrae el número del pedido de la URL
+            let orderId = scannedOrderId.split("/").pop();
+            document.getElementById('order_id_input').value = orderId;
+            console.log('order_id_input: '+orderId);
+            // Realiza una solicitud Ajax para verificar el ID del pedido
+            $.ajax({
+                url: '/orders/qr-validation/' + orderId,
+                method: 'GET',
+                success: function (data) {
+                    if (data.valid) {
+                        window.location.href = '/orders/create/' + orderId;
+                    } else {
+                        swal("Error!", "Número de pedido no válido!", "error");
+                    }
+                },
+                error: function () {
+                    swal("Error!", "Error al verificar el número de pedido!", "error");
+                }
+            });
+        }
     </script>
 @endsection
