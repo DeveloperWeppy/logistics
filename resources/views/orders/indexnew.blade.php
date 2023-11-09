@@ -359,7 +359,12 @@
         // Función para manejar el escaneo
         function handleScan(scannedOrderId) {
             // Extrae el número del pedido de la URL
-            let orderId = scannedOrderId.split("/").pop();
+            // Extrae el número del pedido de la URL
+            let orderId = scannedOrderId.split("logistic.weppydev.com.co").pop();
+            
+            // Limpia el número del pedido de caracteres no deseados (por ejemplo, "?q=")
+            orderId = orderId.replace(/[^\d]/g, '');
+
             document.getElementById('order_id_input').value = orderId;
             console.log('order_id_input: '+orderId);
             // Realiza una solicitud Ajax para verificar el ID del pedido
