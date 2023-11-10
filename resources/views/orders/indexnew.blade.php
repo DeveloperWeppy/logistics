@@ -373,7 +373,8 @@
                 method: 'GET',
                 success: function (data) {
                     if (data.valid) {
-                        window.location.href = '/orders/create/' + orderId;
+                        //window.location.href = '/orders/create/' + orderId;
+                        console.log("respuesta ajax:" +data.valid)
                     } else {
                         swal("Error!", "Número de pedido no válido!", "error");
                     }
