@@ -359,12 +359,12 @@
             //         handleScan({ data: event.key });
             //     }
             // });
-            document.addEventListener('keypress', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                }
-            });
-            document.addEventListener('keydown', function (event) {
+            // document.addEventListener('keypress', function (event) {
+            //     if (event.key === 'Enter') {
+            //         event.preventDefault();
+            //     }
+            // });
+           // document.addEventListener('keydown', function (event) {
                 //let scannedOrderId = event.target.value;
                 // Llama a la función de manejo del escaneo
                 // if (scannedOrderId.length === 6) {
@@ -375,7 +375,21 @@
                     // }
                 // }
                 //handleScan({ data: event.target.value });
+            //});
+            $(document).on('keydown', function (event) {
+                console.log('keydown: ' + $(document.activeElement).attr('id'));
+                // Verifica si el campo de entrada oculto está enfocado
+                if ($(document.activeElement).attr('id') === 'order_id_input') {
+                    // Forza la asignación del valor escaneado al campo de entrada
+                    $('#order_id_input').val(function (index, value) {
+                        return value + event.key;
+                    });
+
+                    // Llama a la función de manejo del escaneo
+                    //handleScan();
+                }
             });
+
             document.getElementById('verifyOrderButton').addEventListener('click', function () {
                 // Obtén el valor del input oculto
                 let scannedOrderId = document.getElementById('order_id_input').value;
