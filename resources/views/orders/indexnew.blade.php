@@ -104,7 +104,7 @@
 @section('scripts')
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('assets/js/codeScanner/minified/html5-qrcode.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/codeScanner/minified/html5-qrcode.min.js') }}"></script> --}}
     <script> 
      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
@@ -117,31 +117,31 @@
             document.addEventListener("DOMContentLoaded", fn);
         }
     }
-    function abrirCamara(){
-        docReady(function () {
-        var resultContainer = document.getElementById('qr-reader-results');
-        var lastResult, countResults = 0;
-        function onScanSuccess(decodedText, decodedResult) {
-            if (decodedText !== lastResult) {
-                ++countResults;
-                lastResult = decodedText;
-                console.log(`Scan result ${decodedText}`, decodedResult);
-                var order_id=decodedText.split("/");
-                order_id=order_id[order_id.length-1];
-                $("#cont-input-id").show();
-                $("#input-order-id").val(order_id);
-                html5QrcodeScanner.clear().then(_ => {    
-                }).catch(error => {
+    // function abrirCamara(){
+    //     docReady(function () {
+    //     var resultContainer = document.getElementById('qr-reader-results');
+    //     var lastResult, countResults = 0;
+    //     function onScanSuccess(decodedText, decodedResult) {
+    //         if (decodedText !== lastResult) {
+    //             ++countResults;
+    //             lastResult = decodedText;
+    //             console.log(`Scan result ${decodedText}`, decodedResult);
+    //             var order_id=decodedText.split("/");
+    //             order_id=order_id[order_id.length-1];
+    //             $("#cont-input-id").show();
+    //             $("#input-order-id").val(order_id);
+    //             html5QrcodeScanner.clear().then(_ => {    
+    //             }).catch(error => {
                    
-                });
-            }
-        }
+    //             });
+    //         }
+    //     }
 
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
-    });
-    }
+    //     var html5QrcodeScanner = new Html5QrcodeScanner(
+    //         "qr-reader", { fps: 10, qrbox: 250 });
+    //     html5QrcodeScanner.render(onScanSuccess);
+    // });
+    // }
         $(document).ready(function() {
             var order_id=0;
             $(document).on("click", ".btm-check", function() {  
@@ -171,10 +171,10 @@
                 });
             });
            
-            $("#btn-scann-qr").on( "click", function() {
-                $("#cont-input-id").hide();
-                abrirCamara();
-            } );
+            // $("#btn-scann-qr").on( "click", function() {
+            //     $("#cont-input-id").hide();
+            //     abrirCamara();
+            // } );
             $(".btn-create").on( "click", function() {
                 swal({
                     title: "Sincronizar con la Web",
@@ -369,22 +369,22 @@
             document.getElementById('order_id_input').value = scannedOrderId;
             console.log('order_id_input: '+scannedOrderId);
             // Realiza una solicitud Ajax para verificar el ID del pedido
-            $.ajax({
-                url: '/orders/qr-validation/' + scannedOrderId,
-                method: 'GET',
-                success: function (data) {
-                    if (data.valid) {
-                        //window.location.href = '/orders/create/' + orderId;
-                        console.log("respuesta ajax:" +data.valid)
-                        swal("Error!", "Pedido Correcto!", "success");
-                    } else {
-                        swal("Error!", "Número de pedido no válido!", "error");
-                    }
-                },
-                error: function () {
-                    swal("Error!", "Error al verificar el número de pedido!", "error");
-                }
-            });
+            // $.ajax({
+            //     url: '/orders/qr-validation/' + scannedOrderId,
+            //     method: 'GET',
+            //     success: function (data) {
+            //         if (data.valid) {
+            //             //window.location.href = '/orders/create/' + orderId;
+            //             console.log("respuesta ajax:" +data.valid)
+            //             swal("Error!", "Pedido Correcto!", "success");
+            //         } else {
+            //             swal("Error!", "Número de pedido no válido!", "error");
+            //         }
+            //     },
+            //     error: function () {
+            //         swal("Error!", "Error al verificar el número de pedido!", "error");
+            //     }
+            // });
         }
     </script>
 @endsection
