@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade " id="modalAprobar" tabindex="-1" aria-labelledby="modalAprobar" aria-modal="true" role="dialog">
+    {{-- <div class="modal fade " id="modalAprobar" tabindex="-1" aria-labelledby="modalAprobar" aria-modal="true" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
             </div>
-    </div>
+    </div> --}}
 @endsection
 
 @section('scripts')
@@ -350,8 +350,14 @@
                 console.log('keydown: '+document.activeElement.id);
                 // Verifica si el campo de entrada oculto está enfocado
                 if (document.activeElement.id === 'order_id_input') {
+                    console.log("event.key: "+event.key);
                     // Llama a la función de manejo del escaneo
                     handleScan({ data: event.key });
+                }
+            });
+            document.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
                 }
             });
 
@@ -369,22 +375,22 @@
             document.getElementById('order_id_input').value = scannedOrderId;
             console.log('order_id_input: '+scannedOrderId);
             // Realiza una solicitud Ajax para verificar el ID del pedido
-            // $.ajax({
-            //     url: '/orders/qr-validation/' + scannedOrderId,
-            //     method: 'GET',
-            //     success: function (data) {
-            //         if (data.valid) {
-            //             //window.location.href = '/orders/create/' + orderId;
-            //             console.log("respuesta ajax:" +data.valid)
-            //             swal("Error!", "Pedido Correcto!", "success");
-            //         } else {
-            //             swal("Error!", "Número de pedido no válido!", "error");
-            //         }
-            //     },
-            //     error: function () {
-            //         swal("Error!", "Error al verificar el número de pedido!", "error");
-            //     }
-            // });
+            $.ajax({
+                url: '/orders/qr-validation/' + scannedOrderId,
+                method: 'GET',
+                success: function (data) {
+                    if (data.valid) {
+                        //window.location.href = '/orders/create/' + orderId;
+                        console.log("respuesta ajax:" +data.valid)
+                        swal("Error!", "Pedido Correcto!", "success");
+                    } else {
+                        swal("Error!", "Número de pedido no válido!", "error");
+                    }
+                },
+                error: function () {
+                    swal("Error!", "Error al verificar el número de pedido!", "error");
+                }
+            });
         }
     </script>
 @endsection
