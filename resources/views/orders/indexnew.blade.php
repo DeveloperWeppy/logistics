@@ -361,8 +361,12 @@
                 }
             });
             document.getElementById('order_id_input').addEventListener('input', function (event) {
+                let scannedOrderId = event.target.value;
                 // Llama a la función de manejo del escaneo
-                handleScan({ data: event.target.value });
+                if (scannedOrderId.length === 6) {
+                    // Llama a la función de manejo del escaneo
+                    handleScan(scannedOrderId);
+                }
             });
 
         });
