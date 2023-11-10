@@ -247,46 +247,46 @@
                 });
             });
             if (isMobile) {
-               $(".card-pc").hide();
-               fetch("{{route('orders.get_orders_datatable')}}", {
-                method: 'get',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-                })
-                .then(res => res.json())
-                .catch(error => console.error('Error:', error))
-                .then(response => {
-                    var list="";
-                    var cont=$("#tarjeta-table").html();
-                    for (let i = 0; i < response.data.length; i++) {
-                        const billing =JSON.parse(response.data[i].billing);
-                        const fecha = new Date(response.data[i].created_at);
-                        let fechat= fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" "+fecha.getHours()+":"+fecha.getMinutes();
-                        list+= `
-                        <div class="col-md-12 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                <div class="row">
-                                    <div class="col-10">
-                                    #: <span class="email">${response.data[i].wc_order_id}</span><br>
-                                    Fecha: <span class="email">${fechat}</span><br>
-                                    Cliente: <span class="email">${response.data[i].customer}</span><br>
-                                    Creador: <span class="email">${response.data[i].customer}</span><br>
-                                    Estado: <span class="email">${response.data[i].status_name}</span>
-                                    </div>
-                                    <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
-                                      ${response.data[i].edit}
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    }
+            //    $(".card-pc").hide();
+            //    fetch("{{route('orders.get_orders_datatable')}}", {
+            //     method: 'get',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            //     })
+            //     .then(res => res.json())
+            //     .catch(error => console.error('Error:', error))
+            //     .then(response => {
+            //         var list="";
+            //         var cont=$("#tarjeta-table").html();
+            //         for (let i = 0; i < response.data.length; i++) {
+            //             const billing =JSON.parse(response.data[i].billing);
+            //             const fecha = new Date(response.data[i].created_at);
+            //             let fechat= fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" "+fecha.getHours()+":"+fecha.getMinutes();
+            //             list+= `
+            //             <div class="col-md-12 mb-3">
+            //                 <div class="card">
+            //                     <div class="card-body">
+            //                     <div class="row">
+            //                         <div class="col-10">
+            //                         #: <span class="email">${response.data[i].wc_order_id}</span><br>
+            //                         Fecha: <span class="email">${fechat}</span><br>
+            //                         Cliente: <span class="email">${response.data[i].customer}</span><br>
+            //                         Creador: <span class="email">${response.data[i].customer}</span><br>
+            //                         Estado: <span class="email">${response.data[i].status_name}</span>
+            //                         </div>
+            //                         <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
+            //                           ${response.data[i].edit}
+            //                         </div>
+            //                     </div>
+            //                     </div>
+            //                 </div>
+            //             </div>
+            //         `;
+            //         }
 
-                    $("#tarjeta-table").html(cont+"<div style='width:100%'>"+list+"</div>");
-                });
+            //         $("#tarjeta-table").html(cont+"<div style='width:100%'>"+list+"</div>");
+            //     });
 
             } else {
                 $("#tarjeta-table").hide();
@@ -369,10 +369,10 @@
                 // Llama a la función de manejo del escaneo
                 // if (scannedOrderId.length === 6) {
                     // Llama a la función de manejo del escaneo
-                    if (document.activeElement.id === 'order_id_input') {
+                    // if (document.activeElement.id === 'order_id_input') {
                         // Forza la asignación del valor escaneado al campo de entrada
                         document.getElementById('order_id_input').value += event.key;
-                    }
+                    // }
                 // }
                 //handleScan({ data: event.target.value });
             });
