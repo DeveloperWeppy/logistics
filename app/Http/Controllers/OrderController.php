@@ -526,8 +526,8 @@ class OrderController extends Controller
             $customer=json_decode($order['billing'],true);
 
             $payment_methid = $order->payment_method == 'Paga a cuotas' ? 'Addi' : $order->payment_method;
-            $qrcode = (new QRCode($options))->render(env('APP_URL').$order->wc_order_id);
-            //$qrcode = (new QRCode($options))->render($order->wc_order_id);
+            //$qrcode = (new QRCode($options))->render(env('APP_URL').$order->wc_order_id);
+            $qrcode = (new QRCode($options))->render($order->wc_order_id);
             $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
             $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
             $identification = $customer['document_number'] ? $customer['document_number'] : 0;

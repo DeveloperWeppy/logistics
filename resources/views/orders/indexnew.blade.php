@@ -360,13 +360,14 @@
         function handleScan(scannedOrderId) {
             // Extrae el número del pedido de la URL
             // Extrae el número del pedido de la URL
-            let orderId = scannedOrderId.split("logistic.weppydev.com.co").pop();
+            // let orderId = scannedOrderId.split("logistic.weppydev.com.co").pop();
             
-            // Limpia el número del pedido de caracteres no deseados (por ejemplo, "?q=")
-            orderId = orderId.replace(/[^\d]/g, '');
+            // // Limpia el número del pedido de caracteres no deseados (por ejemplo, "?q=")
+            // orderId = orderId.replace(/[^\d]/g, '');
 
-            document.getElementById('order_id_input').value = orderId;
-            console.log('order_id_input: '+orderId);
+            // document.getElementById('order_id_input').value = orderId;
+            document.getElementById('order_id_input').value = scannedOrderId;
+            console.log('order_id_input: '+scannedOrderId);
             // Realiza una solicitud Ajax para verificar el ID del pedido
             $.ajax({
                 url: '/orders/qr-validation/' + orderId,
