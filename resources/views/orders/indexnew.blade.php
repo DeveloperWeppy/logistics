@@ -147,6 +147,7 @@
     // });
     // }
         $(document).ready(function() {
+            $('#order_id_input').focus();
             var order_id=0;
             $(document).on("click", ".btm-check", function() {  
                 order_id=$(this).attr("data");
