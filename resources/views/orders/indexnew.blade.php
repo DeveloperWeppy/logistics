@@ -383,23 +383,23 @@
             // document.getElementById('order_id_input').value = orderId;
             //document.getElementById('order_id_input').value = scannedOrderId;
             console.log('order_id_input: '+scannedOrderId);
-            // Realiza una solicitud Ajax para verificar el ID del pedido
-            // $.ajax({
-            //     url: '/orders/qr-validation/' + scannedOrderId,
-            //     method: 'GET',
-            //     success: function (data) {
-            //         if (data.valid) {
-            //             //window.location.href = '/orders/create/' + orderId;
-            //             console.log("respuesta ajax:" +data.valid)
-            //             swal("Correcto!", "Pedido Correcto!", "success");
-            //         } else {
-            //             swal("Error!", "Número de pedido no válido!", "error");
-            //         }
-            //     },
-            //     error: function () {
-            //         swal("Error!", "Error al verificar el número de pedido!", "error");
-            //     }
-            // });
+            //Realiza una solicitud Ajax para verificar el ID del pedido
+            $.ajax({
+                url: '/orders/qr-validation/' + scannedOrderId,
+                method: 'GET',
+                success: function (data) {
+                    if (data.valid) {
+                        //window.location.href = '/orders/create/' + orderId;
+                        console.log("respuesta ajax:" +data.valid)
+                        swal("Correcto!", "Pedido Correcto!", "success");
+                    } else {
+                        swal("Error!", "Número de pedido no válido!", "error");
+                    }
+                },
+                error: function () {
+                    swal("Error!", "Error al verificar el número de pedido!", "error");
+                }
+            });
         }
     </script>
 @endsection
