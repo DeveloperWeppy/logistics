@@ -371,7 +371,7 @@
                     // Llama a la función de manejo del escaneo
                     // if (document.activeElement.id === 'order_id_input') {
                         // Forza la asignación del valor escaneado al campo de entrada
-                        document.getElementById('order_id_input').value += event.key;
+                        //document.getElementById('order_id_input').value += event.key;
                     // }
                 // }
                 //handleScan({ data: event.target.value });
@@ -389,10 +389,10 @@
             //         //handleScan();
             //     }
             // });
-            document.addEventListener('DOMContentLoaded', function() {
-                // Pone el foco en el input oculto al cargar la página
-                document.getElementById('order_id_input').focus();
-            });
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     // Pone el foco en el input oculto al cargar la página
+            //     document.getElementById('order_id_input').focus();
+            // });
             $(document).on('input', '#order_id_input', function (event) {
                 console.log("eveto: "+event);
                 // Verifica si el campo de entrada oculto está enfocado
