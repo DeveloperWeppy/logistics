@@ -393,18 +393,39 @@
             //     // Pone el foco en el input oculto al cargar la página
             //     document.getElementById('order_id_input').focus();
             // });
-            $(document).on('input', '#order_id_input', function (event) {
-                console.log("eveto: "+event);
-                // Verifica si el campo de entrada oculto está enfocado
-                if ($(document.activeElement).attr('id') === 'order_id_input') {
-                    // Forza la asignación del valor escaneado al campo de entrada
-                    $('#order_id_input').val(function (index, value) {
-                        return value + event.data;
-                    });
+            // $(document).on('input', '#order_id_input', function (event) {
+            //     console.log("eveto: "+event);
+            //     // Verifica si el campo de entrada oculto está enfocado
+            //     if ($(document.activeElement).attr('id') === 'order_id_input') {
+            //         // Forza la asignación del valor escaneado al campo de entrada
+            //         $('#order_id_input').val(function (index, value) {
+            //             return value + event.data;
+            //         });
 
-                    // Llama a la función de manejo del escaneo
-                    //handleScan();
+            //         // Llama a la función de manejo del escaneo
+            //         //handleScan();
+            //     }
+            // });
+            var timer;
+
+            // Agrega un controlador de eventos para el evento 'input' en el input oculto
+            $(document).on('input', '#order_id_input', function () {
+                // Si ya hay un temporizador en ejecución, límpialo
+                if (timer) {
+                    clearTimeout(timer);
                 }
+
+                // Configura un temporizador para verificar el valor del input después de 100 ms
+                timer = setTimeout(function () {
+                    // Obtiene el valor actual del input
+                    var scannedOrderId = $('#order_id_input').val();
+
+                    // Verifica si el campo de entrada oculto está enfocado
+                    if ($(document.activeElement).attr('id') === 'order_id_input') {
+                        // Llama a la función de manejo del escaneo con el valor escaneado
+                        handleScan(scannedOrderId);
+                    }
+                }, 100);
             });
 
             // Simulación de escaneo con un valor arbitrario "123456"
