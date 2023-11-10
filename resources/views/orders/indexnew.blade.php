@@ -370,12 +370,13 @@
             console.log('order_id_input: '+scannedOrderId);
             // Realiza una solicitud Ajax para verificar el ID del pedido
             $.ajax({
-                url: '/orders/qr-validation/' + orderId,
+                url: '/orders/qr-validation/' + scannedOrderId,
                 method: 'GET',
                 success: function (data) {
                     if (data.valid) {
                         //window.location.href = '/orders/create/' + orderId;
                         console.log("respuesta ajax:" +data.valid)
+                        swal("Error!", "Pedido Correcto!", "success");
                     } else {
                         swal("Error!", "Número de pedido no válido!", "error");
                     }
