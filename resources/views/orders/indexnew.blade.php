@@ -419,11 +419,11 @@
                 timer = setTimeout(function () {
                     // Obtiene el valor actual del input
                     var scannedOrderId = $('#order_id_input').val();
-
+                    console.log('valueee '+scannedOrderId);
                     // Verifica si el campo de entrada oculto está enfocado
                     if ($(document.activeElement).attr('id') === 'order_id_input') {
                         // Llama a la función de manejo del escaneo con el valor escaneado
-                        handleScan(scannedOrderId);
+                        //handleScan(scannedOrderId);
                     }
                 }, 100);
             });
@@ -433,7 +433,7 @@
 
             document.getElementById('verifyOrderButton').addEventListener('click', function () {
                 // Obtén el valor del input oculto
-                let scannedOrderId = document.getElementById('order_id_input').value;
+                let scannedOrderId = $('#order_id_input').val();
 
                 console.log("orderId: " + scannedOrderId);
                 // Verifica si hay algún valor
