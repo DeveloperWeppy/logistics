@@ -389,6 +389,10 @@
             //         //handleScan();
             //     }
             // });
+            document.addEventListener('DOMContentLoaded', function() {
+                // Pone el foco en el input oculto al cargar la página
+                document.getElementById('order_id_input').focus();
+            });
             $(document).on('input', '#order_id_input', function (event) {
                 // Verifica si el campo de entrada oculto está enfocado
                 if ($(document.activeElement).attr('id') === 'order_id_input') {
