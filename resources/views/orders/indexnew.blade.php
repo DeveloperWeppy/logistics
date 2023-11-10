@@ -113,14 +113,14 @@
      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
 
-    function docReady(fn) {
-        if (document.readyState === "complete"
-            || document.readyState === "interactive") {
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-    }
+    // function docReady(fn) {
+    //     if (document.readyState === "complete"
+    //         || document.readyState === "interactive") {
+    //         setTimeout(fn, 1);
+    //     } else {
+    //         document.addEventListener("DOMContentLoaded", fn);
+    //     }
+    // }
     // function abrirCamara(){
     //     docReady(function () {
     //     var resultContainer = document.getElementById('qr-reader-results');
