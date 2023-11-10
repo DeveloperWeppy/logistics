@@ -447,6 +447,7 @@
                             if (data.valid) {
                                 console.log("respuesta ajax: " + data.valid);
                                 swal("Correcto!", "Pedido Correcto!", "success");
+                                window.location.href = '/orders/create/' + orderId;
                             } else {
                                 swal("Error!", "Número de pedido no válido!", "error");
                             }
