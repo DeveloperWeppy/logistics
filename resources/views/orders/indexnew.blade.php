@@ -394,6 +394,7 @@
                 document.getElementById('order_id_input').focus();
             });
             $(document).on('input', '#order_id_input', function (event) {
+                console.log("eveto: "+event);
                 // Verifica si el campo de entrada oculto está enfocado
                 if ($(document.activeElement).attr('id') === 'order_id_input') {
                     // Forza la asignación del valor escaneado al campo de entrada
