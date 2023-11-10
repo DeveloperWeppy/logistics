@@ -44,7 +44,7 @@
                             <i style="color:white;" class="mdi mdi-checkbox-marked-circle"></i>
                         </button>
 
-                        <input type="hidden" id="order_id_input" value="">
+                        <input type="text" id="order_id_input" placeholder="Id Pedido QR" value="">
                     </div>
                     
                     <div class="card-body">
@@ -376,19 +376,34 @@
                 // }
                 //handleScan({ data: event.target.value });
             //});
-            $(document).on('keydown', function (event) {
-                console.log('keydown: ' + $(document.activeElement).attr('id'));
+            // $(document).on('keydown', function (event) {
+            //     console.log('keydown: ' + $(document.activeElement).attr('id'));
+            //     // Verifica si el campo de entrada oculto está enfocado
+            //     if ($(document.activeElement).attr('id') === 'order_id_input') {
+            //         // Forza la asignación del valor escaneado al campo de entrada
+            //         $('#order_id_input').val(function (index, value) {
+            //             return value + event.key;
+            //         });
+
+            //         // Llama a la función de manejo del escaneo
+            //         //handleScan();
+            //     }
+            // });
+            $(document).on('input', '#order_id_input', function (event) {
                 // Verifica si el campo de entrada oculto está enfocado
                 if ($(document.activeElement).attr('id') === 'order_id_input') {
                     // Forza la asignación del valor escaneado al campo de entrada
                     $('#order_id_input').val(function (index, value) {
-                        return value + event.key;
+                        return value + event.data;
                     });
 
                     // Llama a la función de manejo del escaneo
                     //handleScan();
                 }
             });
+
+            // Simulación de escaneo con un valor arbitrario "123456"
+            //$('#order_id_input').val('123456').trigger('input');
 
             document.getElementById('verifyOrderButton').addEventListener('click', function () {
                 // Obtén el valor del input oculto
