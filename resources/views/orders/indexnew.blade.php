@@ -364,16 +364,16 @@
                     event.preventDefault();
                 }
             });
-            document.getElementById('order_id_input').addEventListener('input', function (event) {
-                let scannedOrderId = event.target.value;
+            document.addEventListener('keydown', function (event) {
+                //let scannedOrderId = event.target.value;
                 // Llama a la función de manejo del escaneo
-                if (scannedOrderId.length === 6) {
+                // if (scannedOrderId.length === 6) {
                     // Llama a la función de manejo del escaneo
                     if (document.activeElement.id === 'order_id_input') {
                         // Forza la asignación del valor escaneado al campo de entrada
                         document.getElementById('order_id_input').value += event.key;
                     }
-                }
+                // }
                 //handleScan({ data: event.target.value });
             });
             document.getElementById('verifyOrderButton').addEventListener('click', function () {
