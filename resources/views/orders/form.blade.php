@@ -890,7 +890,7 @@
 
         // Supongamos que tienes un array para mantener el estado de validación de cada producto
         const productosValidados = {};
-
+        console.log("cantidad items "+arrayData.length);
         // Escucha el evento de entrada (input) del producto
         $('#product_id_input').on('input', function () {
             let codigoEscaneado = $('#product_id_input').val();
