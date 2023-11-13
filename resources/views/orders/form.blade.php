@@ -770,8 +770,8 @@
 
     }
     $(document).ready(function() {
-        console.log("daat: "+dataOrder);
-        console.log("items: "+arrayData);
+        console.log("daat: "+JSON.stringify(dataOrder, null, 2));
+        console.log("items: "+JSON.stringify(arrayData, null, 2));
         $('#product_id_input').focus();
         //console.log("cantidad items "+arrayData.length);
         // Escucha el evento de entrada (input) del producto
