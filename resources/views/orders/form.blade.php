@@ -841,6 +841,35 @@
 
     }
     $(document).ready(function() {
+        $('#product_id_input').focus();
+        console.log("cantidad items "+arrayData.length);
+        // Escucha el evento de entrada (input) del producto
+        $('#product_id_input').on('input', function () {
+            let codigoEscaneado = $('#product_id_input').val();
+            let skuEscaneado = codigoEscaneado.trim();
+            console.log("escaneado:"+skuEscaneado);
+           
+            var rowIndex = arrayData.findIndex(function(row) {
+                return row.sku === skuEscaneado;
+            });
+
+            if (rowIndex >= 0) {
+                if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
+                    audioError.play();
+                    mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
+                } else {
+                    mensaje("success", "Agregado", "El producto fue agregado");
+                    audioScanner.play();
+                    modificarTab(rowIndex);
+                }
+            } else {
+                mensaje("error", "Error", "El producto no está en el pedido");
+                audioError.play();
+            }
+            // Vaciar el valor y establecer el foco en el input
+            $('#product_id_input').val('');
+            $('#product_id_input').focus();
+        });
     });
     // function handleScan(scannedOrderId) {
 
@@ -890,67 +919,8 @@
 
         // Supongamos que tienes un array para mantener el estado de validación de cada producto
         const productosValidados = {};
-        console.log("cantidad items "+arrayData.length);
-        // Escucha el evento de entrada (input) del producto
-        $('#product_id_input').on('input', function () {
-            let codigoEscaneado = $('#product_id_input').val();
-            let skuEscaneado = codigoEscaneado.trim();
-            console.log("escaneado:"+skuEscaneado);
-            // Encuentra el índice del producto en el array de productos
-            // let indexProducto = productos.findIndex(producto => producto.sku === skuEscaneado);
+        
 
-            // if (indexProducto !== -1) {
-            //     // Aumenta la cantidad escaneada del producto
-            //     if (!productosValidados[skuEscaneado]) {
-            //         productosValidados[skuEscaneado] = 0;
-            //     }
-            //     productosValidados[skuEscaneado]++;
-
-            //     // Actualiza la tabla con la nueva cantidad escaneada
-            //     actualizarTabla(skuEscaneado, productosValidados[skuEscaneado]);
-
-            //     // Verifica si todos los productos están validados
-            //     if (todosProductosValidados()) {
-            //         // Habilita el botón para realizar la acción adicional
-            //         habilitarBotonAccion();
-            //     }
-            // }
-            var rowIndex = arrayData.findIndex(function(row) {
-                return row.sku === skuEscaneado;
-            });
-
-            if (rowIndex >= 0) {
-                if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
-                    audioError.play();
-                    mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
-                } else {
-                    mensaje("success", "Agregado", "El producto fue agregado");
-                    audioScanner.play();
-                    modificarTab(rowIndex);
-                }
-            } else {
-                mensaje("error", "Error", "El producto no está en el pedido");
-                audioError.play();
-            }
-        });
-
-        // Función para actualizar la tabla con la nueva cantidad escaneada
-        // function actualizarTabla(sku, cantidadEscaneada) {
-        //     let filaProducto = document.getElementById(`fila-${sku}`);
-        //     if (filaProducto) {
-        //         // Actualiza la columna de cantidad escaneada
-        //         let cantidadEscaneadaElemento = filaProducto.querySelector('.cantidad-escaneada');
-        //         if (cantidadEscaneadaElemento) {
-        //             cantidadEscaneadaElemento.textContent = cantidadEscaneada;
-        //         }
-
-        //         // Actualiza la columna de validado
-        //         let validadoElemento = filaProducto.querySelector('.validado');
-        //         if (validadoElemento) {
-        //             validadoElemento.textContent = cantidadEscaneada === cantidadesPedido[sku] ? 'Validado' : '';
-        //         }
-        //     }
-        // }
         function modificarTab(index) {
             arrayData[index].scann = arrayData[index].scann + 1;
             var tabla = "";
