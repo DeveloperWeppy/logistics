@@ -772,7 +772,6 @@
     }
     $(document).ready(function() {
         var cityValue = dataOrder.billing.city;
-        console.log("order actual: "+orderactual.status);
 
         $('#product_id_input').focus();
         //console.log("cantidad items "+arrayData.length);
@@ -832,7 +831,7 @@
             if(cont==arrayData.length){
                 // Verifica si billing existe antes de acceder a city
                 if (dataOrder.billing && dataOrder.billing.city) {
-                    if (cityValue === "Cali") {
+                    if (cityValue === "Cali" && orderactual.status == 1) {
                         $("#btn-domicilio-cali").show();
                     }
                 }
