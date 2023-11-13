@@ -974,12 +974,15 @@
                     `;
                     document.getElementById("t-products").innerHTML = tabla;
             }
+            if(cont==arrayData.length){
+                habilitarBotonAccion();
+            }
         }
 
         // Función para verificar si todos los productos están validados
-        function todosProductosValidados() {
-            return Object.values(productosValidados).every(cantidad => cantidad > 0);
-        }
+        // function todosProductosValidados() {
+        //     return Object.values(productosValidados).every(cantidad => cantidad > 0);
+        // }
 
         // Función para habilitar el botón de acción adicional
         function habilitarBotonAccion() {
