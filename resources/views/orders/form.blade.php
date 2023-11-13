@@ -497,7 +497,7 @@
                                            <span><span class="font-weight-bold">Estado:</span> {{$status_name}} </span>
                                             <span style="display: flex; align-items: center;">
                                                 <span class="font-weight-bold">Producto Escaneado:</span>
-                                                <input type="text" id="product_id_input" placeholder="Id Producto QR" class="form-control" value="" autofocus>
+                                                <input type="text" id="product_id_input" placeholder="Id Producto QR" class="form-control" value="">
                                             </span>
                                         </div>
                                         <div>
@@ -725,79 +725,6 @@
         $("#tarjeta-table").html(list);
      }
 
-    // function docReady(fn) {
-    //     if (document.readyState === "complete"
-    //         || document.readyState === "interactive") {
-    //         setTimeout(fn, 1);
-    //     } else {
-    //         document.addEventListener("DOMContentLoaded", fn);
-    //     }
-    // }
-
-    // function modificarTab(index,html5QrcodeScanner) {
-    //     arrayData[index].scann = arrayData[index].scann + 1;
-    //     var tabla = "";
-    //     var cont=0;
-    //     var icon="";
-    //     for (var i = 0; i < arrayData.length; i++) {
-    //         icon="";
-    //         if(arrayData[i].quantity==arrayData[i].scann){
-    //             cont++;
-    //             icon='<i class="mdi mdi-check" style="color:#28a745"></i>';
-    //         }
-    //         if (isMobile) {
-    //             tabla+= `
-    //                     <div class="col-md-12 mb-3">
-    //                         <div class="card">
-    //                             <div class="card-body" style="padding: 0;">
-    //                             <div class="row">
-    //                                 <div class="col-4" style="background-image: url('${arrayData[i].image}'); background-size: contain;background-repeat: no-repeat;">
-                                        
-    //                                 </div>
-    //                                 <div class="col-8 row" style="display: flex; justify-content: center; align-items: center;padding-top:10px;">
-    //                                      <span class="name col-12 font-weight-bold">${arrayData[i].name}</span>
-    //                                      <span class="name col-12"><span class="font-weight-bold">sku:</span> ${arrayData[i].sku}</span>
-    //                                      <span class="name col-12"><span class="font-weight-bold">Cantidad:</span>: ${arrayData[i].quantity}</span>
-    //                                      <span class="name col-12"><span class="font-weight-bold">Scann:</span>${arrayData[i].scann}</span>
-    //                                      <span class="name col-12"><span class="font-weight-bold">Validado:</span>${icon}</span>
-    //                                 </div>
-    //                             </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-             
-    //                     `;
-    //         }else{
-    //             tabla += `
-    //         <tr>
-    //             <td class="sorting_1"><img src="${arrayData[i].image}" alt="" style="width: 80px;height:auto"></td>
-    //             <td><label> ${arrayData[i].sku}</label></td>
-    //             <td><label>${arrayData[i].name}</label></td>
-    //             <td><p class="itemtext digits">${arrayData[i].quantity}</p></td>
-    //             <td><p class="itemtext digits">${arrayData[i].scann}</p></td>
-    //             <td>${icon}</td>
-    //         </tr>
-    //         `;
-    //         }
-
-    //     }
-    //     if(cont==arrayData.length){
-    //         html5QrcodeScanner.clear().then(_ => {    
-    //             }).catch(error => {
-                   
-    //          });
-    //          $("#exampleModal").modal('hide');
-    //          $("#btn-finalizar").show();
-             
-    //     }
-    //     if (isMobile) {
-    //         $("#tarjeta-table").html(tabla);
-    //     }else{
-    //         document.getElementById("t-products").innerHTML = tabla;
-    //     }
-     
-       
-    // }
     $("#btn-finalizar").on( "click", function() {
         swal({
             title: 'Guardando ',
@@ -842,10 +769,12 @@
     }
     $(document).ready(function() {
         $('#product_id_input').focus();
-        console.log("cantidad items "+arrayData.length);
+        //console.log("cantidad items "+arrayData.length);
         // Escucha el evento de entrada (input) del producto
         $('#product_id_input').on('input', function () {
             let codigoEscaneado = $('#product_id_input').val();
+            // Vaciar el valor
+            $('#product_id_input').val('');
             let skuEscaneado = codigoEscaneado.trim();
             console.log("escaneado:"+skuEscaneado);
            
@@ -866,60 +795,10 @@
                 mensaje("error", "Error", "El producto no está en el pedido");
                 audioError.play();
             }
-            // Vaciar el valor y establecer el foco en el input
-            $('#product_id_input').val('');
+            
             $('#product_id_input').focus();
         });
-    });
-    // function handleScan(scannedOrderId) {
-
-    //     var rowIndex = arrayData.findIndex(function(row) {
-    //         return row.sku === scannedOrderId;
-    //     });
-
-    //     if (rowIndex >= 0) {
-    //         if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
-    //             audioError.play();
-    //             mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
-    //         } else {
-    //             mensaje("success", "Agregado", "El producto fue agregado");
-    //             audioScanner.play();
-    //             modificarTab(rowIndex);
-    //         }
-    //     } else {
-    //         mensaje("error", "Error", "El producto no está en el pedido");
-    //         audioError.play();
-    //     }
-    // }
-    // function modificarTab(index) {
-    //     arrayData[index].scann++;
-
-    //     // Actualiza la cantidad en la columna correspondiente en tu tabla HTML
-    //     $("#t-products tr:eq(" + (index + 1) + ") td:eq(4)").text(arrayData[index].scann);
-
-    //     // Otras actualizaciones o validaciones según sea necesario
-
-    //     // Comprueba si todos los productos han sido validados
-    //     var allValidated = arrayData.every(function (item) {
-    //         return item.quantity === item.scann;
-    //     });
-
-    //     // Si todos los productos han sido validados, realiza acciones adicionales
-    //     if (allValidated) {
-    //         // Realiza acciones adicionales aquí, como limpiar el escáner y mostrar un mensaje
-    //         console.log('Todos los productos han sido validados.');
-    //     }
-    // }
-    // Supongamos que tienes un array con la información de los productos
-        // Supongamos que tienes un array con la información de los productos
-        const productos = @json($data_items);
-
-        // Supongamos que también tienes un array con la cantidad de cada producto en el pedido
-        const cantidadesPedido = @json(array_column($data['line_items'], 'quantity', 'sku'));
-
-        // Supongamos que tienes un array para mantener el estado de validación de cada producto
-        const productosValidados = {};
-        
+    });        
 
         function modificarTab(index) {
             arrayData[index].scann = arrayData[index].scann + 1;
@@ -949,19 +828,11 @@
             }
         }
 
-        // Función para verificar si todos los productos están validados
-        // function todosProductosValidados() {
-        //     return Object.values(productosValidados).every(cantidad => cantidad > 0);
-        // }
-
         // Función para habilitar el botón de acción adicional
         function habilitarBotonAccion() {
-            // Habilita el botón o realiza la acción adicional
+            // Habilita el botón
             $("#btn-finalizar").show();
         }
-
-
-
     </script>
     <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
     <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>

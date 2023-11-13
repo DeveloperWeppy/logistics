@@ -397,7 +397,7 @@ class OrderController extends Controller
                 foreach ($filteredOrders as $key => $invoice) {
                     
                     $createdTimestamp = strtotime($invoice['date_created']);
-                    if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register)->timestamp) {
+                    if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp) {
                         $totalInvoicesresults++;
                         $siigo_invoice_id="";
                         $cedula = ""; 
