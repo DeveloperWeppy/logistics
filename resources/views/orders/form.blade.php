@@ -691,6 +691,7 @@
      var audioError= new Audio('{{asset('assets/audio/error.mp3') }}');
      var arrayData = @json($data_items);
      var dataOrder = @json($data);
+     var orderactual = @json($order);
      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
      if (isMobile) {
         let list="";
@@ -771,7 +772,7 @@
     }
     $(document).ready(function() {
         var cityValue = dataOrder.billing.city;
-        console.log("items: "+cityValue);
+        console.log(orderactual);
 
         $('#product_id_input').focus();
         //console.log("cantidad items "+arrayData.length);
@@ -829,7 +830,14 @@
                     document.getElementById("t-products").innerHTML = tabla;
             }
             if(cont==arrayData.length){
+                // Verifica si billing existe antes de acceder a city
+                if (dataOrder.billing && dataOrder.billing.city) {
+                    if (cityValue === "Cali") {
+                        $("#btn-domicilio-cali").show();
+                    }
+                }
                 habilitarBotonAccion();
+
             }
         }
 
