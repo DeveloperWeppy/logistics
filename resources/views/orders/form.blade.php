@@ -772,7 +772,7 @@
     }
     $(document).ready(function() {
         var cityValue = dataOrder.billing.city;
-        console.log("order actual: "+orderactual,status);
+        console.log("order actual: "+orderactual.status);
 
         $('#product_id_input').focus();
         //console.log("cantidad items "+arrayData.length);
