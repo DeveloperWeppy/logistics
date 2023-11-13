@@ -495,9 +495,10 @@
                                 <div class="col-xl-12">
                                         <div style="width:100%;align-items:center;display:flex;justify-content: space-between;">
                                            <span><span class="font-weight-bold">Estado:</span> {{$status_name}} </span>
-                                           <span class="font-weight-bold">Producto Escaneado:</span><input type="text" id="product_id_input" placeholder="Id Producto QR" class="form-control" value="" autofocus>
-                                           {{-- <button onclick="abrirCamara()"  style="float: right;" class="btn btn-primary" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">   <i style="color:white;" class="mdi mdi-qrcode"></i></button> --}}
-                                           
+                                            <span style="display: flex; align-items: center;">
+                                                <span class="font-weight-bold">Producto Escaneado:</span>
+                                                <input type="text" id="product_id_input" placeholder="Id Producto QR" class="form-control" value="" autofocus>
+                                            </span>
                                         </div>
                                         <div>
                                             <div class="progress-bar2">
