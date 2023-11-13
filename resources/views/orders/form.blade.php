@@ -841,15 +841,6 @@
 
     }
     $(document).ready(function() {
-        // Agrega un escuchador de eventos para la entrada de teclado
-        document.addEventListener('keydown', function (event) {
-            console.log('keydown: '+document.activeElement.id);
-            // Verifica si el campo de entrada oculto está enfocado
-            if (document.activeElement.id === 'order_id_input') {
-                // Llama a la función de manejo del escaneo
-                handleScan({ data: event.key });
-            }
-        });
     });
     // function handleScan(scannedOrderId) {
 
@@ -906,23 +897,40 @@
             let skuEscaneado = codigoEscaneado.trim();
             console.log("escaneado:"+skuEscaneado);
             // Encuentra el índice del producto en el array de productos
-            let indexProducto = productos.findIndex(producto => producto.sku === skuEscaneado);
+            // let indexProducto = productos.findIndex(producto => producto.sku === skuEscaneado);
 
-            if (indexProducto !== -1) {
-                // Aumenta la cantidad escaneada del producto
-                if (!productosValidados[skuEscaneado]) {
-                    productosValidados[skuEscaneado] = 0;
+            // if (indexProducto !== -1) {
+            //     // Aumenta la cantidad escaneada del producto
+            //     if (!productosValidados[skuEscaneado]) {
+            //         productosValidados[skuEscaneado] = 0;
+            //     }
+            //     productosValidados[skuEscaneado]++;
+
+            //     // Actualiza la tabla con la nueva cantidad escaneada
+            //     actualizarTabla(skuEscaneado, productosValidados[skuEscaneado]);
+
+            //     // Verifica si todos los productos están validados
+            //     if (todosProductosValidados()) {
+            //         // Habilita el botón para realizar la acción adicional
+            //         habilitarBotonAccion();
+            //     }
+            // }
+            var rowIndex = arrayData.findIndex(function(row) {
+                return row.sku === skuEscaneado;
+            });
+
+            if (rowIndex >= 0) {
+                if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
+                    audioError.play();
+                    mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
+                } else {
+                    mensaje("success", "Agregado", "El producto fue agregado");
+                    audioScanner.play();
+                    //modificarTab(rowIndex);
                 }
-                productosValidados[skuEscaneado]++;
-
-                // Actualiza la tabla con la nueva cantidad escaneada
-                actualizarTabla(skuEscaneado, productosValidados[skuEscaneado]);
-
-                // Verifica si todos los productos están validados
-                if (todosProductosValidados()) {
-                    // Habilita el botón para realizar la acción adicional
-                    habilitarBotonAccion();
-                }
+            } else {
+                mensaje("error", "Error", "El producto no está en el pedido");
+                audioError.play();
             }
         });
 
