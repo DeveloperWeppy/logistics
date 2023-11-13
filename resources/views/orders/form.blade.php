@@ -926,7 +926,7 @@
                 } else {
                     mensaje("success", "Agregado", "El producto fue agregado");
                     audioScanner.play();
-                    //modificarTab(rowIndex);
+                    modificarTab(rowIndex);
                 }
             } else {
                 mensaje("error", "Error", "El producto no está en el pedido");
@@ -935,20 +935,44 @@
         });
 
         // Función para actualizar la tabla con la nueva cantidad escaneada
-        function actualizarTabla(sku, cantidadEscaneada) {
-            let filaProducto = document.getElementById(`fila-${sku}`);
-            if (filaProducto) {
-                // Actualiza la columna de cantidad escaneada
-                let cantidadEscaneadaElemento = filaProducto.querySelector('.cantidad-escaneada');
-                if (cantidadEscaneadaElemento) {
-                    cantidadEscaneadaElemento.textContent = cantidadEscaneada;
-                }
+        // function actualizarTabla(sku, cantidadEscaneada) {
+        //     let filaProducto = document.getElementById(`fila-${sku}`);
+        //     if (filaProducto) {
+        //         // Actualiza la columna de cantidad escaneada
+        //         let cantidadEscaneadaElemento = filaProducto.querySelector('.cantidad-escaneada');
+        //         if (cantidadEscaneadaElemento) {
+        //             cantidadEscaneadaElemento.textContent = cantidadEscaneada;
+        //         }
 
-                // Actualiza la columna de validado
-                let validadoElemento = filaProducto.querySelector('.validado');
-                if (validadoElemento) {
-                    validadoElemento.textContent = cantidadEscaneada === cantidadesPedido[sku] ? 'Validado' : '';
+        //         // Actualiza la columna de validado
+        //         let validadoElemento = filaProducto.querySelector('.validado');
+        //         if (validadoElemento) {
+        //             validadoElemento.textContent = cantidadEscaneada === cantidadesPedido[sku] ? 'Validado' : '';
+        //         }
+        //     }
+        // }
+        function modificarTab(index) {
+            arrayData[index].scann = arrayData[index].scann + 1;
+            var tabla = "";
+            var cont=0;
+            var icon="";
+            for (var i = 0; i < arrayData.length; i++) {
+                icon="";
+                if(arrayData[i].quantity==arrayData[i].scann){
+                    cont++;
+                    icon='<i class="mdi mdi-check" style="color:#28a745"></i>';
                 }
+                tabla += `
+                    <tr>
+                        <td class="sorting_1"><img src="${arrayData[i].image}" alt="" style="width: 80px;height:auto"></td>
+                        <td><label> ${arrayData[i].sku}</label></td>
+                        <td><label>${arrayData[i].name}</label></td>
+                        <td><p class="itemtext digits">${arrayData[i].quantity}</p></td>
+                        <td><p class="itemtext digits">${arrayData[i].scann}</p></td>
+                        <td>${icon}</td>
+                    </tr>
+                    `;
+                    document.getElementById("t-products").innerHTML = tabla;
             }
         }
 
