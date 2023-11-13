@@ -495,8 +495,9 @@
                                 <div class="col-xl-12">
                                         <div style="width:100%;align-items:center;display:flex;justify-content: space-between;">
                                            <span><span class="font-weight-bold">Estado:</span> {{$status_name}} </span>
+                                           <input type="text" id="product_id_input" placeholder="Id Producto QR" value="" autofocus>
                                            {{-- <button onclick="abrirCamara()"  style="float: right;" class="btn btn-primary" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#exampleModal" data-bs-original-title="" title="">   <i style="color:white;" class="mdi mdi-qrcode"></i></button> --}}
-                                           <input type="hidden" id="order_id_input">
+                                           
                                         </div>
                                         <div>
                                             <div class="progress-bar2">
@@ -723,14 +724,14 @@
         $("#tarjeta-table").html(list);
      }
 
-    function docReady(fn) {
-        if (document.readyState === "complete"
-            || document.readyState === "interactive") {
-            setTimeout(fn, 1);
-        } else {
-            document.addEventListener("DOMContentLoaded", fn);
-        }
-    }
+    // function docReady(fn) {
+    //     if (document.readyState === "complete"
+    //         || document.readyState === "interactive") {
+    //         setTimeout(fn, 1);
+    //     } else {
+    //         document.addEventListener("DOMContentLoaded", fn);
+    //     }
+    // }
 
     // function modificarTab(index,html5QrcodeScanner) {
     //     arrayData[index].scann = arrayData[index].scann + 1;
@@ -849,45 +850,111 @@
             }
         });
     });
-    function handleScan(scannedOrderId) {
+    // function handleScan(scannedOrderId) {
 
-        var rowIndex = arrayData.findIndex(function(row) {
-            return row.sku === scannedOrderId;
-        });
+    //     var rowIndex = arrayData.findIndex(function(row) {
+    //         return row.sku === scannedOrderId;
+    //     });
 
-        if (rowIndex >= 0) {
-            if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
-                audioError.play();
-                mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
-            } else {
-                mensaje("success", "Agregado", "El producto fue agregado");
-                audioScanner.play();
-                modificarTab(rowIndex);
+    //     if (rowIndex >= 0) {
+    //         if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
+    //             audioError.play();
+    //             mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
+    //         } else {
+    //             mensaje("success", "Agregado", "El producto fue agregado");
+    //             audioScanner.play();
+    //             modificarTab(rowIndex);
+    //         }
+    //     } else {
+    //         mensaje("error", "Error", "El producto no está en el pedido");
+    //         audioError.play();
+    //     }
+    // }
+    // function modificarTab(index) {
+    //     arrayData[index].scann++;
+
+    //     // Actualiza la cantidad en la columna correspondiente en tu tabla HTML
+    //     $("#t-products tr:eq(" + (index + 1) + ") td:eq(4)").text(arrayData[index].scann);
+
+    //     // Otras actualizaciones o validaciones según sea necesario
+
+    //     // Comprueba si todos los productos han sido validados
+    //     var allValidated = arrayData.every(function (item) {
+    //         return item.quantity === item.scann;
+    //     });
+
+    //     // Si todos los productos han sido validados, realiza acciones adicionales
+    //     if (allValidated) {
+    //         // Realiza acciones adicionales aquí, como limpiar el escáner y mostrar un mensaje
+    //         console.log('Todos los productos han sido validados.');
+    //     }
+    // }
+    // Supongamos que tienes un array con la información de los productos
+        // Supongamos que tienes un array con la información de los productos
+        const productos = @json($data_items);
+
+        // Supongamos que también tienes un array con la cantidad de cada producto en el pedido
+        const cantidadesPedido = @json(array_column($data['line_items'], 'quantity', 'sku'));
+
+        // Supongamos que tienes un array para mantener el estado de validación de cada producto
+        const productosValidados = {};
+
+        // Escucha el evento de entrada (input) del producto
+        $('#product_id_input').on('input', function () {
+            let codigoEscaneado = $('#product_id_input').val();
+            let skuEscaneado = codigoEscaneado.trim();
+            console.log("escaneado:"+skuEscaneado);
+            // Encuentra el índice del producto en el array de productos
+            let indexProducto = productos.findIndex(producto => producto.sku === skuEscaneado);
+
+            if (indexProducto !== -1) {
+                // Aumenta la cantidad escaneada del producto
+                if (!productosValidados[skuEscaneado]) {
+                    productosValidados[skuEscaneado] = 0;
+                }
+                productosValidados[skuEscaneado]++;
+
+                // Actualiza la tabla con la nueva cantidad escaneada
+                actualizarTabla(skuEscaneado, productosValidados[skuEscaneado]);
+
+                // Verifica si todos los productos están validados
+                if (todosProductosValidados()) {
+                    // Habilita el botón para realizar la acción adicional
+                    habilitarBotonAccion();
+                }
             }
-        } else {
-            mensaje("error", "Error", "El producto no está en el pedido");
-            audioError.play();
-        }
-    }
-    function modificarTab(index) {
-        arrayData[index].scann++;
-
-        // Actualiza la cantidad en la columna correspondiente en tu tabla HTML
-        $("#t-products tr:eq(" + (index + 1) + ") td:eq(4)").text(arrayData[index].scann);
-
-        // Otras actualizaciones o validaciones según sea necesario
-
-        // Comprueba si todos los productos han sido validados
-        var allValidated = arrayData.every(function (item) {
-            return item.quantity === item.scann;
         });
 
-        // Si todos los productos han sido validados, realiza acciones adicionales
-        if (allValidated) {
-            // Realiza acciones adicionales aquí, como limpiar el escáner y mostrar un mensaje
-            console.log('Todos los productos han sido validados.');
+        // Función para actualizar la tabla con la nueva cantidad escaneada
+        function actualizarTabla(sku, cantidadEscaneada) {
+            let filaProducto = document.getElementById(`fila-${sku}`);
+            if (filaProducto) {
+                // Actualiza la columna de cantidad escaneada
+                let cantidadEscaneadaElemento = filaProducto.querySelector('.cantidad-escaneada');
+                if (cantidadEscaneadaElemento) {
+                    cantidadEscaneadaElemento.textContent = cantidadEscaneada;
+                }
+
+                // Actualiza la columna de validado
+                let validadoElemento = filaProducto.querySelector('.validado');
+                if (validadoElemento) {
+                    validadoElemento.textContent = cantidadEscaneada === cantidadesPedido[sku] ? 'Validado' : '';
+                }
+            }
         }
-    }
+
+        // Función para verificar si todos los productos están validados
+        function todosProductosValidados() {
+            return Object.values(productosValidados).every(cantidad => cantidad > 0);
+        }
+
+        // Función para habilitar el botón de acción adicional
+        function habilitarBotonAccion() {
+            // Habilita el botón o realiza la acción adicional
+            $("#btn-finalizar").show();
+        }
+
+
 
     </script>
     <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>

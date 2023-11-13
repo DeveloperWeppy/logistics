@@ -113,39 +113,6 @@
      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
 
-    // function docReady(fn) {
-    //     if (document.readyState === "complete"
-    //         || document.readyState === "interactive") {
-    //         setTimeout(fn, 1);
-    //     } else {
-    //         document.addEventListener("DOMContentLoaded", fn);
-    //     }
-    // }
-    // function abrirCamara(){
-    //     docReady(function () {
-    //     var resultContainer = document.getElementById('qr-reader-results');
-    //     var lastResult, countResults = 0;
-    //     function onScanSuccess(decodedText, decodedResult) {
-    //         if (decodedText !== lastResult) {
-    //             ++countResults;
-    //             lastResult = decodedText;
-    //             console.log(`Scan result ${decodedText}`, decodedResult);
-    //             var order_id=decodedText.split("/");
-    //             order_id=order_id[order_id.length-1];
-    //             $("#cont-input-id").show();
-    //             $("#input-order-id").val(order_id);
-    //             html5QrcodeScanner.clear().then(_ => {    
-    //             }).catch(error => {
-                   
-    //             });
-    //         }
-    //     }
-
-    //     var html5QrcodeScanner = new Html5QrcodeScanner(
-    //         "qr-reader", { fps: 10, qrbox: 250 });
-    //     html5QrcodeScanner.render(onScanSuccess);
-    // });
-    // }
         $(document).ready(function() {
             $('#order_id_input').focus();
             var order_id=0;
@@ -319,94 +286,7 @@
                 ]
                 });
             }
-            // Supongamos que tienes un campo de entrada oculto con el ID "order_id_input"
-            // let orderInput = document.getElementById('order_id_input');
-
-            // // Escucha el evento de escaneo del QR
-            // tuElementoQRScanner.addEventListener('scan', function (event) {
-            //     //let scannedOrderId = event.detail; // Suponiendo que el evento devuelve el ID del pedido escaneado
-            //     let qrUrl = event.detail;
-            //     let orderId = qrUrl.split("/").pop();
-
-            //     // Realiza una solicitud Ajax para verificar el ID del pedido
-            //     $.ajax({
-            //         url: '/orders/qr-validation/' + orderId,
-            //         method: 'GET',
-            //         success: function (data) {
-            //             // Manejar la respuesta del servidor
-            //             if (data.valid) {
-            //                 // Si el pedido es válido, redirige al detalle del pedido
-            //                 window.location.href = '/orders/create/' + orderId;
-            //             } else {
-            //                 // Si el pedido no es válido, muestra un mensaje de error o maneja según sea necesario
-            //                 //alert('Número de pedido no válido');
-            //                 swal("Error!", "Número de pedido no válido!", "error");
-            //             }
-            //         },
-            //         error: function () {
-            //             // Manejar errores de la solicitud Ajax
-            //             //alert('Error al verificar el número de pedido');
-            //             swal("Error!", "Error al verificar el número de pedido!", "error");
-            //         }
-            //     });
-            // });
-            // // Agrega un escuchador de eventos para la entrada de teclado
-            // document.addEventListener('keydown', function (event) {
-            //     console.log('keydown: '+document.activeElement.id);
-            //     // Verifica si el campo de entrada oculto está enfocado
-            //     if (document.activeElement.id === 'order_id_input') {
-            //         console.log("event.key: "+event.key);
-            //         // Llama a la función de manejo del escaneo
-            //         handleScan({ data: event.key });
-            //     }
-            // });
-            // document.addEventListener('keypress', function (event) {
-            //     if (event.key === 'Enter') {
-            //         event.preventDefault();
-            //     }
-            // });
-           // document.addEventListener('keydown', function (event) {
-                //let scannedOrderId = event.target.value;
-                // Llama a la función de manejo del escaneo
-                // if (scannedOrderId.length === 6) {
-                    // Llama a la función de manejo del escaneo
-                    // if (document.activeElement.id === 'order_id_input') {
-                        // Forza la asignación del valor escaneado al campo de entrada
-                        //document.getElementById('order_id_input').value += event.key;
-                    // }
-                // }
-                //handleScan({ data: event.target.value });
-            //});
-            // $(document).on('keydown', function (event) {
-            //     console.log('keydown: ' + $(document.activeElement).attr('id'));
-            //     // Verifica si el campo de entrada oculto está enfocado
-            //     if ($(document.activeElement).attr('id') === 'order_id_input') {
-            //         // Forza la asignación del valor escaneado al campo de entrada
-            //         $('#order_id_input').val(function (index, value) {
-            //             return value + event.key;
-            //         });
-
-            //         // Llama a la función de manejo del escaneo
-            //         //handleScan();
-            //     }
-            // });
-            // document.addEventListener('DOMContentLoaded', function() {
-            //     // Pone el foco en el input oculto al cargar la página
-            //     document.getElementById('order_id_input').focus();
-            // });
-            // $(document).on('input', '#order_id_input', function (event) {
-            //     console.log("eveto: "+event);
-            //     // Verifica si el campo de entrada oculto está enfocado
-            //     if ($(document.activeElement).attr('id') === 'order_id_input') {
-            //         // Forza la asignación del valor escaneado al campo de entrada
-            //         $('#order_id_input').val(function (index, value) {
-            //             return value + event.data;
-            //         });
-
-            //         // Llama a la función de manejo del escaneo
-            //         //handleScan();
-            //     }
-            // });
+            
             var timer;
 
             // Agrega un controlador de eventos para el evento 'input' en el input oculto
@@ -428,9 +308,6 @@
                     }
                 }, 100);
             });
-
-            // Simulación de escaneo con un valor arbitrario "123456"
-            //$('#order_id_input').val('123456').trigger('input');
 
             document.getElementById('verifyOrderButton').addEventListener('click', function () {
                 // Obtén el valor del input oculto
@@ -464,36 +341,6 @@
 
 
         });
-        // Función para manejar el escaneo
-        // function handleScan(scannedOrderId) {
-        //     // Extrae el número del pedido de la URL
-        //     // Extrae el número del pedido de la URL
-        //     // let orderId = scannedOrderId.split("logistic.weppydev.com.co").pop();
-            
-        //     // // Limpia el número del pedido de caracteres no deseados (por ejemplo, "?q=")
-        //     // orderId = orderId.replace(/[^\d]/g, '');
-
-        //     // document.getElementById('order_id_input').value = orderId;
-        //     //document.getElementById('order_id_input').value = scannedOrderId;
-        //     console.log('order_id_input: '+scannedOrderId);
-        //     //Realiza una solicitud Ajax para verificar el ID del pedido
-        //     $.ajax({
-        //         url: '/orders/qr-validation/' + scannedOrderId,
-        //         method: 'GET',
-        //         success: function (data) {
-        //             if (data.valid) {
-        //                 //window.location.href = '/orders/create/' + orderId;
-        //                 console.log("respuesta ajax:" +data.valid)
-        //                 swal("Correcto!", "Pedido Correcto!", "success");
-        //             } else {
-        //                 swal("Error!", "Número de pedido no válido!", "error");
-        //             }
-        //         },
-        //         error: function () {
-        //             swal("Error!", "Error al verificar el número de pedido!", "error");
-        //         }
-        //     });
-        // }
         
     </script>
 @endsection
