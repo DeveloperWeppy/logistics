@@ -575,6 +575,7 @@
                         </div>
                         <div class="col-sm-12 text-center mt-3">
                             <button id="btn-finalizar" class="btn btn btn-primary me-2" type="button" style="display:none">{{$status==1?"Enviar a Delivery":"Enviar a Packing"}} </button>
+                            <button id="btn-domicilio-cali" class="btn btn btn-primary me-2" type="button" style="display:none">Domicilio Cali </button>
                             <a class="btn btn-secondary" href="{{route('orders')}}"  type="button">Cancel</a>
                         </div>
                     </div>
@@ -666,7 +667,7 @@
 @section('scripts')
     <script src="{{ asset('assets/js/codeScanner/minified/html5-qrcode.min.js') }}"></script>
     <script>
-            window.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('DOMContentLoaded', function() {
       var steps = document.querySelectorAll('.step');
       var progressContents = document.querySelectorAll('.progress-content');
 
@@ -689,6 +690,7 @@
      var audioScanner = new Audio('{{asset('assets/audio/scanner.mp3') }}');
      var audioError= new Audio('{{asset('assets/audio/error.mp3') }}');
      var arrayData = @json($data_items);
+     var dataOrder = @json($data);
      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
      if (isMobile) {
         let list="";
@@ -768,6 +770,7 @@
 
     }
     $(document).ready(function() {
+        console.log("daat: "+dataOrder);
         $('#product_id_input').focus();
         //console.log("cantidad items "+arrayData.length);
         // Escucha el evento de entrada (input) del producto
