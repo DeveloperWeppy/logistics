@@ -693,27 +693,18 @@ $html .= '<th style="padding: 8px; font-weight: bold;">Total</th>';
 $html .= '</tr>';
 $html .= '</thead>';
 
-foreach ($lineItems as $index => $item) {
+foreach ($lineItems as $item) {
     $productName = $item['name'];
     $quantity = $item['quantity'];
     $total = $item['total'];
     $sku = $item['sku'];
 
     $html .= '<tr>';
-    $html .= '<td style="border-right: 1px solid #000; padding: 8px;">';
+    $html .= '<td style="border: 2px; padding: 8px;">';
     $html .= $productName . '<br><strong>SKU:</strong> ' . $sku;
     $html .= '</td>';
-    $html .= '<td style="border-right: 1px solid #000; padding: 8px;">' . $quantity . '</td>';
-
-    // Verificar si es la última columna
-    if ($index === count($lineItems) - 1) {
-        // No añadir borde derecho en la última columna
-        $html .= '<td style="padding: 8px;">' . $total . '</td>';
-    } else {
-        // Añadir borde derecho en las columnas que no son la última
-        $html .= '<td style="border-right: 1px solid #000; padding: 8px;">' . $total . '</td>';
-    }
-
+    $html .= '<td style="border: 2px; padding: 8px;">' . $quantity . '</td>';
+    $html .= '<td style="border: 2px ; padding: 8px;">' . $total . '</td>';
     $html .= '</tr>';
 }
 
