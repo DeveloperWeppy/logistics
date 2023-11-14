@@ -663,7 +663,10 @@ class OrderController extends Controller
 
                 $html = '<table style="width: 100%; margin-top: 0; padding-top: 0;">';
 $html .= '<tr>';
-$html .= '<td style="width: 33%; vertical-align: top;"><img src="' . $logo . '" style="width: 100%;"></td>';
+$html .= '<td style="width: 33%; vertical-align: top; position: relative;">';
+$html .= '<h3 style="position: absolute; top: 0; left: 0; margin: 0; padding: 5px; color: #000; font-weight: bold;">FACTURA</h3>';
+$html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 30px;">';
+$html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
 $html .= '<p><strong>Cliente:</strong> ' . $first_name . '</p>';
 $html .= '<p><strong>Identificación:</strong> ' . $identification . '</p>';
@@ -671,7 +674,7 @@ $html .= '<p><strong>Teléfono:</strong> ' . $phone . '</p>';
 $html .= '<p><strong>Ciudad:</strong> ' . $city . '</p>';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
-$html .= '<p><strong>Empresa:</strong> ' . $company . '</p>';
+$html .= '<p><strong>' . $company . '</strong> </p>';
 $html .= '<p><strong>Dirección:</strong> ' . $addres_company . '</p>';
 $html .= '<p><strong>Fecha del pedido:</strong> ' . $date_order . '</p>';
 $html .= '<p><strong>Número de orden:</strong> ' . $num_order . '</p>';
