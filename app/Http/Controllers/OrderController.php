@@ -651,7 +651,7 @@ class OrderController extends Controller
                   border-collapse: collapse;
                 }
                 html{margin:0;padding:0}
-                p{margin-top: 2px !important}
+                p{margin-top: -6px !important}
                 .title-qr-content{
                     width:100%;
                     text-align: center;
