@@ -651,7 +651,7 @@ class OrderController extends Controller
                   border-collapse: collapse;
                 }
                 html{margin:0;padding:0}
-                p{margin-top: -6px !important}
+                .text-title{margin-top: -6px !important}
                 .title-qr-content{
                     width:100%;
                     text-align: center;
@@ -666,20 +666,20 @@ class OrderController extends Controller
 $html .= '<tr>';
 $html .= '<td style="width: 33%; vertical-align: top; position: relative; text-align: center;">';
 $html .= '<h3 style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0; padding: 5px; color: #000; font-weight: bold;">FACTURA</h3>';
-$html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 30px;">';
+$html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 10px;">';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
 $html .= '<p><strong>Cliente:</strong> ' . $first_name . '</p>';
-$html .= '<p style="margin-top: 2px !important;"><strong>Identificación:</strong> ' . $identification . '</p>';
-$html .= '<p><strong>Teléfono:</strong> ' . $phone . '</p>';
-$html .= '<p><strong>Ciudad:</strong> ' . $city . '</p>';
+$html .= '<p class="text-title"><strong>Identificación:</strong> ' . $identification . '</p>';
+$html .= '<p class="text-title"><strong>Teléfono:</strong> ' . $phone . '</p>';
+$html .= '<p class="text-title"><strong>Ciudad:</strong> ' . $city . '</p>';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
 $html .= '<p><strong>' . $company . '</strong> </p>';
-$html .= '<p><strong>Dirección:</strong> ' . $addres_company . '</p>';
-$html .= '<p><strong>Fecha del pedido:</strong> ' . $date_order . '</p>';
-$html .= '<p><strong>Número de orden:</strong> ' . $num_order . '</p>';
-$html .= '<p><strong>Método de pago:</strong> ' . $payment_method . '</p>';
+$html .= '<p class="text-title"><strong>Dirección:</strong> ' . $addres_company . '</p>';
+$html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $date_order . '</p>';
+$html .= '<p class="text-title"><strong>Número de orden:</strong> ' . $num_order . '</p>';
+$html .= '<p class="text-title"><strong>Método de pago:</strong> ' . $payment_method . '</p>';
 $html .= '</td>';
 $html .= '</tr>';
 $html .= '</table>';
