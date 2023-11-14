@@ -773,68 +773,48 @@
     }
     $(document).ready(function() {
         
-
+        var timer;
         $('#product_id_input').focus();
         //console.log("cantidad items "+arrayData.length);
         // Escucha el evento de entrada (input) del producto
-        let codigoEscaneado = '';
         $('#product_id_input').on('input', function () {
-            //let codigoEscaneado = $('#product_id_input').val();
-            let digito = $(this).val().trim();
+            if (timer) {
+                clearTimeout(timer);
+            }
+            // Configura un temporizador para verificar el valor del input después de 100 ms
+            timer = setTimeout(function () {
+                let codigoEscaneado = $('#product_id_input').val();
+            
+                let skuEscaneado = codigoEscaneado.trim();
+                console.log("escaneado:"+skuEscaneado);
+            
+                var rowIndex = arrayData.findIndex(function(row) {
+                    return row.sku === skuEscaneado;
+                });
 
-            // Verificar si es un dígito numérico
-            if (!isNaN(digito)) {
-                // Acumular el dígito en la variable
-                codigoEscaneado += digito;
-
-                // Verificar la longitud del código
-                if (codigoEscaneado.length === 5) {
-                    // Realizar acciones adicionales cuando se alcanza la longitud deseada
-                    console.log("Código escaneado completo: " + codigoEscaneado);
-
-                    //let skuEscaneado = codigoEscaneado.trim();
-                        console.log("escaneado:"+skuEscaneado);
-                    
-                    var rowIndex = arrayData.findIndex(function(row) {
-                        return row.sku === codigoEscaneado;
-                    });
-
-                    if (rowIndex >= 0) {
-                        if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
-                            audioError.play();
-                            mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
-                            // Vaciar el valor
-                            $('#product_id_input').val('');
-                        } else {
-                            mensaje("success", "Agregado", "El producto fue agregado");
-                            audioScanner.play();
-                            modificarTab(rowIndex);
-                            // Vaciar el valor
-                            $('#product_id_input').val('');
-                        }
-                    } else {
+                if (rowIndex >= 0) {
+                    if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
                         audioError.play();
-                        mensaje("error", "Error", "El producto no está en el pedido");
+                        mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
+                        // Vaciar el valor
+                        $('#product_id_input').val('');
+                    } else {
+                        mensaje("success", "Agregado", "El producto fue agregado");
+                        audioScanner.play();
+                        modificarTab(rowIndex);
                         // Vaciar el valor
                         $('#product_id_input').val('');
                     }
-
-                    // Vaciar el valor y reiniciar la variable
-                    $(this).val('');
-                    codigoEscaneado = '';
+                } else {
+                    audioError.play();
+                    mensaje("error", "Error", "El producto no está en el pedido");
+                    // Vaciar el valor
+                    $('#product_id_input').val('');
                 }
-            } else {
-                // Manejar el caso en el que el escaneo no es un dígito numérico
-                console.log("Escaneo no válido: " + digito);
-
-                // Vaciar el valor y reiniciar la variable
-                $(this).val('');
-                codigoEscaneado = '';
-            }
+                
+                $('#product_id_input').focus();
+            }, 100);
             
-            
-            
-            $(this).focus();
         });
     });        
 
