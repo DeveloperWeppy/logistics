@@ -672,13 +672,13 @@ $html .= '<h3 style="position: absolute; top: 0; left: 50%; transform: translate
 $html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 10px;">';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
-$html .= '<p style="margin-top: -3px !important"><strong>Cliente:</strong> ' . $first_name . '</p>';
+$html .= '<p style="margin-top: 1px !important"><strong>Cliente:</strong> ' . $first_name . '</p>';
 $html .= '<p class="text-title"><strong>Identificación:</strong> ' . $identification . '</p>';
 $html .= '<p class="text-title"><strong>Teléfono:</strong> ' . $phone . '</p>';
 $html .= '<p class="text-title"><strong>Ciudad:</strong> ' . $city . '</p>';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
-$html .= '<p style="margin-top: -3px !important"><strong>' . $company . '</strong> </p>';
+$html .= '<p style="margin-top: 1px !important"><strong>' . $company . '</strong> </p>';
 $html .= '<p class="text-title"><strong>Dirección:</strong> ' . $addres_company . '</p>';
 $html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $formatted_date_order . '</p>';
 $html .= '<p class="text-title"><strong>Número de orden:</strong> ' . $num_order . '</p>';
