@@ -497,7 +497,7 @@
                                            <span><span class="font-weight-bold">Estado:</span> {{$status_name}} </span>
                                             <span style="display: flex; align-items: center;">
                                                 <span class="font-weight-bold">Producto Escaneado:</span>
-                                                <input type="text" id="product_id_input" placeholder="Id Producto QR" class="form-control" value="">
+                                                <input type="text" id="product_id_input" placeholder="SKU Producto QR" class="form-control" value="">
                                             </span>
                                         </div>
                                         <div>
@@ -575,7 +575,7 @@
                         </div>
                         <div class="col-sm-12 text-center mt-3">
                             <button id="btn-finalizar" class="btn btn btn-primary me-2" type="button" style="display:none">{{$status==1?"Enviar a Delivery":"Enviar a Packing"}} </button>
-                            <button id="btn-domicilio-cali" class="btn btn btn-primary me-2" type="button" style="display:none">Domicilio Cali </button>
+                            <a id="btn-domicilio-cali" class="btn btn btn-info me-2" href="{{route('orders.pdf', $order->wc_order_id) }}" target="_blank" style="display:none">Domicilio Cali </a>
                             <a class="btn btn-secondary" href="{{route('orders')}}"  type="button">Cancel</a>
                         </div>
                     </div>

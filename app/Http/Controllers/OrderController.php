@@ -615,4 +615,108 @@ class OrderController extends Controller
         }
     }
 
+    public function getPdfOrder($idOrder)
+    {
+        $order = Order::where('wc_order_id',$idOrder)->first();
+        $logo=base64_encode(file_get_contents( asset('assets/images/LOGO-NATY-LONDON-sin-fondo-1.jpg') ));
+        $logo ='data:image/jpeg;base64,'.$logo;
+
+        $customer=json_decode($order['billing'],true);
+        $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
+        $identification = $customer['document_number'] ? $customer['document_number'] : 0;
+        $phone = $customer['phone'] ? $customer['phone'] : 0;
+        $city = $customer['city'] ? $customer['city'] : 'Sin ciudad';
+
+        $company = 'Naty London';
+        $addres_company = 'Calle 47 norte #5an-73, La Flora';
+        $date_order = 
+        $num_order = $idOrder;
+        $payment_method= $order->payment_method;
+
+        $lineItems = json_decode($order->line_items, true);
+        $tabla="<style>
+                @font-face {
+                font-family:'Monea Alegante';           
+                src: url('https://ceramik.com.co/wp-content/uploads/2022/11/Monea-Alegante.otf') format('truetype');
+                font-weight: normal;
+                font-style: normal;
+                }
+            body{
+                font-family: 'Monea Alegante', sans-serif;
+                
+            }
+                  td {
+                  border:0px;
+                  padding:0;
+                  border-collapse: collapse;
+                  height:50%;
+                }
+                html{margin:0;padding:0}
+                table{margin:0;padding:0;height:100%;width:100%;
+                }
+                .title-qr-content{
+                    width:100%;
+                    text-align: center;
+                    margin-top:-15px;
+                    font-weight: 500;
+                    padding-left:-2px;
+                    font-family: 'Monea Alegante', sans-serif;
+                    }
+                </style>";
+
+                $html = '<table style="width: 100%; height:90%;">';
+                $html .= '<tr>';
+                $html .= '<td style="width: 33%;"><img src="' . $logo . '" style="width: 100%;"></td>';
+                $html .= '<td style="width: 33%;">';
+                $html .= '<p>Cliente: ' . $first_name . '</p>';
+                $html .= '<p>Identificación: ' . $identification . '</p>';
+                $html .= '<p>Teléfono: ' . $phone . '</p>';
+                $html .= '<p>Ciudad: ' . $city . '</p>';
+                $html .= '</td>';
+                $html .= '<td style="width: 33%;">';
+                $html .= '<p>Empresa: ' . $company . '</p>';
+                $html .= '<p>Dirección: ' . $addres_company . '</p>';
+                $html .= '<p>Fecha del pedido: ' . $date_order . '</p>';
+                $html .= '<p>Número de orden: ' . $num_order . '</p>';
+                $html .= '<p>Método de pago: ' . $payment_method . '</p>';
+                $html .= '</td>';
+                $html .= '</tr>';
+                $html .= '</table>';
+                
+                // Añadir tabla de productos
+                $html .= '<table style="width: 100%;">';
+                $html .= '<tr>';
+                $html .= '<th>Producto</th>';
+                $html .= '<th>Cantidad</th>';
+                $html .= '<th>Total</th>';
+                $html .= '</tr>';
+                
+                foreach ($lineItems as $item) {
+                    $productName = $item['name'];
+                    $quantity = $item['quantity'];
+                    $total = $item['total'];
+                
+                    $html .= '<tr>';
+                    $html .= '<td>' . $productName . '</td>';
+                    $html .= '<td>' . $quantity . '</td>';
+                    $html .= '<td>' . $total . '</td>';
+                    $html .= '</tr>';
+                }
+                
+                $html .= '</table>';
+                $html .= '</table>';
+                
+        $tabla.=$html;
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($tabla);
+        //$dompdf->set_paper(array(0,0,147,71));
+        $dompdf->setPaper('letter', 'portrait');
+        $dompdf->set_option('dpi', 52);
+        $dompdf->render();
+        
+        header("Content-type: application/pdf");
+        header("Content-Disposition: inline; filename=documento.pdf");
+        echo $dompdf->output();
+    }
+
 }

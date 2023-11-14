@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/sync-invoices',[OrderController::class,'sync_invoices'])->name('orders.sync_invoices');
     Route::get('orders/qr/{id}', [OrderController::class,'getQrCode'])->name('orders.qr');
     Route::get('orders/qr-validation/{order_id}', [OrderController::class,'redirectToDetail'])->name('orders.qr_validation');
+    Route::get('orders/pdf/{idOrder}', [OrderController::class,'getPdfOrder'])->name('orders.pdf');
 
 
 
