@@ -649,11 +649,8 @@ class OrderController extends Controller
                   border:0px;
                   padding:0;
                   border-collapse: collapse;
-                  height:50%;
                 }
                 html{margin:0;padding:0}
-                table{margin:0;padding:0;height:100%;width:100%;
-                }
                 .title-qr-content{
                     width:100%;
                     text-align: center;
