@@ -651,7 +651,7 @@ class OrderController extends Controller
                   border-collapse: collapse;
                 }
                 html{margin:0;padding:0}
-                p{margin-top: 5px}
+                p{margin-top: 2px !important}
                 .title-qr-content{
                     width:100%;
                     text-align: center;
@@ -670,7 +670,7 @@ $html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 30px;">';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
 $html .= '<p><strong>Cliente:</strong> ' . $first_name . '</p>';
-$html .= '<p><strong>Identificación:</strong> ' . $identification . '</p>';
+$html .= '<p style="margin-top: 2px !important;"><strong>Identificación:</strong> ' . $identification . '</p>';
 $html .= '<p><strong>Teléfono:</strong> ' . $phone . '</p>';
 $html .= '<p><strong>Ciudad:</strong> ' . $city . '</p>';
 $html .= '</td>';
