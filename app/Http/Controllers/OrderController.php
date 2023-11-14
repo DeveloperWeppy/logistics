@@ -627,9 +627,12 @@ class OrderController extends Controller
         $phone = $customer['phone'] ? $customer['phone'] : 0;
         $city = $customer['city'] ? $customer['city'] : 'Sin ciudad';
 
+        
         $company = 'Naty London';
         $addres_company = 'Calle 47 norte #5an-73, La Flora';
-        $date_order = 
+        // Obtener la fecha del pedido
+        $date_order = $order->created_at;
+        $formatted_date_order  = date('d/m/Y H:i:s', strtotime($date_order));
         $num_order = $idOrder;
         $payment_method= $order->payment_method;
 
@@ -677,7 +680,7 @@ $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
 $html .= '<p><strong>' . $company . '</strong> </p>';
 $html .= '<p class="text-title"><strong>Dirección:</strong> ' . $addres_company . '</p>';
-$html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $date_order . '</p>';
+$html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $formatted_date_order . '</p>';
 $html .= '<p class="text-title"><strong>Número de orden:</strong> ' . $num_order . '</p>';
 $html .= '<p class="text-title"><strong>Método de pago:</strong> ' . $payment_method . '</p>';
 $html .= '</td>';
