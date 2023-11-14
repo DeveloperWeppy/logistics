@@ -608,7 +608,7 @@ class OrderController extends Controller
 
         if ($order) {
             // Si existe, devolver una respuesta JSON válida
-            return response()->json(['valid' => true]);
+            return response()->json(['valid' => true, 'order' => $order]);
         } else {
             // Si no existe, devolver una respuesta JSON no válida
             return response()->json(['valid' => false]);
@@ -666,53 +666,53 @@ class OrderController extends Controller
                 </style>";
 
                 $html = '<table style="width: 100%; margin-top: 0; padding-top: 0;">';
-$html .= '<tr>';
-$html .= '<td style="width: 33%; vertical-align: top; position: relative; text-align: center;">';
-$html .= '<h3 style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0; padding: 5px; color: #000; font-weight: bold;">FACTURA</h3>';
-$html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 10px;">';
-$html .= '</td>';
-$html .= '<td style="width: 33%; vertical-align: top;">';
-$html .= '<p style="margin-top: 3px !important"><strong>Cliente:</strong> ' . $first_name . '</p>';
-$html .= '<p class="text-title"><strong>Identificación:</strong> ' . $identification . '</p>';
-$html .= '<p class="text-title"><strong>Teléfono:</strong> ' . $phone . '</p>';
-$html .= '<p class="text-title"><strong>Ciudad:</strong> ' . $city . '</p>';
-$html .= '</td>';
-$html .= '<td style="width: 33%; vertical-align: top;">';
-$html .= '<p style="margin-top: 3px !important"><strong>' . $company . '</strong> </p>';
-$html .= '<p class="text-title"><strong>Dirección:</strong> ' . $addres_company . '</p>';
-$html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $formatted_date_order . '</p>';
-$html .= '<p class="text-title"><strong>Número de orden:</strong> ' . $num_order . '</p>';
-$html .= '<p class="text-title"><strong>Método de pago:</strong> ' . $payment_method . '</p>';
-$html .= '</td>';
-$html .= '</tr>';
-$html .= '</table>';
+                $html .= '<tr>';
+                $html .= '<td style="width: 33%; vertical-align: top; position: relative; text-align: center;">';
+                $html .= '<h3 style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0; padding: 5px; color: #000; font-weight: bold;">FACTURA</h3>';
+                $html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 10px;">';
+                $html .= '</td>';
+                $html .= '<td style="width: 33%; vertical-align: top;">';
+                $html .= '<p style="margin-top: 3px !important"><strong>Cliente:</strong> ' . $first_name . '</p>';
+                $html .= '<p class="text-title"><strong>Identificación:</strong> ' . $identification . '</p>';
+                $html .= '<p class="text-title"><strong>Teléfono:</strong> ' . $phone . '</p>';
+                $html .= '<p class="text-title"><strong>Ciudad:</strong> ' . $city . '</p>';
+                $html .= '</td>';
+                $html .= '<td style="width: 33%; vertical-align: top;">';
+                $html .= '<p style="margin-top: 3px !important"><strong>' . $company . '</strong> </p>';
+                $html .= '<p class="text-title"><strong>Dirección:</strong> ' . $addres_company . '</p>';
+                $html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $formatted_date_order . '</p>';
+                $html .= '<p class="text-title"><strong>Número de orden:</strong> ' . $num_order . '</p>';
+                $html .= '<p class="text-title"><strong>Método de pago:</strong> ' . $payment_method . '</p>';
+                $html .= '</td>';
+                $html .= '</tr>';
+                $html .= '</table>';
 
-// Añadir tabla de productos
-$html .= '<table style="width: 100%; border-collapse: collapse;">';
-$html .= '<thead style="background-color: #000; color: #fff;">';
-$html .= '<tr>';
-$html .= '<th style="padding: 8px; font-weight: bold;">Producto</th>';
-$html .= '<th style="padding: 8px; font-weight: bold;">Cantidad</th>';
-$html .= '<th style="padding: 8px; font-weight: bold;">Total</th>';
-$html .= '</tr>';
-$html .= '</thead>';
+                // Añadir tabla de productos
+                $html .= '<table style="width: 100%; border-collapse: collapse;">';
+                $html .= '<thead style="background-color: #000; color: #fff;">';
+                $html .= '<tr>';
+                $html .= '<th style="padding: 8px; font-weight: bold;">Producto</th>';
+                $html .= '<th style="padding: 8px; font-weight: bold;">Cantidad</th>';
+                $html .= '<th style="padding: 8px; font-weight: bold;">Total</th>';
+                $html .= '</tr>';
+                $html .= '</thead>';
 
-foreach ($lineItems as $item) {
-    $productName = $item['name'];
-    $quantity = $item['quantity'];
-    $total = $item['total'];
-    $sku = $item['sku'];
+                foreach ($lineItems as $item) {
+                    $productName = $item['name'];
+                    $quantity = $item['quantity'];
+                    $total = $item['total'];
+                    $sku = $item['sku'];
 
-    $html .= '<tr>';
-    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">';
-    $html .= $productName . '<br><strong>SKU:</strong> ' . $sku;
-    $html .= '</td>';
-    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . $quantity . '</td>';
-    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . number_format($total, 2) . '</td>';
-    $html .= '</tr>';
-}
+                    $html .= '<tr>';
+                    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">';
+                    $html .= $productName . '<br><strong>SKU:</strong> ' . $sku;
+                    $html .= '</td>';
+                    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . $quantity . '</td>';
+                    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . number_format($total, 2) . '</td>';
+                    $html .= '</tr>';
+                }
 
-$html .= '</table>';
+                $html .= '</table>';
                 
         $tabla.=$html;
         $dompdf = new Dompdf();

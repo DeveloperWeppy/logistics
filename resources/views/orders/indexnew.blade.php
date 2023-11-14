@@ -322,9 +322,14 @@
                         method: 'GET',
                         success: function (data) {
                             if (data.valid) {
-                                console.log("respuesta ajax: " + data.valid);
-                                swal("Correcto!", "Pedido Correcto!", "success");
-                                window.location.href = '/orders/create/' + scannedOrderId;
+                                //console.log("respuesta ajax: " + data.valid);
+                                if (data.order.status != 3) {
+                                    swal("Correcto!", "Pedido Correcto!", "success");
+                                    window.location.href = '/orders/create/' + scannedOrderId;
+                                } else {
+                                    swal("Información!", "El pedido ya se encuentra completado!", "warning");
+                                }
+                                
                             } else {
                                 swal("Error!", "Número de pedido no válido!", "error");
                             }
