@@ -323,7 +323,7 @@
                         success: function (data) {
                             if (data.valid) {
                                 //console.log("respuesta ajax: " + data.valid);
-                                if (data.order.status != 3) {
+                                if (data.order_status != 3) {
                                     swal("Correcto!", "Pedido Correcto!", "success");
                                     window.location.href = '/orders/create/' + scannedOrderId;
                                 } else {

@@ -607,8 +607,9 @@ class OrderController extends Controller
         $order = Order::where('wc_order_id', $order_id)->first();
 
         if ($order) {
+            $status_order = $order->status;
             // Si existe, devolver una respuesta JSON válida
-            return response()->json(['valid' => true, 'order' => $order]);
+            return response()->json(['valid' => true, 'order_status' => $status_order]);
         } else {
             // Si no existe, devolver una respuesta JSON no válida
             return response()->json(['valid' => false]);
