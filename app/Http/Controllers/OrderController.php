@@ -663,8 +663,8 @@ class OrderController extends Controller
 
                 $html = '<table style="width: 100%; margin-top: 0; padding-top: 0;">';
 $html .= '<tr>';
-$html .= '<td style="width: 33%; vertical-align: top; position: relative;">';
-$html .= '<h3 style="position: absolute; top: 0; left: 0; margin: 0; padding: 5px; color: #000; font-weight: bold;">FACTURA</h3>';
+$html .= '<td style="width: 33%; vertical-align: top; position: relative; text-align: center;">';
+$html .= '<h3 style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0; padding: 5px; color: #000; font-weight: bold;">FACTURA</h3>';
 $html .= '<img src="' . $logo . '" style="width: 100%; margin-top: 30px;">';
 $html .= '</td>';
 $html .= '<td style="width: 33%; vertical-align: top;">';
