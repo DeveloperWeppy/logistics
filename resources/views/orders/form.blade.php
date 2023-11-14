@@ -779,8 +779,7 @@
         // Escucha el evento de entrada (input) del producto
         $('#product_id_input').on('input', function () {
             let codigoEscaneado = $('#product_id_input').val();
-            // Vaciar el valor
-            $('#product_id_input').val('');
+            
             let skuEscaneado = codigoEscaneado.trim();
             console.log("escaneado:"+skuEscaneado);
            
@@ -792,14 +791,20 @@
                 if (arrayData[rowIndex].quantity === arrayData[rowIndex].scann) {
                     audioError.play();
                     mensaje("info", "No puedes agregar", "Por que supera la cantidad del pedido");
+                    // Vaciar el valor
+                    $('#product_id_input').val('');
                 } else {
                     mensaje("success", "Agregado", "El producto fue agregado");
                     audioScanner.play();
                     modificarTab(rowIndex);
+                    // Vaciar el valor
+                    $('#product_id_input').val('');
                 }
             } else {
-                mensaje("error", "Error", "El producto no está en el pedido");
                 audioError.play();
+                mensaje("error", "Error", "El producto no está en el pedido");
+                // Vaciar el valor
+                $('#product_id_input').val('');
             }
             
             $('#product_id_input').focus();

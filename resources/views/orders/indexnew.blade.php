@@ -40,9 +40,9 @@
                         <button class="btn btn-primary btn-create mr-3" type="button" >Sincronizar Pedidos
                                <i style="color:white;" class="mdi mdi-sync"></i></button>
                         @endif
-                        <button type="button" class="btn btn-info ml-2" id="verifyOrderButton">Verificar Pedido
+                        {{-- <button type="button" class="btn btn-info ml-2" id="verifyOrderButton">Verificar Pedido
                             <i style="color:white;" class="mdi mdi-checkbox-marked-circle"></i>
-                        </button>
+                        </button> --}}
 
                         <input type="text" id="order_id_input" placeholder="Id Pedido QR" value="">
                     </div>
@@ -290,7 +290,8 @@
             var timer;
 
             // Agrega un controlador de eventos para el evento 'input' en el input oculto
-            $(document).on('input', '#order_id_input', function () {
+            // $(document).on('input', '#order_id_input', function () {
+            $('#order_id_input').on('input', function () {
                 // Si ya hay un temporizador en ejecución, límpialo
                 if (timer) {
                     clearTimeout(timer);
@@ -300,22 +301,15 @@
                 timer = setTimeout(function () {
                     // Obtiene el valor actual del input
                     var scannedOrderId = $('#order_id_input').val();
+                    let skuEscaneado = scannedOrderId.trim();
                     console.log('valueee '+scannedOrderId);
-                    // Verifica si el campo de entrada oculto está enfocado
-                    if ($(document.activeElement).attr('id') === 'order_id_input') {
-                        // Llama a la función de manejo del escaneo con el valor escaneado
-                        //handleScan(scannedOrderId);
-                    }
+                    handleScan(skuEscaneado);
                 }, 100);
             });
 
-            document.getElementById('verifyOrderButton').addEventListener('click', function () {
-                // Obtén el valor del input oculto
-                let scannedOrderId = $('#order_id_input').val();
-
-                console.log("orderId: " + scannedOrderId);
-                // Verifica si hay algún valor
-                if (scannedOrderId.trim() !== '') {
+        });
+        function handleScan(scannedOrderId){
+            if (scannedOrderId.trim() !== '') {
                     // Realiza una solicitud Ajax para verificar el ID del pedido
                     $.ajax({
                         url: '/orders/qr-validation/' + scannedOrderId,
@@ -327,25 +321,29 @@
                                     swal("Correcto!", "Pedido Correcto!", "success");
                                     window.location.href = '/orders/create/' + scannedOrderId;
                                 } else {
+                                    $('#order_id_input').val('');
                                     swal("Información!", "El pedido ya se encuentra completado!", "warning");
                                 }
                                 
                             } else {
+                                $('#order_id_input').val('');
                                 swal("Error!", "Número de pedido no válido!", "error");
+                                $('#order_id_input').focus();
                             }
                         },
                         error: function () {
+                            $('#order_id_input').val('');
                             swal("Error!", "Error al verificar el número de pedido!", "error");
+                            $('#order_id_input').focus();
                         }
                     });
                 } else {
+                    $('#order_id_input').val('');
                     // Mostrar un mensaje de error si no hay valor escaneado
                     swal("Error!", "No hay número de pedido para verificar.", "error");
+                    ('#order_id_input').focus();
                 }
-            });
-
-
-        });
+        }
         
     </script>
 @endsection
