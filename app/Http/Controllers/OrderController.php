@@ -704,7 +704,7 @@ foreach ($lineItems as $item) {
     $html .= $productName . '<br><strong>SKU:</strong> ' . $sku;
     $html .= '</td>';
     $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . $quantity . '</td>';
-    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . $total . '</td>';
+    $html .= '<td style="border: 1px dotted #ccc; padding: 8px;">' . number_format($total, 2) . '</td>';
     $html .= '</tr>';
 }
 
