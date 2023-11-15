@@ -616,13 +616,18 @@ class OrderController extends Controller
                 //dd('wompi');
                 //$responsePayment = $this->apiWompi($id_transaction_payment);
                 $publicKey = env('API_PUBLIC_KEY_WOMPI');
-            $privateKey = env('API_PRIVATE_KEY_WOMPI');
-            $baseUrl = 'https://production.wompi.co/v1/';
+                $privateKey = env('API_PRIVATE_KEY_WOMPI');
+                $token = base64_encode($publicKey . ':' . $privateKey);
 
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . base64_encode($publicKey . ':' . $privateKey),
-            ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
-                dd($response);
+                $baseUrl = 'https://production.wompi.co/v1/';
+                $id_transaction_payment = 'ID_DE_LA_TRANSACCION'; // Reemplazar con el ID real de la transacción
+
+                $response = Http::withHeaders([
+                    'Authorization' => 'Bearer ' . $token,
+                ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
+
+                dd($response->json());
+
             } else {
                 dd('addi');
                 $responsePayment = $this->apiAddi($id_transaction_payment);
