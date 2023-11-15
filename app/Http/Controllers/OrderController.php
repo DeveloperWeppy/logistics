@@ -613,8 +613,15 @@ class OrderController extends Controller
             $payment_method = $order->payment_method;
             $id_transaction_payment = $order->id_transaction_payment;
             if ($payment_method == "Wompi") {
-                dd('wompi');
-                $responsePayment = $this->apiWompi($id_transaction_payment);
+                //dd('wompi');
+                //$responsePayment = $this->apiWompi($id_transaction_payment);
+                $publicKey = env('API_PUBLIC_KEY_WOMPI');
+            $privateKey = env('API_PRIVATE_KEY_WOMPI');
+            $baseUrl = 'https://production.wompi.co/v1/';
+
+            $response = Http::withBasicAuth($publicKey, $privateKey)
+                ->get($baseUrl . 'transactions/' . $id_transaction_payment);
+                dd($response);
             } else {
                 dd('addi');
                 $responsePayment = $this->apiAddi($id_transaction_payment);
