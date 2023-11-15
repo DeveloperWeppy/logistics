@@ -613,19 +613,18 @@ class OrderController extends Controller
             $payment_method = $order->payment_method;
             $id_transaction_payment = $order->id_transaction_payment;
             if ($payment_method == "Wompi") {
-                //dd('wompi');
-                //$responsePayment = $this->apiWompi($id_transaction_payment);
-                $publicKey = env('API_PUBLIC_KEY_WOMPI');
-                $privateKey = env('API_PRIVATE_KEY_WOMPI');
-                $token = base64_encode($publicKey . ':' . $privateKey);
-                $baseUrl = 'https://production.wompi.co/v1/';
+                
+                $responsePayment = $this->apiWompi($id_transaction_payment);
+                // $publicKey = env('API_PUBLIC_KEY_WOMPI');
+                // $privateKey = env('API_PRIVATE_KEY_WOMPI');
+                // $token = base64_encode($publicKey . ':' . $privateKey);
+                // $baseUrl = 'https://production.wompi.co/v1/';
 
-                $response = Http::withHeaders([
-                    //'Authorization' => 'Bearer ' . $token,
-                    'Bearer' => $token,
-                ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
+                // $response = Http::withHeaders([
+                //     'Bearer' => $token,
+                // ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
 
-                dd($response->json());
+                dd($responsePayment);
 
             } else {
                 dd('addi');
@@ -757,15 +756,15 @@ class OrderController extends Controller
         try {
             $publicKey = env('API_PUBLIC_KEY_WOMPI');
             $privateKey = env('API_PRIVATE_KEY_WOMPI');
+             $token = base64_encode($publicKey . ':' . $privateKey);
             $baseUrl = 'https://production.wompi.co/v1/';
 
-            $response = Http::withBasicAuth($publicKey, $privateKey)
-                ->get($baseUrl . 'transactions/' . $id_transaction);
-
-            //dd($response);
+                $response = Http::withHeaders([
+                    'Bearer' => $token,
+                ])->get($baseUrl . 'transactions/' . $id_transaction);
             return $response->json();
         } catch (\Throwable $th) {
-            //throw $th;
+            Log::error('Error en la sincronización de facturas: ' . $th->getMessage());
         }
     }
 
