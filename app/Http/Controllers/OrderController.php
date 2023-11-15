@@ -619,8 +619,9 @@ class OrderController extends Controller
             $privateKey = env('API_PRIVATE_KEY_WOMPI');
             $baseUrl = 'https://production.wompi.co/v1/';
 
-            $response = Http::withBasicAuth($publicKey, $privateKey)
-                ->get($baseUrl . 'transactions/' . $id_transaction_payment);
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . base64_encode($publicKey . ':' . $privateKey),
+            ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
                 dd($response);
             } else {
                 dd('addi');
