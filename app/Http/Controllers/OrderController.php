@@ -414,6 +414,7 @@ class OrderController extends Controller
                         $order = Order::create([
                             'wc_order_id' => $invoice['id'],
                             'payment_method' => $invoice['payment_method_title'], 
+                            'id_transaction_payment' => $invoice['transaction_id'],
                             'wc_status' => $invoice['status'],
                             'shipping' => json_encode($invoice['shipping']),
                             'billing' => json_encode($invoice['billing']),
@@ -608,6 +609,14 @@ class OrderController extends Controller
 
         if ($order) {
             $status_order = $order->status;
+            $payment_method = $order->payment_method;
+            $id_transaction_payment = $order->id_transaction_payment;
+            if ($payment_method == "Wompi") {
+                $this->apiWompi($id_transaction_payment);
+            } else {
+                $this->apiAddi($id_transaction_payment);
+            }
+            
             // Si existe, devolver una respuesta JSON válida
             return response()->json(['valid' => true, 'order_status' => $status_order]);
         } else {
