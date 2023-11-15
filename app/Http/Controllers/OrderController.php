@@ -620,7 +620,6 @@ class OrderController extends Controller
                 $token = base64_encode($publicKey . ':' . $privateKey);
 
                 $baseUrl = 'https://production.wompi.co/v1/';
-                $id_transaction_payment = 'ID_DE_LA_TRANSACCION'; // Reemplazar con el ID real de la transacción
 
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $token,
