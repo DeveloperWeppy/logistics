@@ -330,18 +330,24 @@
                             if (data.valid) {
                                 //console.log("respuesta ajax: " + data.valid);
                                 if (data.order_status == 0) {
-                                    if (data.responseStatusPayment === "APPROVED" && data.responseStatusPayment != null) {
+                                    if (data.payment_method === "Wompi") {
+                                        if (data.responseStatusPayment === "APPROVED" && data.responseStatusPayment != null) {
+                                            swal("Correcto!", "Pedido Correcto!", "success");
+                                            window.location.href = '/orders/create/' + scannedOrderId;
+                                        } else {
+                                            if (data.payment_method === "Wompi") {
+                                                $('#order_id_input').val('');
+                                                swal("Información!", "El pago del pedido en WOMPI no ha sido aprovado correctamente!", "warning");
+                                            } else {
+                                                $('#order_id_input').val('');
+                                                swal("Información!", "El pago del pedido en ADDI no ha sido aprovado correctamente!", "warning");
+                                            }
+                                        }
+                                    }else{
                                         swal("Correcto!", "Pedido Correcto!", "success");
                                         window.location.href = '/orders/create/' + scannedOrderId;
-                                    } else {
-                                        if (data.payment_method === "Wompi") {
-                                            $('#order_id_input').val('');
-                                            swal("Información!", "El pago del pedido en WOMPI no ha sido aprovado correctamente!", "warning");
-                                        } else {
-                                            $('#order_id_input').val('');
-                                            swal("Información!", "El pago del pedido en ADDI no ha sido aprovado correctamente!", "warning");
-                                        }
                                     }
+                                    
                                 } else if(data.order_status == 1) {
                                     swal("Correcto!", "Pedido Correcto!", "success");
                                     window.location.href = '/orders/create/' + scannedOrderId;
