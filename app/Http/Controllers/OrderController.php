@@ -613,8 +613,10 @@ class OrderController extends Controller
             $payment_method = $order->payment_method;
             $id_transaction_payment = $order->id_transaction_payment;
             if ($payment_method == "Wompi") {
+                dd('wompi');
                 $responsePayment = $this->apiWompi($id_transaction_payment);
             } else {
+                dd('addi');
                 $responsePayment = $this->apiAddi($id_transaction_payment);
             }
             
