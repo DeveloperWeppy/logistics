@@ -317,7 +317,7 @@
                         beforeSend: function() {
                                 // Mostrar el mensaje de carga inicial
                                 swal({
-                                    title: 'Validando Pago',
+                                    title: 'Validando',
                                     text: 'Por Favor espere',
                                     timer: 2000,
                                     showConfirmButton: false,
@@ -329,8 +329,8 @@
                         success: function (data) {
                             if (data.valid) {
                                 //console.log("respuesta ajax: " + data.valid);
-                                if (data.order_status != 3) {
-                                    if (data.responseStatusPayment === "APPROVED") {
+                                if (data.order_status == 0) {
+                                    if (data.responseStatusPayment === "APPROVED" && data.responsePayment != null) {
                                         swal("Correcto!", "Pedido Correcto!", "success");
                                         window.location.href = '/orders/create/' + scannedOrderId;
                                     } else {
@@ -342,7 +342,11 @@
                                             swal("Información!", "El pago del pedido en ADDI no ha sido aprovado correctamente!", "warning");
                                         }
                                     }
-                                } else {
+                                } else if(data.order_status == 1) {
+                                    swal("Correcto!", "Pedido Correcto!", "success");
+                                    window.location.href = '/orders/create/' + scannedOrderId;
+                                    
+                                }else if(data.order_status == 3){
                                     $('#order_id_input').val('');
                                     swal("Información!", "El pedido ya se encuentra completado!", "warning");
                                 }

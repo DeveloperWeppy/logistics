@@ -612,13 +612,13 @@ class OrderController extends Controller
             $status_order = $order->status;
             $payment_method = $order->payment_method;
             $id_transaction_payment = $order->id_transaction_payment;
-            if ($payment_method == "Wompi") {
-                $responsePayment = $this->apiWompi($id_transaction_payment);
-            } else {
-                dd('addi');
-                $responsePayment = $this->apiAddi($id_transaction_payment);
+            if ($status_order == 0) {
+                if ($payment_method == "Wompi") {
+                    $responsePayment = $this->apiWompi($id_transaction_payment);
+                } else {
+                    $responsePayment = $this->apiAddi($id_transaction_payment);
+                }
             }
-            
             // Si existe, devolver una respuesta JSON válida
             return response()->json(['valid' => true, 'order_status' => $status_order, 'responseStatusPayment' => $responsePayment, 'payment_method'=>$payment_method]);
         } else {

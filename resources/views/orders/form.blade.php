@@ -756,7 +756,7 @@
             showConfirmButton: false,
             timer: 1500
             });
-            location.href ="{{ route('orders');}}";
+            location.href ="{{ route('orders.get_orders');}}";
          });
     } );
     function mensaje(icon,title,text){
@@ -849,7 +849,6 @@
                     }
                 }
                 habilitarBotonAccion();
-
             }
         }
 
