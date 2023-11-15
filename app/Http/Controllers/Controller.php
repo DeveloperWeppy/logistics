@@ -88,7 +88,8 @@ class Controller extends BaseController
         $response = Http::withBasicAuth($publicKey, $privateKey)
             ->get($baseUrl . 'transactions/' . $id_transaction);
 
-        return $response->json();
+            dd($response);
+        //return $response->json();
         } catch (\Throwable $th) {
             //throw $th;
         }
