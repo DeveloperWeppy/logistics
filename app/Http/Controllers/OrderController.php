@@ -608,6 +608,7 @@ class OrderController extends Controller
         $order = Order::where('wc_order_id', $order_id)->first();
 
         if ($order) {
+            $responsePayment = '';
             $status_order = $order->status;
             $payment_method = $order->payment_method;
             $id_transaction_payment = $order->id_transaction_payment;
