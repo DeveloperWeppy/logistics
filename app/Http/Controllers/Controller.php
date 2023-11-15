@@ -78,22 +78,6 @@ class Controller extends BaseController
         }
     }
 
-    public function apiWompi($id_transaction)
-    {
-        try {
-            $publicKey = env('API_PUBLIC_KEY_WOMPI');
-            $privateKey = env('API_PRIVATE_KEY_WOMPI');
-            $baseUrl = 'https://production.wompi.co/v1/';
-
-            $response = Http::withBasicAuth($publicKey, $privateKey)
-                ->get($baseUrl . 'transactions/' . $id_transaction);
-
-            //dd($response);
-            return $response->json();
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-    }
 
     public function apiAddi($id_transaction)
     {
