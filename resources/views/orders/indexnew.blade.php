@@ -314,12 +314,34 @@
                     $.ajax({
                         url: '/orders/qr-validation/' + scannedOrderId,
                         method: 'GET',
+                        beforeSend: function() {
+                                // Mostrar el mensaje de carga inicial
+                                swal({
+                                    title: 'Validando Pago',
+                                    text: 'Por Favor espere',
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                    showCancelButton: false,
+                                    buttons: false,
+                                    allowOutsideClick: false, 
+                                });
+                            },
                         success: function (data) {
                             if (data.valid) {
                                 //console.log("respuesta ajax: " + data.valid);
                                 if (data.order_status != 3) {
-                                    swal("Correcto!", "Pedido Correcto!", "success");
-                                    //window.location.href = '/orders/create/' + scannedOrderId;
+                                    if (data.responseStatusPayment === "APPROVED") {
+                                        swal("Correcto!", "Pedido Correcto!", "success");
+                                        window.location.href = '/orders/create/' + scannedOrderId;
+                                    } else {
+                                        if (data.payment_method === "Wompi") {
+                                            $('#order_id_input').val('');
+                                            swal("Información!", "El pago del pedido en WOMPI no ha sido aprovado correctamente!", "warning");
+                                        } else {
+                                            $('#order_id_input').val('');
+                                            swal("Información!", "El pago del pedido en ADDI no ha sido aprovado correctamente!", "warning");
+                                        }
+                                    }
                                 } else {
                                     $('#order_id_input').val('');
                                     swal("Información!", "El pedido ya se encuentra completado!", "warning");

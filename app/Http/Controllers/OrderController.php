@@ -620,7 +620,7 @@ class OrderController extends Controller
             }
             
             // Si existe, devolver una respuesta JSON válida
-            return response()->json(['valid' => true, 'order_status' => $status_order, 'responsePayment' => $responsePayment]);
+            return response()->json(['valid' => true, 'order_status' => $status_order, 'responseStatusPayment' => $responsePayment, 'payment_method'=>$payment_method]);
         } else {
             // Si no existe, devolver una respuesta JSON no válida
             return response()->json(['valid' => false]);
