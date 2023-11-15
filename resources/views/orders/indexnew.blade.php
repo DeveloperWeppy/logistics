@@ -330,7 +330,7 @@
                             if (data.valid) {
                                 //console.log("respuesta ajax: " + data.valid);
                                 if (data.order_status == 0) {
-                                    if (data.responseStatusPayment === "APPROVED" && data.responsePayment != null) {
+                                    if (data.responseStatusPayment === "APPROVED" && data.responseStatusPayment != null) {
                                         swal("Correcto!", "Pedido Correcto!", "success");
                                         window.location.href = '/orders/create/' + scannedOrderId;
                                     } else {
