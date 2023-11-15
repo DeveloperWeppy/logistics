@@ -613,19 +613,7 @@ class OrderController extends Controller
             $payment_method = $order->payment_method;
             $id_transaction_payment = $order->id_transaction_payment;
             if ($payment_method == "Wompi") {
-                
                 $responsePayment = $this->apiWompi($id_transaction_payment);
-                // $publicKey = env('API_PUBLIC_KEY_WOMPI');
-                // $privateKey = env('API_PRIVATE_KEY_WOMPI');
-                // $token = base64_encode($publicKey . ':' . $privateKey);
-                // $baseUrl = 'https://production.wompi.co/v1/';
-
-                // $response = Http::withHeaders([
-                //     'Bearer' => $token,
-                // ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
-
-                dd($responsePayment);
-
             } else {
                 dd('addi');
                 $responsePayment = $this->apiAddi($id_transaction_payment);
@@ -756,13 +744,16 @@ class OrderController extends Controller
         try {
             $publicKey = env('API_PUBLIC_KEY_WOMPI');
             $privateKey = env('API_PRIVATE_KEY_WOMPI');
-             $token = base64_encode($publicKey . ':' . $privateKey);
+            $token = base64_encode($publicKey . ':' . $privateKey);
             $baseUrl = 'https://production.wompi.co/v1/';
 
                 $response = Http::withHeaders([
                     'Bearer' => $token,
                 ])->get($baseUrl . 'transactions/' . $id_transaction);
-            return $response->json();
+            $response = $response->json();
+            $status = $response['data']['status'];
+
+            return $status;
         } catch (\Throwable $th) {
             Log::error('Error en la sincronización de facturas: ' . $th->getMessage());
         }
