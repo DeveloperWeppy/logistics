@@ -615,8 +615,6 @@ class OrderController extends Controller
             if ($status_order == 0) {
                 if ($payment_method == "Wompi") {
                     $responsePayment = $this->apiWompi($id_transaction_payment);
-                } else {
-                    $responsePayment = $this->apiAddi($id_transaction_payment);
                 }
             }
             // Si existe, devolver una respuesta JSON válida
