@@ -319,7 +319,7 @@
                                 //console.log("respuesta ajax: " + data.valid);
                                 if (data.order_status != 3) {
                                     swal("Correcto!", "Pedido Correcto!", "success");
-                                    window.location.href = '/orders/create/' + scannedOrderId;
+                                    //window.location.href = '/orders/create/' + scannedOrderId;
                                 } else {
                                     $('#order_id_input').val('');
                                     swal("Información!", "El pedido ya se encuentra completado!", "warning");
