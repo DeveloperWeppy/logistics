@@ -622,7 +622,7 @@ class OrderController extends Controller
                 $baseUrl = 'https://production.wompi.co/v1/';
 
                 $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $token,
+                    'Authorization' => 'Basic ' . $token,
                 ])->get($baseUrl . 'transactions/' . $id_transaction_payment);
 
                 dd($response->json());
