@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use App\Models\Order;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use chillerlan\QRCode\QRCode;
 use App\Models\LastSyncInvoices;
 use chillerlan\QRCode\QROptions;
-use chillerlan\QRCode\QRCode;
-use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 //use TCPDF;
 
 class OrderController extends Controller
@@ -319,16 +321,39 @@ class OrderController extends Controller
         return view('orders.indexnew',['type'=>$type]);
 
     }
+    public function get_orders_completed()
+    {
+        $type="";
+        if(isset($_GET['type'])){
+            $type=$_GET['type'];              
+        }
+        return view('orders.indexnewcomplete',['type'=>$type]);
+
+    }
 
     public function get_orders_datatable(Request $request)
     {
+       $rutaReferente = $request->headers->get('referer');
+
+       // Obtiene la ruta relativa
+       $rutaRelativa = parse_url($rutaReferente, PHP_URL_PATH);
+
+       //URL base
+       $urlBase = '/orders/web';
 
        $arrayStatus=['En cola','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
     
         $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
         ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
         
-        $data= $query->get();
+        // Compara la ruta relativa con la URL base
+       if ($rutaRelativa == $urlBase) {
+            $data = $query->where('orders.status', '<>', 3)->get();
+        } else {
+            $data = $query->where('orders.status', 3)->get();
+        }
+        
+        //$data= $query->get();
         $datos = array();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){

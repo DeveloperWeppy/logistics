@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('orders/store/{id?}/{type?}',[OrderController::class,'store'])->name('orders.store');
     //Route::get('product',[MaterialController::class,'index'])->name('product');
     Route::get('orders/web',[OrderController::class,'get_orders'])->name('orders.get_orders');
+    Route::get('orders/web-completados',[OrderController::class,'get_orders_completed'])->name('orders.get_orders_completed');
     Route::get('orders/web-datatable',[OrderController::class,'get_orders_datatable'])->name('orders.get_orders_datatable');
     Route::get('orders/sync-invoices',[OrderController::class,'sync_invoices'])->name('orders.sync_invoices');
     Route::get('orders/qr/{id}', [OrderController::class,'getQrCode'])->name('orders.qr');

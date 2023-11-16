@@ -33,8 +33,9 @@
                         <li class="sidebar-list"><a class="sidebar-link sidebar-title" href="javascript:void(0)"><i
                                     data-feather="shopping-bag"></i><span>Pedidos</span></a>
                             <ul class="sidebar-submenu">
-                                <li><a href="{{ route('orders') }}">Activos</a></li>
-                                <li><a href="{{ route('orders') }}?type=completed">Completados</a></li>
+                                {{-- <li><a href="{{ route('orders') }}">Activos</a></li> --}}
+                                <li><a href="{{ route('orders.get_orders') }}">Activos</a></li>
+                                <li><a href="{{ route('orders.get_orders_completed') }}">Completados</a></li>
                                 
                             </ul>
                         </li>
@@ -60,12 +61,6 @@
                             data-feather="list"></i><span>Inventario
                                 </span></a></li>      
                     @endif
-                            
-                    <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav"
-                        href="{{ route('orders.get_orders') }}"><i
-                        data-feather="shopping-bag"></i><span>Pedidos
-                            </span></a></li> 
-
                 </ul>
              
             </div>

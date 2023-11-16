@@ -18,7 +18,7 @@
             <div class="col-6">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"> <i data-feather="home"></i></a></li>
-                    <li class="breadcrumb-item">Pedidos</li>
+                    <li class="breadcrumb-item">Pedidos Completados</li>
                   
                 </ol>
             </div>
@@ -94,32 +94,6 @@
         $(document).ready(function() {
             $('#order_id_input').focus();
             var order_id=0;
-            $(document).on("click", ".btm-check", function() {  
-                order_id=$(this).attr("data");
-                $("#modalAprobar").modal('show');
-            });
-            $(document).on("click", "#btn-finalizar", function() {  
-                var csrfToken = document.querySelector('input[name="_token"]').value;
-                fetch("{{ route('orders.store');}}/"+order_id+"/"+1, {
-                method: 'POST',
-                body: JSON.stringify({cod:$("#codrastreo").val()}), 
-                headers:{
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                    
-                }
-                }).then(res => res.json())
-                .catch(error => console.error('Error:', error))
-                .then(response =>  {
-                    swal({
-                    icon: 'success',
-                    title: 'Guardado',
-                    showConfirmButton: false,
-                    timer: 1500
-                    });
-                    location.href ="{{ route('orders');}}";
-                });
-            });
            
             // $("#btn-scann-qr").on( "click", function() {
             //     $("#cont-input-id").hide();
@@ -193,47 +167,7 @@
                 });
             });
             if (isMobile) {
-            //    $(".card-pc").hide();
-            //    fetch("{{route('orders.get_orders_datatable')}}", {
-            //     method: 'get',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            //     })
-            //     .then(res => res.json())
-            //     .catch(error => console.error('Error:', error))
-            //     .then(response => {
-            //         var list="";
-            //         var cont=$("#tarjeta-table").html();
-            //         for (let i = 0; i < response.data.length; i++) {
-            //             const billing =JSON.parse(response.data[i].billing);
-            //             const fecha = new Date(response.data[i].created_at);
-            //             let fechat= fecha.getDate()+"/"+(fecha.getMonth()+1)+"/"+fecha.getFullYear()+" "+fecha.getHours()+":"+fecha.getMinutes();
-            //             list+= `
-            //             <div class="col-md-12 mb-3">
-            //                 <div class="card">
-            //                     <div class="card-body">
-            //                     <div class="row">
-            //                         <div class="col-10">
-            //                         #: <span class="email">${response.data[i].wc_order_id}</span><br>
-            //                         Fecha: <span class="email">${fechat}</span><br>
-            //                         Cliente: <span class="email">${response.data[i].customer}</span><br>
-            //                         Creador: <span class="email">${response.data[i].customer}</span><br>
-            //                         Estado: <span class="email">${response.data[i].status_name}</span>
-            //                         </div>
-            //                         <div class="col-2" style="display: flex; justify-content: center; align-items: center;">
-            //                           ${response.data[i].edit}
-            //                         </div>
-            //                     </div>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         `;
-            //         }
-
-            //         $("#tarjeta-table").html(cont+"<div style='width:100%'>"+list+"</div>");
-            //     });
-
+            
             } else {
                 $("#tarjeta-table").hide();
                 var table = $('#users-table').DataTable({
