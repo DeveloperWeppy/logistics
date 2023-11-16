@@ -251,6 +251,31 @@ class OrderController extends Controller
       
         $this->siigoEnviar($siigo_invoice_id);
     }
+
+    public function pruebaOrders()
+    {
+        $consumer_key = env('API_WOOCOMMERCE_USER');
+        $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
+        $headers = [
+            //'Authorization' => 'Basic ' . $authorization,
+            'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
+        ];
+        $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
+
+        if ($response->status() == 200) {
+            $orders = json_decode($response->body(), true);
+
+            // estados a filtrar
+            $desiredStatuses = ["processing", "addi-approved"];
+
+            // Filtra las órdenes por estado
+            $filteredOrders = array_filter($orders, function ($order) use ($desiredStatuses) {
+                return in_array($order["status"], $desiredStatuses);
+            });
+
+            dd($filteredOrders);
+        }
+    }
     public function siigoEnviar($siigo_invoice_id)
     {
         $value = session('siigo_data');
@@ -303,16 +328,12 @@ class OrderController extends Controller
         $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
         ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
         
-    
-        //$l=$request->input('start') / $request->input('length') + 1;
-        //$users = $query->paginate($request->input('length'), ['*'], 'page',1 );
-        //$count = count($users);
         $data= $query->get();
         $datos = array();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
             if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
-                $datos[$i]['edit'] = '<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+                $datos[$i]['edit'] = '<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-tooltip-edit"></i></a>';
             }
             if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
                 $datos[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
@@ -371,8 +392,8 @@ class OrderController extends Controller
         try {
             // Obtén la fecha y hora de la última sincronización exitosa
             $lastSync = LastSyncInvoices::first(); // Suponiendo que LastSync es el modelo para tu tabla auxiliar
-            $day = date("Y-m-d");
-            $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
+            //$day = date("Y-m-d");
+            //$authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
             $consumer_key = env('API_WOOCOMMERCE_USER');
             $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
             $headers = [
@@ -397,7 +418,11 @@ class OrderController extends Controller
                 foreach ($filteredOrders as $key => $invoice) {
                     
                     $createdTimestamp = strtotime($invoice['date_created']);
-                    if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp) {
+                    $modifiedTimestamp = strtotime($invoice['date_paid']);
+
+                    //if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp) {
+                        if((!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp)
+                            && ($createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp || $modifiedTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp)){
                         $totalInvoicesresults++;
                         $siigo_invoice_id="";
                         $cedula = ""; 

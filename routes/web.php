@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('orders',[OrderController::class,'index'])->name('orders');
     Route::get('orders/prueba',[OrderController::class,'prueba'])->name('orders.prueba');
+    Route::get('orders/prueba-orders',[OrderController::class,'pruebaOrders'])->name('orders.pruebaorders');
     Route::get('orders/get/{type?}',[OrderController::class,'get'])->name('orders.get');
     Route::get('orders/create/{id?}',[OrderController::class,'create'])->name('orders.create');
     Route::get('orders/detail/{id?}',[OrderController::class,'detail'])->name('orders.detail');
