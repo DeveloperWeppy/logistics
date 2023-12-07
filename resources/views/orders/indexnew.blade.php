@@ -36,7 +36,7 @@
                             <h3></h3>
                         @endif
                         
-                        @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
+                        @if(@Auth::user()->hasRole('Admin') || @Auth::user()->hasRole('Picking'))
                         <button class="btn btn-primary btn-create mr-3" type="button" >Sincronizar Pedidos
                                <i style="color:white;" class="mdi mdi-sync"></i></button>
                         @endif
@@ -58,7 +58,7 @@
                                         <th scope="col">Teléfono</th>
                                         <th scope="col">Método de Pago</th>
                                         <th scope="col">Ciudad</th>
-                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Fecha de Pago</th>
                                         <th scope="col">Total</th>
                                         <th scope="col">Acción</th>
                                         <th scope="col">QR</th>
@@ -243,11 +243,11 @@
                 processing: true,
                 serverSide: true,
                 // colReorder: true,
-                pageLength: 10,
+                pageLength: 30,
                 //lengthChange: true, 
-                lengthMenu: [10, 25, 50, 75, 100],
+                lengthMenu: [30, 60, 90, 120, 200],
                 ajax: '{{route('orders.get_orders_datatable')}}',
-                
+                searching: true,
                 order: [[0, 'DESC']],
                 columns: [
                     { data: 'wc_order_id' },

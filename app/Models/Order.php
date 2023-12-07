@@ -27,7 +27,8 @@ class Order extends Model
         'tracking_code',
         'status',
         'payment_method',
-        'id_transaction_payment'
+        'id_transaction_payment',
+        'date_paid'
     ];
     public function creatorUser()
     {

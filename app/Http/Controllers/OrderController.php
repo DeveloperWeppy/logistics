@@ -107,7 +107,6 @@ class OrderController extends Controller
                 'status' => 0,
             ]);
         }
-     
   
         for($i = 0; $i < count($data['line_items']); $i++) {
             $dataP=$this->apiWc("products/".$data['line_items'][$i]['product_id']);
@@ -258,12 +257,21 @@ class OrderController extends Controller
     {
         $consumer_key = env('API_WOOCOMMERCE_USER');
         $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
+        $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
         $headers = [
-            //'Authorization' => 'Basic ' . $authorization,
+            'Authorization' => 'Basic ' . $authorization,
             'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
         ];
-        $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
-
+        //$url = 'https://natylondon.com/wp-json/wc/v3/orders/';
+        $url = 'https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret.'&status=processing&per_page=50';
+        $params = [
+            'consumer_key' => $consumer_key,
+            'consumer_secret' => $consumer_secret,
+            'status' => 'processing', // Comma-separated list of statuses
+            'per_page' => 100,
+        ];
+                $response = Http::withHeaders($headers)->get($url,$params);
+        dd(json_decode($response->body(), true));
         if ($response->status() == 200) {
             $orders = json_decode($response->body(), true);
 
@@ -275,7 +283,9 @@ class OrderController extends Controller
                 return in_array($order["status"], $desiredStatuses);
             });
 
-            dd($filteredOrders);
+            
+        }else if($response->status() == 403){
+            dd($response);
         }
     }
     public function siigoEnviar($siigo_invoice_id)
@@ -344,8 +354,15 @@ class OrderController extends Controller
        $arrayStatus=['En cola','Picking Realizado','Packing Realizado','Completado','Embalado','Etiquetado','Enviado',''];
     
         $query = Order::leftJoin('users', 'users.id', '=', 'orders.create_user_id')
-        ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.created_at', 'users.name as name_user');
+        ->select('orders.id', 'orders.wc_order_id', 'orders.create_user_id', 'orders.billing','orders.payment_method', 'orders.wc_status', 'orders.total_amount', 'orders.status', 'orders.date_paid', 'users.name as name_user');
         
+        // Se aplica la búsqueda global a wc_order_id, city
+        $query->where(function ($query) use ($request) {
+            $searchValue = $request->input('search')['value'];
+        
+            $query->where('orders.wc_order_id', 'like', '%' . $searchValue . '%')
+                  ->orWhereRaw("JSON_UNQUOTE(JSON_EXTRACT(orders.billing, '$.city')) LIKE '%$searchValue%'");
+        });
         // Compara la ruta relativa con la URL base
        if ($rutaRelativa == $urlBase) {
             $data = $query->where('orders.status', '<>', 3)->get();
@@ -357,21 +374,22 @@ class OrderController extends Controller
         $datos = array();
         $rol=auth()->user()->getRoleNames()->first();
         for ($i=0;$i<count($data);$i++){
+            $datos[$i]['edit'] = '';
             if(($data[$i]['status']==0 && ($rol=="Picking" || $rol=="Admin" )) || ($data[$i]['status']==1  && ($rol=="Packing"  ||  $rol=="Admin"  )) ){
                 $datos[$i]['edit'] = '<a href="'.route('orders.create', $data[$i]['wc_order_id']).'"><i class="mdi mdi-tooltip-edit"></i></a>';
             }
             if(($data[$i]['status']==1 && $rol=="Picking") || ($data[$i]['status']==2  && $rol=="Packing") ){
-                $datos[$i]['edit']='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
+                $datos[$i]['edit'] .='<a href="#" class="btn-no-check"><i class="mdi mdi-checkbox-marked-outline"></i></a>';
             }
             
             if($rol=="Despachador"){
-                $datos[$i]['edit']="";
+                $datos[$i]['edit'] .="";
             }
             // if(!isset($data[$i]['edit'])){
             //     $datos[$i]['edit']="";
             // }
             if(($rol=="Admin" || $rol=="Delivery") && $data[$i]['status']==2){
-               $datos[$i]['edit']= '<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
+               $datos[$i]['edit'] .= '<a href="#" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi mdi-checkbox-blank-outline"></i></a>';
             }
              if($data[$i]['status']==3){
                // $data[$i]['edit']= $data[$i]['edit'].'<a  href="'.route('orders.detail', $data[$i]['wc_order_id']).'" class="btm-check" data="'.$data[$i]['id'].'"><i class="mdi  mdi-checkbox-multiple-blank-outline"></i></a>';
@@ -383,7 +401,11 @@ class OrderController extends Controller
             if(isset($customer['first_name'],$customer['last_name'])){
                 $datos[$i]['customer']=$customer['first_name']." ".$customer['last_name'];
             }
-            $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['created_at']));
+            if(stripos($customer['city'], 'cali') !== false){
+                $datos[$i]['edit'] .= '<a class="" target="_blank" href="'.route('orders.pdf', ['idOrder' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-file-pdf"></i></a>';
+            }
+
+            $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['date_paid']));
             $payment_methid = $data[$i]['payment_method'] == 'Paga a cuotas' ? 'Addi' : $data[$i]['payment_method'];
             //$qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.get_site_url().'/wp-json/picking-weppy/order/qr?id='.$pedido->get_id().'"><i class="mdi mdi-qrcode"></i></a></td>';
             $qr = '<td style="display:flex;justify-content:center;"><a class="" target="_blank" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-qrcode"></i></a></td>';
@@ -418,29 +440,38 @@ class OrderController extends Controller
             // Obtén la fecha y hora de la última sincronización exitosa
             $lastSync = LastSyncInvoices::first(); // Suponiendo que LastSync es el modelo para tu tabla auxiliar
             //$day = date("Y-m-d");
-            //$authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
+            $authorization = base64_encode(env('API_WOOCOMMERCE_USER') . ':' . env('API_WOOCOMMERC_PASSWORD'));
             $consumer_key = env('API_WOOCOMMERCE_USER');
             $consumer_secret = env('API_WOOCOMMERC_PASSWORD');
             $headers = [
-                //'Authorization' => 'Basic ' . $authorization,
+                'Authorization' => 'Basic ' . $authorization,
                 'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
             ];
-            $response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
-
+            
+            $url = 'https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret.'&status=processing&per_page=100';
+            $params = [
+                'consumer_key' => $consumer_key,
+                'consumer_secret' => $consumer_secret,
+                'status' => 'processing', // 
+                'per_page' => 100,
+            ];
+            $response = Http::withHeaders($headers)->get($url, $params);
+            //$response = Http::get('https://natylondon.com/wp-json/wc/v3/orders?consumer_key='.$consumer_key.'&consumer_secret='.$consumer_secret);
+            
             if ($response->status() == 200) {
                 $orders = json_decode($response->body(), true);
 
                 // estados a filtrar
-                $desiredStatuses = ["processing", "addi-approved"];
+                //$desiredStatuses = ["processing", "addi-approved"];
 
                 // Filtra las órdenes por estado
-                $filteredOrders = array_filter($orders, function ($order) use ($desiredStatuses) {
-                    return in_array($order["status"], $desiredStatuses);
-                });
+                // $filteredOrders = array_filter($orders, function ($order) use ($desiredStatuses) {
+                //     return in_array($order["status"], $desiredStatuses);
+                // });
                 $totalInvoicesresults= 0;
                 // Ahora, $filteredOrders contiene solo las órdenes con estado "processing" o "addi-approved"
                 // Puedes trabajar con este array filtrado según tus necesidades.
-                foreach ($filteredOrders as $key => $invoice) {
+                foreach ($orders as $key => $invoice) {
                     
                     $createdTimestamp = strtotime($invoice['date_created']);
                     $modifiedTimestamp = strtotime($invoice['date_paid']);
@@ -459,6 +490,8 @@ class OrderController extends Controller
                                 $cedula = $meta_data['value'];
                             }
                         }
+                        // Convertir la cadena de fecha a un objeto DateTime
+                        $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                         // Agregar "cedula" al arreglo "billing"
                         $invoice['billing']['document_number'] = $cedula;
                         $order = Order::create([
@@ -474,9 +507,19 @@ class OrderController extends Controller
                             'picking_user_id'=>0,
                             'siigo_invoice'=>$siigo_invoice_id,
                             'status' => 0,
+                            'date_paid'  => $timestamp
                         ]);
                     }
                 }
+                // Ejecutar la segunda función
+                try {
+                    Log::info('Antes de processAdditionalOrders');
+                    $this->processAdditionalOrders($consumer_key, $consumer_secret, $lastSync->last_register);
+                    Log::info('Después de processAdditionalOrders');
+                } catch (\Throwable $th) {
+                    Log::error('Excepción en processAdditionalOrders: ' . $th->getMessage());
+                }
+                                
                 // Actualiza la fecha y hora de la última sincronización exitosa
                 if (!$lastSync) {
                     $lastSync = new LastSyncInvoices();
@@ -484,11 +527,14 @@ class OrderController extends Controller
 
                 $lastSync->last_register = now()->setTimezone('America/Bogota');
                 $lastSync->save();
-                Log::info('Cantidad de facturas: ' . $totalInvoicesresults);
+
+                Log::info('Cantidad de facturas processing: ' . $totalInvoicesresults);
                 $error = false;
                 $mensaje = 'Exitoso';
             }else{
-                dd( 'false api'. $response->throw()->json());
+                $error = true;
+                $mensaje = 'Error al procesar facturas  '.$response->throw()->json();
+                Log::error( 'false api'. $response->throw()->json());
             }
         } catch (\Throwable $th) {
             //throw $th;
@@ -497,6 +543,92 @@ class OrderController extends Controller
         return response()->json(['error' => $error, 'mensaje' => $mensaje]);
     }
 
+    private function processAdditionalOrders($consumer_key, $consumer_secret, $last_register)
+    {
+        try {
+            $authorization = base64_encode($consumer_key . ':' . $consumer_secret);
+            $headers = [
+                'Authorization' => 'Basic ' . $authorization,
+                'Cookie' => 'database_validation=1; mailpoet_page_view=%7B%22timestamp%22%3A1686054310%7D',
+            ];
+    
+            $page = 1;
+            do {
+                $url = 'https://natylondon.com/wp-json/wc/v3/orders?consumer_key=' . $consumer_key . '&consumer_secret=' . $consumer_secret . '&page=' . $page;
+                $response = Http::withHeaders($headers)->get($url);
+    
+                if ($response->status() == 200) {
+                    $additionalOrders = json_decode($response->body(), true);
+    
+                    // Verifica si la respuesta es un array antes de aplicar array_filter
+                    if (is_array($additionalOrders)) {
+                        $desiredStatuses = ["addi-approved"];
+    
+                        $filteredOrders = array_filter($additionalOrders, function ($order) use ($desiredStatuses) {
+                            return in_array($order["status"], $desiredStatuses);
+                        });
+    
+                        $totalInvoicesresults = 0;
+    
+                        foreach ($filteredOrders as $key => $invoice) {
+                            $createdTimestamp = strtotime($invoice['date_created']);
+                            $modifiedTimestamp = strtotime($invoice['date_paid']);
+    
+                            if ((!$last_register || $createdTimestamp > Carbon::parse($last_register, 'America/Bogota')->timestamp)
+                                && ($createdTimestamp > Carbon::parse($last_register, 'America/Bogota')->timestamp || $modifiedTimestamp > Carbon::parse($last_register, 'America/Bogota')->timestamp)) {
+                           
+                                $totalInvoicesresults++;
+                                $siigo_invoice_id = "";
+                                $cedula = ""; 
+    
+                                foreach ($invoice['meta_data'] as $meta_data) {
+                                    if ($meta_data['key'] == '_siigo_invoice_id') {
+                                        $siigo_invoice_id = $meta_data['value'];
+                                    }
+                                    if ($meta_data['key'] == 'cedula') {
+                                        $cedula = $meta_data['value'];
+                                    }
+                                }
+                                
+                                $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
+                                $invoice['billing']['document_number'] = $cedula;
+    
+                                $order = Order::create([
+                                    'wc_order_id' => $invoice['id'],
+                                    'payment_method' => $invoice['payment_method_title'], 
+                                    'id_transaction_payment' => $invoice['transaction_id'],
+                                    'wc_status' => $invoice['status'],
+                                    'shipping' => json_encode($invoice['shipping']),
+                                    'billing' => json_encode($invoice['billing']),
+                                    'line_items' =>json_encode($invoice['line_items']),
+                                    'total_amount' =>$invoice['total'],
+                                    'create_user_id' =>  auth()->user()->id,
+                                    'picking_user_id'=>0,
+                                    'siigo_invoice'=>$siigo_invoice_id,
+                                    'status' => 0,
+                                    'date_paid'  => $timestamp,
+                                ]);
+                            }
+                        }
+    
+                        $page++; // Incrementa el número de página para obtener la siguiente página de resultados
+    
+                    } else {
+                        Log::error('La respuesta no es un array válido.');
+                        break; // Sale del bucle si la respuesta no es válida
+                    }
+                } else {
+                    Log::error('Error al obtener pedidos adicionales: ' . $response->throw()->json());
+                    break; // Sale del bucle si hay un error en la solicitud
+                }
+            } while (!empty($additionalOrders)); // Continúa el bucle mientras haya más resultados
+    
+            Log::info('Cantidad total de facturas Addi: ' . $totalInvoicesresults);
+    
+        } catch (\Throwable $th) {
+            Log::error('Error al procesar pedidos adicionales: ' . $th->getMessage());
+        }
+    }
     // public function qr($params=[]) {
     //     $options = new QROptions(
     //         [
@@ -689,7 +821,7 @@ class OrderController extends Controller
 
         
         $company = 'Naty London';
-        $addres_company = 'Calle 47 norte #5an-73, La Flora';
+        $addres_company = $customer['address_1'] ? $customer['address_1'] : 'Sin ciudad';
         // Obtener la fecha del pedido
         $date_order = $order->created_at;
         $formatted_date_order  = date('d/m/Y H:i:s', strtotime($date_order));

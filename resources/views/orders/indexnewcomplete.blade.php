@@ -36,10 +36,10 @@
                             <h3></h3>
                         @endif
                         
-                        @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
+                        {{-- @if (auth()->user()->getRoleNames()->first() != 'Despachador' && !isset($_GET['type']))
                         <button class="btn btn-primary btn-create mr-3" type="button" >Sincronizar Pedidos
                                <i style="color:white;" class="mdi mdi-sync"></i></button>
-                        @endif
+                        @endif --}}
                         {{-- <button type="button" class="btn btn-info ml-2" id="verifyOrderButton">Verificar Pedido
                             <i style="color:white;" class="mdi mdi-checkbox-marked-circle"></i>
                         </button> --}}
