@@ -10,6 +10,9 @@
 
 @section('main-content')
 <div class="container-fluid">
+    <!-- Agregar el token CSRF solo en esta vista -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <div class="page-title">
         <div class="row">
             <div class="col-6">
@@ -37,6 +40,8 @@
                         @endif
                         
                         @if(@Auth::user()->hasRole('Admin') || @Auth::user()->hasRole('Picking'))
+                        <button class="btn btn-info mr-3 ms-2" type="button" id="generate-qr-selected">Crear QR de Seleccionados
+                            <i style="color:white;" class="mdi mdi-qrcode"></i></button>
                         <button class="btn btn-primary btn-create mr-3" type="button" >Sincronizar Pedidos
                                <i style="color:white;" class="mdi mdi-sync"></i></button>
                         @endif
@@ -52,6 +57,7 @@
                             <table id="users-table" class="display responsive nowrap" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th scope="col"></th>
                                         <th scope="col">Pedido</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Cliente</th>
@@ -250,6 +256,9 @@
                 searching: true,
                 order: [[0, 'DESC']],
                 columns: [
+                    { data: null, orderable: false, render: function (data, type, row) {
+                        return '<input type="checkbox" class="check-row" data-order-id="' + row.wc_order_id + '">';
+                    }},
                     { data: 'wc_order_id' },
                     { data: 'status_name' },
                     { data: 'customer' },
@@ -283,6 +292,62 @@
                     console.log('valueee '+scannedOrderId);
                     handleScan(skuEscaneado);
                 }, 100);
+            });
+
+            // Manejar la selección/deselección de todos los checkboxes
+            $('#check-all').change(function () {
+                $('.check-row').prop('checked', this.checked);
+            });
+
+            // Manejar la generación masiva de QR al hacer clic en el botón correspondiente
+            $('#generate-qr-selected').click(function () {
+                var selectedOrders = [];
+
+                // Obtener los IDs de los pedidos seleccionados
+                $('.check-row:checked').each(function () {
+                    selectedOrders.push($(this).data('order-id'));
+                });
+
+                // Validar que hay al menos un pedido seleccionado
+                if (selectedOrders.length === 0) {
+                    // Mostrar una alerta con SweetAlert
+                    swal({
+                        text: "Por favor, selecciona al menos un pedido para generar QR",
+                        icon: 'error',
+                        showConfirmButton: true,
+                    });
+                    return; // Detener la ejecución si no hay pedidos seleccionados
+                }
+
+                // Realizar la solicitud AJAX para generar los QR de los pedidos seleccionados
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '{{ route("orders.generate_qr_selected") }}',
+                    type: 'POST',
+                    data: { orders: selectedOrders },
+                    success: function (response) {
+                        console.log(response);
+                        if (response.success) {
+                            swal({
+                                text: "Se ha generado los QR de los pedidos seleccionados",
+                                icon: 'success',
+                                showConfirmButton: true,
+                            });
+                            openPdfTab(response.html);
+                        }else{
+                            swal({
+                                text: "Ha ocurrido un error al intentar generar los QR de los pedidos seleccionados",
+                                icon: 'error',
+                                showConfirmButton: true,
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
             });
 
         });
@@ -354,6 +419,38 @@
                     ('#order_id_input').focus();
                 }
         }
-        
+
+        // Función para abrir una nueva pestaña y enviar los datos HTML
+        function openPdfTab(htmlData) {
+            // Obtener el token CSRF
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            // Crear un formulario temporal
+            var form = document.createElement('form');
+            form.method = 'post';
+            form.action = '{{ route("orders.pdf_qr_masivos") }}';
+            form.target = '_blank';
+
+            // Agregar un campo de entrada para el token CSRF
+            var csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = csrfToken;
+            form.appendChild(csrfInput);
+
+            // Agregar un campo de entrada para los datos HTML
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'htmlData';
+            input.value = JSON.stringify(htmlData);
+            form.appendChild(input);
+
+            // Agregar el formulario al documento y enviarlo
+            document.body.appendChild(form);
+            form.submit();
+
+            // Eliminar el formulario temporal
+            document.body.removeChild(form);
+        }
     </script>
 @endsection

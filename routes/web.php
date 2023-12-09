@@ -68,6 +68,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/qr/{id}', [OrderController::class,'getQrCode'])->name('orders.qr');
     Route::get('orders/qr-validation/{order_id}', [OrderController::class,'redirectToDetail'])->name('orders.qr_validation');
     Route::get('orders/pdf/{idOrder}', [OrderController::class,'getPdfOrder'])->name('orders.pdf');
+    Route::post('orders/generate-qr-selected',  [OrderController::class,'generateQrSelected'])->name('orders.generate_qr_selected');
+    Route::post('orders/pdf-qr-masivos', [OrderController::class,'generatePdfMultiple'])->name('orders.pdf_qr_masivos');
 
 
 

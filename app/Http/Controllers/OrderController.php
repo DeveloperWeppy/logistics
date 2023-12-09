@@ -479,36 +479,45 @@ class OrderController extends Controller
                     //if (!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp) {
                         if((!$lastSync || $createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp)
                             && ($createdTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp || $modifiedTimestamp > Carbon::parse($lastSync->last_register, 'America/Bogota')->timestamp)){
-                        $totalInvoicesresults++;
-                        $siigo_invoice_id="";
-                        $cedula = ""; 
-                        foreach ($invoice['meta_data'] as $meta_data) {
-                            if($meta_data['key']=='_siigo_invoice_id'){
-                            $siigo_invoice_id=$meta_data['value'];
+                            // Verifica si ya existe un pedido con el mismo wc_order_id
+                            $existingOrder = Order::where('wc_order_id', $invoice['id'])->first();
+
+                            if (!$existingOrder) {
+                                $totalInvoicesresults++;
+                                $siigo_invoice_id="";
+                                $cedula = ""; 
+                                foreach ($invoice['meta_data'] as $meta_data) {
+                                    if($meta_data['key']=='_siigo_invoice_id'){
+                                    $siigo_invoice_id=$meta_data['value'];
+                                    }
+                                    if ($meta_data['key'] == 'cedula') {
+                                        $cedula = $meta_data['value'];
+                                    }
+                                }
+                                // Convertir la cadena de fecha a un objeto DateTime
+                                $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
+                                // Agregar "cedula" al arreglo "billing"
+                                $invoice['billing']['document_number'] = $cedula;
+                                $order = Order::create([
+                                    'wc_order_id' => $invoice['id'],
+                                    'payment_method' => $invoice['payment_method_title'], 
+                                    'id_transaction_payment' => $invoice['transaction_id'],
+                                    'wc_status' => $invoice['status'],
+                                    'shipping' => json_encode($invoice['shipping']),
+                                    'billing' => json_encode($invoice['billing']),
+                                    'line_items' =>json_encode($invoice['line_items']),
+                                    'total_amount' =>$invoice['total'],
+                                    'create_user_id' =>  auth()->user()->id,
+                                    'picking_user_id'=>0,
+                                    'siigo_invoice'=>$siigo_invoice_id,
+                                    'status' => 0,
+                                    'date_paid'  => $timestamp
+                                ]);
+                            }else{
+                                Log::info('Pedido existente con wc_order_id: ' . $invoice['id']);
                             }
-                            if ($meta_data['key'] == 'cedula') {
-                                $cedula = $meta_data['value'];
-                            }
-                        }
-                        // Convertir la cadena de fecha a un objeto DateTime
-                        $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
-                        // Agregar "cedula" al arreglo "billing"
-                        $invoice['billing']['document_number'] = $cedula;
-                        $order = Order::create([
-                            'wc_order_id' => $invoice['id'],
-                            'payment_method' => $invoice['payment_method_title'], 
-                            'id_transaction_payment' => $invoice['transaction_id'],
-                            'wc_status' => $invoice['status'],
-                            'shipping' => json_encode($invoice['shipping']),
-                            'billing' => json_encode($invoice['billing']),
-                            'line_items' =>json_encode($invoice['line_items']),
-                            'total_amount' =>$invoice['total'],
-                            'create_user_id' =>  auth()->user()->id,
-                            'picking_user_id'=>0,
-                            'siigo_invoice'=>$siigo_invoice_id,
-                            'status' => 0,
-                            'date_paid'  => $timestamp
-                        ]);
+                        
+                        
                     }
                 }
                 // Ejecutar la segunda función
@@ -577,37 +586,45 @@ class OrderController extends Controller
                             if ((!$last_register || $createdTimestamp > Carbon::parse($last_register, 'America/Bogota')->timestamp)
                                 && ($createdTimestamp > Carbon::parse($last_register, 'America/Bogota')->timestamp || $modifiedTimestamp > Carbon::parse($last_register, 'America/Bogota')->timestamp)) {
                            
-                                $totalInvoicesresults++;
-                                $siigo_invoice_id = "";
-                                $cedula = ""; 
-    
-                                foreach ($invoice['meta_data'] as $meta_data) {
-                                    if ($meta_data['key'] == '_siigo_invoice_id') {
-                                        $siigo_invoice_id = $meta_data['value'];
+                                // Verifica si ya existe un pedido con el mismo wc_order_id
+                                $existingOrder = Order::where('wc_order_id', $invoice['id'])->first();
+
+                                if (!$existingOrder) {
+                                    $totalInvoicesresults++;
+                                    $siigo_invoice_id = "";
+                                    $cedula = ""; 
+        
+                                    foreach ($invoice['meta_data'] as $meta_data) {
+                                        if ($meta_data['key'] == '_siigo_invoice_id') {
+                                            $siigo_invoice_id = $meta_data['value'];
+                                        }
+                                        if ($meta_data['key'] == 'cedula') {
+                                            $cedula = $meta_data['value'];
+                                        }
                                     }
-                                    if ($meta_data['key'] == 'cedula') {
-                                        $cedula = $meta_data['value'];
-                                    }
+                                    
+                                    $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
+                                    $invoice['billing']['document_number'] = $cedula;
+        
+                                    $order = Order::create([
+                                        'wc_order_id' => $invoice['id'],
+                                        'payment_method' => $invoice['payment_method_title'], 
+                                        'id_transaction_payment' => $invoice['transaction_id'],
+                                        'wc_status' => $invoice['status'],
+                                        'shipping' => json_encode($invoice['shipping']),
+                                        'billing' => json_encode($invoice['billing']),
+                                        'line_items' =>json_encode($invoice['line_items']),
+                                        'total_amount' =>$invoice['total'],
+                                        'create_user_id' =>  auth()->user()->id,
+                                        'picking_user_id'=>0,
+                                        'siigo_invoice'=>$siigo_invoice_id,
+                                        'status' => 0,
+                                        'date_paid'  => $timestamp,
+                                    ]);
+                                }else{
+                                    Log::info('Pedido existente con wc_order_id: ' . $invoice['id']);
                                 }
                                 
-                                $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
-                                $invoice['billing']['document_number'] = $cedula;
-    
-                                $order = Order::create([
-                                    'wc_order_id' => $invoice['id'],
-                                    'payment_method' => $invoice['payment_method_title'], 
-                                    'id_transaction_payment' => $invoice['transaction_id'],
-                                    'wc_status' => $invoice['status'],
-                                    'shipping' => json_encode($invoice['shipping']),
-                                    'billing' => json_encode($invoice['billing']),
-                                    'line_items' =>json_encode($invoice['line_items']),
-                                    'total_amount' =>$invoice['total'],
-                                    'create_user_id' =>  auth()->user()->id,
-                                    'picking_user_id'=>0,
-                                    'siigo_invoice'=>$siigo_invoice_id,
-                                    'status' => 0,
-                                    'date_paid'  => $timestamp,
-                                ]);
                             }
                         }
     
@@ -783,6 +800,72 @@ class OrderController extends Controller
                 echo $dompdf->output();
     }
 
+    function getPdfCodeMasivos($htmlData, $conf = "")
+    {
+        
+        // Deserializar la cadena JSON en un array
+        $data = json_decode($htmlData, true);
+        
+        // Inicializar el contenido HTML del PDF
+        $pdfContent = "<style>
+                            @font-face {
+                                font-family: 'Monea Alegante';
+                                src: url('https://ceramik.com.co/wp-content/uploads/2022/11/Monea-Alegante.otf') format('truetype');
+                                font-weight: normal;
+                                font-style: normal;
+                            }
+                            body {
+                                font-family: 'Monea Alegante', sans-serif;
+                            }
+                            td {
+                                border: 0px;
+                                padding: 0;
+                                border-collapse: collapse;
+                                height: 50%;
+                            }
+                            html {
+                                margin: 0;
+                                padding: 0;
+                            }
+                            table {
+                                margin: 0;
+                                padding: 0;
+                                height: 100%;
+                                width: 100%;
+                            }
+                            .title-qr-content {
+                                width: 100%;
+                                text-align: center;
+                                margin-top: -15px;
+                                font-weight: 500;
+                                padding-left: -2px;
+                                font-family: 'Monea Alegante', sans-serif;
+                            }
+                        </style>";
+
+        // Agregar el contenido HTML de cada QR al contenido total del PDF
+        foreach ($data as $html) {
+            $pdfContent .= $html;
+        }
+
+        // Crear el objeto Dompdf
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($pdfContent);
+
+        // Configuración del tamaño del papel y DPI
+        $dompdf->set_paper(array(0,0,147,71));
+        $dompdf->set_option('dpi', 52);
+
+        // Renderizar el PDF
+        $dompdf->render();
+
+        // Configurar las cabeceras para la respuesta PDF
+        header("Content-type: application/pdf");
+        header("Content-Disposition: inline; filename=documento.pdf");
+
+        // Enviar el contenido del PDF al navegador
+        echo $dompdf->output();
+    }
 
     public function redirectToDetail($order_id)
     {
@@ -821,7 +904,10 @@ class OrderController extends Controller
 
         
         $company = 'Naty London';
-        $addres_company = $customer['address_1'] ? $customer['address_1'] : 'Sin ciudad';
+        $addres_company = $customer['address_1'] ? $customer['address_1'] : 'Sin Dirección';
+        $addres_company2 = $customer['address_2'] ? $customer['address_2'] : 'Sin Dirección';
+
+        
         // Obtener la fecha del pedido
         $date_order = $order->created_at;
         $formatted_date_order  = date('d/m/Y H:i:s', strtotime($date_order));
@@ -872,6 +958,7 @@ class OrderController extends Controller
                 $html .= '<td style="width: 33%; vertical-align: top;">';
                 $html .= '<p style="margin-top: 3px !important"><strong>' . $company . '</strong> </p>';
                 $html .= '<p class="text-title"><strong>Dirección:</strong> ' . $addres_company . '</p>';
+                $html .= '<p class="text-title"><strong>Dirección 2:</strong> ' . $addres_company2 . '</p>';
                 $html .= '<p class="text-title"><strong>Fecha del pedido:</strong> ' . $formatted_date_order . '</p>';
                 $html .= '<p class="text-title"><strong>Número de orden:</strong> ' . $num_order . '</p>';
                 $html .= '<p class="text-title"><strong>Método de pago:</strong> ' . $payment_method . '</p>';
@@ -917,6 +1004,73 @@ class OrderController extends Controller
         header("Content-type: application/pdf");
         header("Content-Disposition: inline; filename=documento.pdf");
         echo $dompdf->output();
+    }
+
+    public function generateQrSelected(Request $request)
+    {
+        $selectedOrders = $request->input('orders');
+
+        $generatedHtml = [];
+        // Lógica para generar QR de los pedidos seleccionados
+        foreach ($selectedOrders as $orderId) {
+            // Puedes ajustar tu lógica actual para manejar múltiples pedidos a la vez
+            $options = new QROptions([
+                'eccLevel' => QRCode::ECC_L,
+                'outputType' => QRCode::OUTPUT_IMAGE_PNG,
+                'version' => 5,
+            ]);
+
+            $order = Order::where('wc_order_id', $orderId)->first();
+
+            if (!$order) {
+                return ["status" => false];
+            }
+
+            $logo = base64_encode(file_get_contents(asset('assets/images/LOGO-NATY-LONDON-sin-fondo-1.jpg')));
+            $logo = 'data:image/jpeg;base64,' . $logo;
+            $customer = json_decode($order['billing'], true);
+
+            $payment_method = $order->payment_method == 'Paga a cuotas' ? 'Addi' : $order->payment_method;
+            $qrcode = (new QRCode($options))->render($order->wc_order_id);
+            $first_name = $customer['first_name'] . ' ' . $customer['last_name'];
+            $first_name = strlen($first_name) > 10 ? substr($first_name, 0, 10) : $first_name;
+            $identification = $customer['document_number'] ? $customer['document_number'] : 0;
+            $phone = $customer['phone'] ? $customer['phone'] : 0;
+
+            $html = '<table style="width: 100%; height:90%;">';
+            $html .= '<tr style="height: 100%;width: 100%;padding:0px;margin:0px;">';
+            $html .= '<td style="width:50%;height:87%;padding:0px;margin:0px;position: absolute;z-index:105">';
+            $html .= '<img class="qr-image" src="' . $qrcode . '" style="width:98.3%;heigth:auto;margin-top:-2.5px;z-index:-15">';
+            $html .= '</td>';
+            $html .= '<td style="width:49%;height:50%;padding:0px;margin:0px;">';
+            $html .= '<img class="qr-image" src="' . $logo . '" style="width:0%;heigth:auto;margin-top:-11px;margin-left:-12px;">';
+            $html .= '<div style="font-size:6px;position: absolute;margin-top:1px;right:24px;font-weight: bold;">ID:' . $order->wc_order_id . '</div>';
+            $html .= '<div style="font-size:6px;margin-top:3px;font-weight: bold;">D:' . $identification . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $first_name . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $phone . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">$' . number_format($order->total_amount, 2) . '</div>';
+            $html .= '<div style="font-size:6px;font-weight: bold;">' . $payment_method . '</div>';
+            $html .= '</td>';
+            $html .= '</tr>';
+            $html .= '</table>';
+
+            // Lógica para guardar o mostrar el HTML generado
+            // $this->getPdf($html);
+            // almacenar el HTML en un array para usarlo más tarde
+            $generatedHtml[] = $html;
+        }
+        //dd($generatedHtml);
+        return response()->json(['success' => true, 'message' => 'QR generados correctamente', 'html' => $generatedHtml]);
+    }
+
+    public function generatePdfMultiple(Request $request)
+    {
+        $htmlData = $request->input('htmlData');
+
+        // Lógica para generar el PDF con múltiples QR a partir de los datos HTML
+        $this->getPdfCodeMasivos($htmlData);
+
+        exit();
     }
 
     public function apiWompi($id_transaction)
