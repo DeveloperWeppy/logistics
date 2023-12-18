@@ -97,10 +97,12 @@ class SyncSiigo extends Command
                                         $cedula = $meta_data['value'];
                                     }
                                 }
+                                $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
                                 // Convertir la cadena de fecha a un objeto DateTime
                                 $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                                 // Agregar "cedula" al arreglo "billing"
                                 $invoice['billing']['document_number'] = $cedula;
+                                $invoice['billing']['customer_note'] = $customer_note;
                                 $order = Order::create([
                                     'wc_order_id' => $invoice['id'],
                                     'payment_method' => $invoice['payment_method_title'], 
@@ -200,10 +202,11 @@ class SyncSiigo extends Command
                                             $cedula = $meta_data['value'];
                                         }
                                     }
+                                    $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
                                     
                                     $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                                     $invoice['billing']['document_number'] = $cedula;
-        
+                                    $invoice['billing']['customer_note'] = $customer_note;
                                     $order = Order::create([
                                         'wc_order_id' => $invoice['id'],
                                         'payment_method' => $invoice['payment_method_title'], 

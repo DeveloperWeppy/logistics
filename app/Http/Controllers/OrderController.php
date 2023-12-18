@@ -494,10 +494,12 @@ class OrderController extends Controller
                                         $cedula = $meta_data['value'];
                                     }
                                 }
+                                $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
                                 // Convertir la cadena de fecha a un objeto DateTime
                                 $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                                 // Agregar "cedula" al arreglo "billing"
                                 $invoice['billing']['document_number'] = $cedula;
+                                $invoice['billing']['customer_note'] = $customer_note;
                                 $order = Order::create([
                                     'wc_order_id' => $invoice['id'],
                                     'payment_method' => $invoice['payment_method_title'], 
@@ -602,10 +604,11 @@ class OrderController extends Controller
                                             $cedula = $meta_data['value'];
                                         }
                                     }
-                                    
+                                    $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
                                     $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                                     $invoice['billing']['document_number'] = $cedula;
-        
+                                    $invoice['billing']['customer_note'] = $customer_note;
+
                                     $order = Order::create([
                                         'wc_order_id' => $invoice['id'],
                                         'payment_method' => $invoice['payment_method_title'], 
@@ -901,6 +904,7 @@ class OrderController extends Controller
         $identification = $customer['document_number'] ? $customer['document_number'] : 0;
         $phone = $customer['phone'] ? $customer['phone'] : 0;
         $city = $customer['city'] ? $customer['city'] : 'Sin ciudad';
+        $note = isset($customer['customer_note']) ? $customer['customer_note'] : 'Sin nota';
 
         
         $company = 'Naty London';
@@ -954,6 +958,7 @@ class OrderController extends Controller
                 $html .= '<p class="text-title"><strong>Identificación:</strong> ' . $identification . '</p>';
                 $html .= '<p class="text-title"><strong>Teléfono:</strong> ' . $phone . '</p>';
                 $html .= '<p class="text-title"><strong>Ciudad:</strong> ' . $city . '</p>';
+                $html .= '<p class="text-title"><strong>Nota del Cliente:</strong> ' . $note. '</p>';
                 $html .= '</td>';
                 $html .= '<td style="width: 33%; vertical-align: top;">';
                 $html .= '<p style="margin-top: 3px !important"><strong>' . $company . '</strong> </p>';
