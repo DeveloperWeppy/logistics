@@ -68,6 +68,7 @@
                                         <th scope="col">Total</th>
                                         <th scope="col">Acción</th>
                                         <th scope="col">QR</th>
+                                        <th scope="col">Factura Siigo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -269,6 +270,7 @@
                     { data: 'total_amount' },
                     { data: 'edit' },
                     { data: 'qr' },
+                    { data: 'siigo_invoice' },
                     
                 ]
                 });

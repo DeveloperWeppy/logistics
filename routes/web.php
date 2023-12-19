@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('orders/pdf/{idOrder}', [OrderController::class,'getPdfOrder'])->name('orders.pdf');
     Route::post('orders/generate-qr-selected',  [OrderController::class,'generateQrSelected'])->name('orders.generate_qr_selected');
     Route::post('orders/pdf-qr-masivos', [OrderController::class,'generatePdfMultiple'])->name('orders.pdf_qr_masivos');
+    Route::get('orders/siigo-factura/{id_order}', [OrderController::class,'getinvoiceSiigo'])->name('orders.invoicesiigo');
 
 
 

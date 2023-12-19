@@ -13,6 +13,7 @@ use chillerlan\QRCode\QROptions;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 //use TCPDF;
 
 class OrderController extends Controller
@@ -409,6 +410,8 @@ class OrderController extends Controller
             $payment_methid = $data[$i]['payment_method'] == 'Paga a cuotas' ? 'Addi' : $data[$i]['payment_method'];
             //$qr = '<td style="display:flex;justify-content:center;"><a class="" href="'.get_site_url().'/wp-json/picking-weppy/order/qr?id='.$pedido->get_id().'"><i class="mdi mdi-qrcode"></i></a></td>';
             $qr = '<td style="display:flex;justify-content:center;"><a class="" target="_blank" href="'.route('orders.qr', ['id' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-qrcode"></i></a></td>';
+            $invoiceSiigo = '<td style="display:flex;justify-content:center;"><a class="" target="_blank" href="'.route('orders.invoicesiigo', ['id_order' => $data[$i]['id']]).'"> <i class="mdi mdi-clipboard-text"></i></a></td>';
+
             $datos[$i]['phone']= $customer['phone'];
             $datos[$i]['city']= $customer['city'];
             $datos[$i]['payment_method']= $payment_methid;
@@ -416,6 +419,7 @@ class OrderController extends Controller
             $datos[$i]['city']= $customer['city'];
             $datos[$i]['date']= $fecha_hora;
             $datos[$i]['wc_order_id']= $data[$i]['wc_order_id'];
+            $datos[$i]['siigo_invoice']= $invoiceSiigo;
     
             // Almacena la ruta al código QR en tus datos
             $datos[$i]['qr'] = $qr;
@@ -704,6 +708,46 @@ class OrderController extends Controller
     //     exit();
         
     // }
+
+    public function getinvoiceSiigo($idOrder)
+    {
+        $order = Order::find($idOrder);
+        $invoice_siigo = $order->siigo_invoice;
+        $token_siigo = '';
+        //Order::truncate();
+
+        if (Session::has('accessToken') && !empty(Session::get('accessToken'))) {
+            $token_siigo = Session::get('accessToken');
+        } else {
+            $token_siigo = $this->auth_siigo();
+        }
+        
+        try {
+            
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $token_siigo,
+                'Content-Type' => 'application/json',
+                'Partner-Id' => 'IntegrationWeppy',
+            ])->get('https://api.siigo.com/v1/invoices/'.$invoice_siigo.'/pdf');
+            
+            $data = $response->json();
+            //dd($data);
+            // Asumiendo que $data['base64'] contiene el contenido en base64 del PDF
+            $pdfContent = base64_decode($data['base64']);
+
+            // HTML para mostrar en la página (puedes personalizarlo según tus necesidades)
+            //$html = '<div style="text-align: center;"><embed src="data:application/pdf;base64,'.base64_encode($pdfContent).'" width="100%" height="auto" /></div>';
+
+            // Utiliza tu función getPdf para mostrar el PDF
+            //$this->generatePdf($html);
+             // Mostrar el PDF
+            header('Content-Type: application/pdf');
+            echo $pdfContent;
+        } catch (\Throwable $th) {
+            Log::error('Error al obtener invoice de Siigo: ' . $th->getMessage() . PHP_EOL . $th->getTraceAsString());
+
+        }
+    }
 
     public function getQrCode($id)
     {

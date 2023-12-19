@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -44,6 +46,7 @@ class Controller extends BaseController
         try {
             $headers = [
                 'Content-Type' => 'application/json', 
+                'Partner-Id' => 'IntegrationWeppy',
             ];
             if($url=="auth"){
                $url='https://api.siigo.com/auth';
@@ -76,6 +79,35 @@ class Controller extends BaseController
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function auth_siigo()
+    {
+        $username = env('API_SIIGO_USERNAME');
+        $accessKey = env('API_SIIGO_ACCESS_KEY');
+        try {
+            $response = Http::post('https://api.siigo.com/auth', [
+                'username' => $username,
+                'access_key' => $accessKey,
+            ]);
+        
+            if ($response->successful()) {
+                $responseData = $response->json();
+                $accessToken = $responseData['access_token'];
+
+                Session::put('accessToken', $accessToken);
+                return $accessToken;
+            } else {
+                // Maneja la respuesta con código de estado no exitoso
+                // Puedes lanzar una excepción, retornar un mensaje de error, etc.
+                return null;
+            }
+        } catch (Exception $e) {
+            // Maneja cualquier excepción que pueda ocurrir durante la petición
+            // Puedes lanzar una excepción, retornar un mensaje de error, etc.
+            return null;
+        }
+        
     }
     
 }
