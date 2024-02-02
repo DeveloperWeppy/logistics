@@ -108,6 +108,7 @@ class OrderController extends Controller
                 'status' => 0,
             ]);
         }
+        
   
         for($i = 0; $i < count($data['line_items']); $i++) {
             $dataP=$this->apiWc("products/".$data['line_items'][$i]['product_id']);
@@ -404,6 +405,7 @@ class OrderController extends Controller
             }
             if(stripos($customer['city'], 'cali') !== false){
                 $datos[$i]['edit'] .= '<a class="" target="_blank" href="'.route('orders.pdf', ['idOrder' => $data[$i]['wc_order_id']]).'"> <i class="mdi mdi-file-pdf"></i></a>';
+
             }
 
             $fecha_hora = date('d/m/Y h:i A', strtotime($data[$i]['date_paid']));
@@ -420,6 +422,7 @@ class OrderController extends Controller
             $datos[$i]['date']= $fecha_hora;
             $datos[$i]['wc_order_id']= $data[$i]['wc_order_id'];
             $datos[$i]['siigo_invoice']= $invoiceSiigo;
+
     
             // Almacena la ruta al código QR en tus datos
             $datos[$i]['qr'] = $qr;
@@ -498,7 +501,7 @@ class OrderController extends Controller
                                         $cedula = $meta_data['value'];
                                     }
                                 }
-                                $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
+                                 $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
                                 // Convertir la cadena de fecha a un objeto DateTime
                                 $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                                 // Agregar "cedula" al arreglo "billing"
@@ -608,11 +611,12 @@ class OrderController extends Controller
                                             $cedula = $meta_data['value'];
                                         }
                                     }
+                                    
                                     $customer_note = $invoice['customer_note'] ? $invoice['customer_note'] : 'Sin nota';
                                     $timestamp = Carbon::parse($invoice['date_paid'], 'America/Bogota');
                                     $invoice['billing']['document_number'] = $cedula;
                                     $invoice['billing']['customer_note'] = $customer_note;
-
+        
                                     $order = Order::create([
                                         'wc_order_id' => $invoice['id'],
                                         'payment_method' => $invoice['payment_method_title'], 
@@ -653,6 +657,7 @@ class OrderController extends Controller
             Log::error('Error al procesar pedidos adicionales: ' . $th->getMessage());
         }
     }
+
     // public function qr($params=[]) {
     //     $options = new QROptions(
     //         [
@@ -748,7 +753,6 @@ class OrderController extends Controller
 
         }
     }
-
     public function getQrCode($id)
     {
         $options = new QROptions([
@@ -847,7 +851,7 @@ class OrderController extends Controller
                 echo $dompdf->output();
     }
 
-    function getPdfCodeMasivos($htmlData, $conf = "")
+function getPdfCodeMasivos($htmlData, $conf = "")
     {
         
         // Deserializar la cadena JSON en un array
@@ -948,7 +952,7 @@ class OrderController extends Controller
         $identification = $customer['document_number'] ? $customer['document_number'] : 0;
         $phone = $customer['phone'] ? $customer['phone'] : 0;
         $city = $customer['city'] ? $customer['city'] : 'Sin ciudad';
-        $note = isset($customer['customer_note']) ? $customer['customer_note'] : 'Sin nota';
+        $note = isset($customer['customer_note'])  ? $customer['customer_note'] : 'Sin nota';
 
         
         $company = 'Naty London';
@@ -1108,6 +1112,7 @@ class OrderController extends Controller
             // almacenar el HTML en un array para usarlo más tarde
             $generatedHtml[] = $html;
         }
+        $generatedHtml = array_map('utf8_encode', $generatedHtml);
         //dd($generatedHtml);
         return response()->json(['success' => true, 'message' => 'QR generados correctamente', 'html' => $generatedHtml]);
     }
@@ -1121,7 +1126,7 @@ class OrderController extends Controller
 
         exit();
     }
-
+    
     public function apiWompi($id_transaction)
     {
         try {

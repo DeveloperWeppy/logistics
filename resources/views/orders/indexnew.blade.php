@@ -57,7 +57,7 @@
                             <table id="users-table" class="display responsive nowrap" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th scope="col"></th>
+                                        <th scope="col"><input type="checkbox" id="check-all"></th>
                                         <th scope="col">Pedido</th>
                                         <th scope="col">Estado</th>
                                         <th scope="col">Cliente</th>
@@ -297,8 +297,11 @@
             });
 
             // Manejar la selección/deselección de todos los checkboxes
-            $('#check-all').change(function () {
+            $(document).on('change', '#check-all', function () {
                 $('.check-row').prop('checked', this.checked);
+
+                // Disparar manualmente el evento 'change' en los checks seleccionados
+                $('.check-row:checked').trigger('change');
             });
 
             // Manejar la generación masiva de QR al hacer clic en el botón correspondiente
@@ -329,6 +332,19 @@
                     url: '{{ route("orders.generate_qr_selected") }}',
                     type: 'POST',
                     data: { orders: selectedOrders },
+                    beforeSend: function() {
+                                // Mostrar el mensaje de carga inicial
+                                swal({
+                                    title: "Espere un momento...",
+                                    //text: "Procesando la información, espere un momento...",
+                                    timerProgressBar: true,
+                                    didOpen: () => {
+                                        swal.showLoading();
+                                    },
+                                    showConfirmButton: false,
+                                    modal: true,
+                                });
+                    },
                     success: function (response) {
                         console.log(response);
                         if (response.success) {
