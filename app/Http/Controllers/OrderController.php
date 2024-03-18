@@ -109,15 +109,16 @@ class OrderController extends Controller
             ]);
         }
         
-  
-        for($i = 0; $i < count($data['line_items']); $i++) {
-            $dataP=$this->apiWc("products/".$data['line_items'][$i]['product_id']);
-            $images= $dataP['images'];
-            $image=asset('assets/images/logo/logo-icon.png');
-            if(count($images)>0){
-                $image=$images[0]['src'];
+        if(isset($data['line_items']) && is_array($data['line_items'])) {
+            for($i = 0; $i < count($data['line_items']); $i++) {
+                $dataP=$this->apiWc("products/".$data['line_items'][$i]['product_id']);
+                $images= $dataP['images'];
+                $image=asset('assets/images/logo/logo-icon.png');
+                if(count($images)>0){
+                    $image=$images[0]['src'];
+                }
+                $data_items[]=['sku'=> $data['line_items'][$i]['sku'],'image'=>$image, 'name'=>$dataP['name'],'id'=>$dataP['id'],'quantity'=>$data['line_items'][$i]['quantity'],'scann'=>0];
             }
-            $data_items[]=['sku'=> $data['line_items'][$i]['sku'],'image'=>$image, 'name'=>$dataP['name'],'id'=>$dataP['id'],'quantity'=>$data['line_items'][$i]['quantity'],'scann'=>0];
         }
         return view('orders.form',['title' =>'Agregar Orden','data'=>$data,'order'=>$order,'data_items'=>$data_items,'id'=> $order->id,'creador'=>$order->creatorUser(),'picking'=>$order->pickingUser(),'delivery'=>$order->deliveryUser,'status'=>$order->status,'status_name'=>$arrayStatus[$order->status]]);
     }
